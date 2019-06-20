@@ -4,6 +4,11 @@
  * Eventually, this might become the metadata editor.
  */
 
+
+#import <CoreData/CoreData.h>
+
+#import "Metadata.h"
+
 void showInfoForFile(NSString *path, NSDictionary *info);
 
 @class LibController;
@@ -19,11 +24,15 @@ void showInfoForFile(NSString *path, NSDictionary *info);
     NSString *ifid;
 }
 
+@property (strong) Game *game;
+
 @property NSString *path;
 @property NSDictionary *meta;
 
 - (instancetype)initWithpath:(NSString *)path andInfo:(NSDictionary *)meta;
 - (instancetype)initWithpath:(NSString *)path;
+
+- (void)updateBlurb;
 
 - (IBAction)saveImage:sender;
 

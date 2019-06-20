@@ -1352,6 +1352,101 @@ static NSInteger compareDicts(NSDictionary *a, NSDictionary *b, id key,
     }
 }
 
+- (void) updateSideView
+{
+
+	NSIndexSet *rows = _gameTableView.selectedRowIndexes;
+
+	if (!rows.count)
+	{
+		NSLog(@"No game selected in table view, returning without updating side view");
+		return;
+	} else NSLog(@"%lu rows selected.", (unsigned long)rows.count);
+
+	Game *game = [gameTableModel objectAtIndex:rows.firstIndex];
+
+	NSLog(@"\nUpdating info pane for %@", game.metadata.title);
+
+	SideInfoView *infoView = [[SideInfoView alloc] initWithFrame:_leftScrollView.frame andIfid:_sideIfid andController:self];
+
+	_leftScrollView.documentView = infoView;
+
+	[infoView updateSideViewForGame:game];
+
+	if (game.metadata.ifid)
+		_sideIfid.stringValue = game.metadata.ifid;
+	else
+		_sideIfid.stringValue = @"";
+
+	_sideIfid.delegate = infoView;
+	gameTableDirty = YES;
+    
+}
+
+#pragma mark -
+#pragma mark SplitView stuff
+
+
+- (BOOL)splitView:(NSSplitView *)splitView
+canCollapseSubview:(NSView *)subview
+{
+	if (subview == _leftView) return YES;
+	return NO;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMaximumPosition ofSubviewAt:(NSInteger)dividerIndex
+{
+	return splitView.frame.size.width / 2;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition ofSubviewAt:(NSInteger)dividerIndex
+{
+	return (CGFloat)200;
+}
+
+-(IBAction)toggleSidebar:(id)sender;
+{
+	if ([_splitView isSubviewCollapsed:_leftView]) {
+		[self uncollapseLeftView];
+	} else {
+		[self collapseLeftView];
+	}
+}
+
+-(void)collapseLeftView
+{
+	NSView *left  = [_splitView.subviews objectAtIndex:0];
+	NSView *right = [_splitView.subviews objectAtIndex:1];
+	NSRect rightFrame = right.frame;
+	NSRect overallFrame = _splitView.frame;
+	[left setHidden:YES];
+	[right setFrameSize:NSMakeSize(overallFrame.size.width,rightFrame.size.height)];
+	[_splitView display];
+}
+
+-(void)uncollapseLeftView
+{
+	NSView *left  = [_splitView.subviews objectAtIndex:0];
+	NSView *right = [_splitView.subviews objectAtIndex:1];
+	[left setHidden:NO];
+
+	CGFloat dividerThickness = _splitView.dividerThickness;
+
+	NSLog(@"dividerThickness = %f", dividerThickness);
+
+	// get the different frames
+	NSRect leftFrame = left.frame;
+	NSRect rightFrame = right.frame;
+
+	rightFrame.size.width = (rightFrame.size.width-leftFrame.size.width-dividerThickness);
+	leftFrame.origin.x = 0;
+	[left setFrameSize:leftFrame.size];
+	right.frame = rightFrame;
+	[_splitView display];
+}
+
+CGFloat lastsplitViewWidth = 0;
+
 #pragma mark -
 #pragma mark Windows restoration
 

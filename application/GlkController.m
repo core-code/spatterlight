@@ -1,5 +1,5 @@
 #import "InfoController.h"
-#import "NSString+Signature.h"
+#import "NSString+Categories.h"
 #import "main.h"
 
 #include <sys/time.h>

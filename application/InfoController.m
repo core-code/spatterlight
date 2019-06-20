@@ -220,4 +220,14 @@
     [self sizeToFitImageAnimate:YES];
 }
 
+- (void)updateBlurb
+{
+	_game.metadata.blurb = descriptionText.textStorage.string;
+
+	[((AppDelegate *)[NSApplication sharedApplication].delegate)
+     .libctl updateSideView];
+	[((AppDelegate *)[NSApplication sharedApplication].delegate)
+     .libctl  updateTableViews];
+}
+
 @end

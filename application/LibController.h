@@ -13,6 +13,16 @@
  *
  */
 
+#import <CoreData/CoreData.h>
+
+#import "Game.h"
+#import "Image.h"
+#import "Metadata.h"
+#import "Settings.h"
+#import "SideInfoView.h"
+#import "NSString+Categories.h"
+#import "NSDate+relative.h"
+
 @interface LibHelperWindow : NSWindow <NSDraggingDestination>
 @end
 
@@ -95,8 +105,18 @@
 - (void)deselectGames;
 - (void)selectGameWithIFID:(NSString *)ifid;
 - (void)updateTableViews; /* must call this after -importGame: */
+- (void) updateSideView;
 
 - (void)enableClickToRenameAfterDelay;
+
+@property (strong) IBOutlet NSView *leftView;
+@property (strong) IBOutlet NSSplitView *splitView;
+
+- (IBAction) toggleSidebar:(id)sender;
+
+@property (strong) IBOutlet NSTextField *sideIfid;
+//@property (strong) IBOutlet NSClipView *sideClipView;
+@property (strong) IBOutlet NSScrollView *leftScrollView;
 
 - (NSString *)convertAGTFile:(NSString *)origpath;
 
