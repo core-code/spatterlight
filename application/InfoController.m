@@ -14,11 +14,11 @@
 
 @implementation InfoController
 
-- (instancetype)initWithpath:(NSString *)path andInfo:(NSDictionary *)meta {
+- (instancetype)initWithGame:(Game *)game  {
     self = [super initWithWindowNibName:@"InfoPanel"];
     if (self) {
-        _path = path;
-        _meta = meta;
+        _path = game.fileLocation;
+        _meta = game.metadata;
     }
     return self;
 }
@@ -119,13 +119,13 @@
     [(NSScrollView *)descriptionText.superview setDrawsBackground:NO];
 
     if (_meta) {
-        titleField.stringValue = [_meta objectForKey:@"title"];
-        if ([_meta valueForKey:@"author"])
-            authorField.stringValue = [_meta objectForKey:@"author"];
-        if ([_meta valueForKey:@"headline"])
-            headlineField.stringValue = [_meta objectForKey:@"headline"];
-        if ([_meta valueForKey:@"description"])
-            descriptionText.string = [_meta objectForKey:@"description"];
+        titleField.stringValue = _meta.title;
+        if (_meta.author)
+            authorField.stringValue = _meta.author;
+        if (_meta.headline)
+            headlineField.stringValue = _meta.headline;
+        if (_meta.blurb)
+            descriptionText.string = _meta.blurb;
     }
 
     format = babel_init((char *)_path.UTF8String);

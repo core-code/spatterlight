@@ -4,6 +4,7 @@
 
 #import <CoreData/CoreData.h>
 
+#import "CoreDataManager.h"
 #import "HelpPanelController.h"
 #import "InfoController.h"
 
@@ -18,11 +19,9 @@
 @property LibController *libctl;
 @property HelpPanelController *helpLicenseWindow;
 
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-//
-//@property (readonly) NSPersistentContainer *persistentContainer;
+@property (readonly) CoreDataManager *coreDataManager;
+@property (readonly) NSManagedObjectContext *managedObjectContext;
+
 
 - (IBAction)openDocument:(id)sender;
 

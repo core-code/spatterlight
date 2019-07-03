@@ -104,17 +104,13 @@ static const char *msgnames[] = {
 // fullscreen is handled automatically
 
 - (void)runTerp:(NSString *)terpname_
-   withGameFile:(NSString *)gamefile_
-           IFID:(NSString *)gameifid_
-           info:(NSDictionary *)gameinfo_
+        withGame:(Game *)game_
           reset:(BOOL)shouldReset
      winRestore:(BOOL)windowRestoredBySystem_ {
 
-    NSLog(@"glkctl: runterp %@ %@", terpname_, gamefile_);
+    NSLog(@"glkctl: runterp %@ %@", terpname_, game);
 
-    gamefile = gamefile_;
-    gameifid = gameifid_;
-    gameinfo = gameinfo_;
+    game = game_;
     terpname = terpname_;
 
     /* Setup our own stuff */
@@ -140,7 +136,7 @@ static const char *msgnames[] = {
     _gwindows = [[NSMutableDictionary alloc] init];
     bufferedData = nil;
 
-    self.window.title = [gameinfo objectForKey:@"title"];
+    self.window.title = game.metadata.title;
     if (NSAppKitVersionNumber >= NSAppKitVersionNumber10_12) {
         [self.window setValue:@2 forKey:@"tabbingMode"];
     }
@@ -529,7 +525,7 @@ static const char *msgnames[] = {
                   error);
 
         NSString *terpFolder =
-        [[gFolderMap objectForKey:[gameinfo objectForKey:@"format"]]
+        [[gFolderMap objectForKey:game.metadata.format]
          stringByAppendingString:@" Files"];
 
         NSString *dirstr =
@@ -548,7 +544,7 @@ static const char *msgnames[] = {
                                                   attributes:nil
                                                        error:NULL];
 
-        NSString *dummyfilename = [[gameinfo objectForKey:@"title"]
+        NSString *dummyfilename = [game.metadata.title
                                    stringByAppendingPathExtension:@"txt"];
 
         NSString *dummytext = [NSString
@@ -557,7 +553,7 @@ static const char *msgnames[] = {
                                @"it easier for humans to guess what game these autosave files belong "
                                @"to. Any files in this folder are for the game %@, or possibly "
                                @"a game with another name but identical contents.",
-                               dummyfilename, [gameinfo objectForKey:@"title"]];
+                               dummyfilename, game.metadata.title];
 
         NSString *dummyfilepath =
         [appSupportURL.path stringByAppendingPathComponent:dummyfilename];
@@ -592,10 +588,8 @@ static const char *msgnames[] = {
 }
 
 // LibController calls this to reset non-running games
-- (void)deleteAutosaveFilesForGameFile:(NSString *)gamefile_
-                                withInfo:(NSDictionary *)gameinfo_ {
-    gamefile = gamefile_;
-    gameinfo = gameinfo_;
+- (void)deleteAutosaveFilesForGame:(Game *)aGame {
+    gamefile = aGame.fileLocation;
 
     [self appSupportDir];
     [self autosaveFileGUI];
@@ -780,9 +774,7 @@ static const char *msgnames[] = {
     [self deleteAutosaveFiles];
 
     [self runTerp:(NSString *)terpname
-     withGameFile:(NSString *)gamefile
-             IFID:gameifid
-             info:gameinfo
+         withGame:(Game *)game
             reset:YES
        winRestore:NO];
 
@@ -815,7 +807,7 @@ static const char *msgnames[] = {
     }
 
     [((AppDelegate *)[NSApplication sharedApplication].delegate)
-     .libctl.gameSessions removeObjectForKey:gameifid];
+     .libctl.gameSessions removeObjectForKey:game.metadata.ifid];
 }
 
 /*
@@ -826,8 +818,7 @@ static const char *msgnames[] = {
 
 - (IBAction)showGameInfo:(id)sender {
     [((AppDelegate *)[NSApplication sharedApplication].delegate).libctl
-     showInfo:gameinfo
-     forFile:gamefile];
+     showInfoForGame:game];
 }
 
 - (IBAction)revealGameInFinder:(id)sender {
@@ -1129,7 +1120,7 @@ static const char *msgnames[] = {
 
     if (fileusage == fileusage_Transcript || fileusage == fileusage_InputRecord)
         filename =
-        [filename stringByAppendingString:[gameinfo objectForKey:@"title"]];
+        [filename stringByAppendingString:game.metadata.title];
 
     if (fileusage == fileusage_SavedGame) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -1137,7 +1128,7 @@ static const char *msgnames[] = {
         date = [formatter stringFromDate:[NSDate date]];
 
         filename =
-        [[gameinfo objectForKey:@"title"] stringByAppendingString:date];
+        [game.metadata.title stringByAppendingString:date];
     }
 
     if (ext)

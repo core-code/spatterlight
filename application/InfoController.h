@@ -27,9 +27,9 @@ void showInfoForFile(NSString *path, NSDictionary *info);
 @property (strong) Game *game;
 
 @property NSString *path;
-@property NSDictionary *meta;
+@property Metadata *meta;
 
-- (instancetype)initWithpath:(NSString *)path andInfo:(NSDictionary *)meta;
+- (instancetype)initWithGame:(Game *)game;
 - (instancetype)initWithpath:(NSString *)path;
 
 - (void)updateBlurb;

@@ -90,19 +90,10 @@ static const unsigned componentFlags = (NSYearCalendarUnit| NSMonthCalendarUnit 
     return newDate;
 }
 
-- (NSDate *) dateBySubtractingDays: (NSInteger) dDays {
-	return [self dateByAddingDays: (dDays * -1)];
-}
-
 #pragma mark - Relative Dates
 
-+ (NSDate *) dateWithDaysBeforeNow: (NSInteger) days {
-    // Thanks, Jim Morrison
-	return [[NSDate date] dateBySubtractingDays:days];
-}
-
 + (NSDate *) dateYesterday {
-	return [NSDate dateWithDaysBeforeNow:1];
+	return [[NSDate date] dateByAddingDays:-1];
 }
 
 @end

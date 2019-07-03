@@ -13,14 +13,13 @@
 
 @class Interpreter, Metadata, Settings;
 
-@interface Game : NSManagedObject <NSWindowDelegate>
+@interface Game : NSManagedObject
 
 @property (nonatomic, retain) NSDate * added;
 @property (nonatomic, retain) id fileLocation;
 @property (nonatomic, retain) NSNumber * found;
 @property (nonatomic, retain) NSString * group;
 @property (nonatomic, retain) NSNumber * height;
-@property (nonatomic, retain) id infoWindow;
 @property (nonatomic, retain) NSDate * lastModified;
 @property (nonatomic, retain) NSDate * lastPlayed;
 @property (nonatomic, retain) NSNumber * width;
@@ -32,6 +31,8 @@
 
 @property (readonly, copy) NSURL *urlForBookmark;
 - (void) bookmarkForPath: (NSString *)path;
-- (void) showInfoWindow;
 
 @end
+
+//@interface UrlToBookmarkTransformer : NSValueTransformer
+//@end

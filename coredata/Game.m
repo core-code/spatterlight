@@ -72,25 +72,55 @@
     self.fileLocation=bookmark;
 }
 
-- (void) showInfoWindow {
-    if (self.infoWindow == nil)
-        self.infoWindow = [[InfoController alloc]initWithWindowNibName: @"InfoPanel"];
-
-    InfoController *infoWindow = (InfoController *)self.infoWindow;
-    infoWindow.game = self;
-
-    [infoWindow showWindow: nil];
-    infoWindow.window.delegate = self;
-
-}
-
-- (void) windowWillClose:(NSNotification *)notification
-{
-    //    NSLog(@"glkctl: windowWillClose");
-    InfoController * infoWindow = (InfoController *)self.infoWindow;
-	[infoWindow updateBlurb];
-    infoWindow.window.delegate = nil;
-    self.infoWindow = nil;
-}
 
 @end
+
+//@implementation UrlToBookmarkTransformer
+//
+//+ (BOOL)allowsReverseTransformation {
+//    return YES;
+//}
+//+ (Class)transformedValueClass {
+//    return [NSData class];
+//}
+//- (id)transformedValue:(id)theURL {
+//    NSError* theError = nil;
+//    NSData *bookmark = [theURL bookmarkDataWithOptions:NSURLBookmarkCreationSuitableForBookmarkFile
+//                                        includingResourceValuesForKeys:nil
+//                                                         relativeToURL:nil
+//                                                                 error:&theError];
+//
+//    if (theError || (bookmark == nil)) {
+//        // Handle any errors.
+//        NSLog(@"Could not create bookmark from file at %@",theURL);
+//        return nil;
+//    }
+//
+//    
+//    return bookmark;
+//}
+//- (id)reverseTransformedValue:(id)value {
+//    BOOL bookmarkIsStale = NO;
+//    NSError* theError = nil;
+//    NSURL* bookmarkURL = [NSURL URLByResolvingBookmarkData:value
+//                                                   options:NSURLBookmarkResolutionWithoutUI
+//                                             relativeToURL:nil
+//                                       bookmarkDataIsStale:&bookmarkIsStale
+//                                                     error:&theError];
+//
+//    if (bookmarkIsStale) {
+//        NSLog(@"Bookmark is stale! New location: %@", bookmarkURL.path);
+//        // Handle any errors
+//        return bookmarkURL;
+//    }
+//    if (theError != nil) {
+//
+//        NSLog(@"Error! %@", theError);
+//        // Handle any errors
+//        return nil;
+//    }
+//
+//    return bookmarkURL;
+//}
+//
+//@end
