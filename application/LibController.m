@@ -468,7 +468,7 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
          i = [rows indexGreaterThanIndex:i]) {
         NSString *ifid = [gameTableModel objectAtIndex:i];
         Metadata *meta = [self fetchMetadataForIFID:ifid];
-        NSString *path = meta.game.fileLocation;
+        NSString *path = [meta.game urlForBookmark].path;
 
         if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
             NSRunAlertPanel(
@@ -487,14 +487,14 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
     InfoController *infoctl;
 
     // First, we check if we have created this info window already
-    infoctl = [_infoWindows objectForKey:game.fileLocation];
+    infoctl = [_infoWindows objectForKey:[game urlForBookmark].path];
 
     if (!infoctl) {
         infoctl = [[InfoController alloc] initWithGame:game];
         NSWindow *infoWindow = infoctl.window;
         infoWindow.restorable = YES;
         infoWindow.restorationClass = [AppDelegate class];
-        NSString *path = game.fileLocation;
+        NSString *path = [game urlForBookmark].path;
         infoWindow.identifier = [NSString stringWithFormat:@"infoWin%@", path];
         [_infoWindows setObject:infoctl forKey:path];
     }
@@ -874,9 +874,9 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
                     dateFormatter.dateFormat = @"yyyy-MM-dd";
                 else NSLog(@"Illegal date format!");
 
-                entry.firstPublished = [dateFormatter dateFromString:keyVal];
+                entry.firstpublished = [dateFormatter dateFromString:keyVal];
                 dateFormatter.dateFormat = @"yyyy";
-                entry.yearAsString = [dateFormatter stringFromDate:entry.firstPublished];
+                entry.yearAsString = [dateFormatter stringFromDate:entry.firstpublished];
             }
             else if ([(NSString *)key isEqualToString:@"language"])
             {
@@ -1804,7 +1804,7 @@ static NSInteger compareDates(NSDate *ael, NSDate *bel,bool ascending)
         NSInteger cmp;
         if ([gameSortColumn isEqual:@"firstpublished"])
         {
-            cmp = compareDates(a.firstPublished, b.firstPublished, sortAscending);
+            cmp = compareDates(a.firstpublished, b.firstpublished, sortAscending);
             if (cmp) return cmp;
         }
         else if ([gameSortColumn isEqual:@"added"] || [gameSortColumn isEqual:@"lastPlayed"] || [gameSortColumn isEqual:@"lastModified"])
@@ -1823,7 +1823,7 @@ static NSInteger compareDates(NSDate *ael, NSDate *bel,bool ascending)
         if (cmp) return cmp;
         cmp = compareGames(a, b, @"seriesnumber", sortAscending);
         if (cmp) return cmp;
-        cmp = compareDates(a.firstPublished, b.firstPublished, sortAscending);
+        cmp = compareDates(a.firstpublished, b.firstpublished, sortAscending);
         if (cmp) return cmp;
         return compareGames(a, b, @"format", sortAscending);
     }];
@@ -2017,8 +2017,10 @@ CGFloat lastsplitViewWidth = 0;
 - (void)window:(NSWindow *)window willEncodeRestorableState:(NSCoder *)state {
     [state encodeObject:_searchField.stringValue forKey:@"searchText"];
     NSIndexSet *selrow = _gameTableView.selectedRowIndexes;
-    NSArray *selectedGames = [gameTableModel objectsAtIndexes:selrow];
-    [state encodeObject:selectedGames forKey:@"selectedGames"];
+    if (selrow) {
+        NSArray *selectedGames = [gameTableModel objectsAtIndexes:selrow];
+        [state encodeObject:selectedGames forKey:@"selectedGames"];
+    }
 }
 
 - (void)window:(NSWindow *)window didDecodeRestorableState:(NSCoder *)state {
@@ -2068,7 +2070,7 @@ CGFloat lastsplitViewWidth = 0;
 - (void)doDoubleClick:(id)sender {
     //    NSLog(@"doDoubleClick:");
     [self enableClickToRenameAfterDelay];
-    [self playGame:sender];
+    [self play:sender];
 }
 
 - (void)enableClickToRenameAfterDelay {

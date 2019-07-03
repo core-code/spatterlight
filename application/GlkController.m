@@ -111,6 +111,7 @@ static const char *msgnames[] = {
     NSLog(@"glkctl: runterp %@ %@", terpname_, game);
 
     game = game_;
+    gamefile = [game urlForBookmark].path;
     terpname = terpname_;
 
     /* Setup our own stuff */
@@ -589,7 +590,7 @@ static const char *msgnames[] = {
 
 // LibController calls this to reset non-running games
 - (void)deleteAutosaveFilesForGame:(Game *)aGame {
-    gamefile = aGame.fileLocation;
+    gamefile = [aGame urlForBookmark].path;
 
     [self appSupportDir];
     [self autosaveFileGUI];

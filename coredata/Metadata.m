@@ -20,7 +20,7 @@
 @dynamic blurb;
 @dynamic coverArtURL;
 @dynamic dateEdited;
-@dynamic firstPublished;
+@dynamic firstpublished;
 @dynamic forgiveness;
 @dynamic format;
 @dynamic genre;

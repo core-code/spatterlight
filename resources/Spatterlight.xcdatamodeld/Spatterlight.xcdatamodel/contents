@@ -62,7 +62,7 @@
         <attribute name="blurb" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="coverArtURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dateEdited" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="firstPublished" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="firstpublished" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="forgiveness" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="format" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="genre" optional="YES" attributeType="String" syncable="YES"/>

@@ -17,7 +17,7 @@
 - (instancetype)initWithGame:(Game *)game  {
     self = [super initWithWindowNibName:@"InfoPanel"];
     if (self) {
-        _path = game.fileLocation;
+        _path = [game urlForBookmark].path;
         _meta = game.metadata;
     }
     return self;
