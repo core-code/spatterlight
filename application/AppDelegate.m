@@ -279,6 +279,21 @@ NSDictionary *gFormatMap;
     addToRecents = YES;
 }
 
+#pragma mark - Core Data stack
+
+@synthesize coreDataManager = _coreDataManager;
+
+- (CoreDataManager *)coreDataManager {
+    // The persistent container for the application. This implementation creates and returns a container, having loaded the store for the application to it.
+    @synchronized (self) {
+        if (_coreDataManager == nil) {
+            _coreDataManager = [[CoreDataManager alloc] initWithModelName:@"Spatterlight"];
+        }
+    }
+
+    return _coreDataManager;
+}
+
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)app {
     NSArray *windows = app.windows;
     NSInteger count = windows.count;

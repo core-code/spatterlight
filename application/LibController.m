@@ -1766,7 +1766,7 @@ static NSInteger compareDates(NSDate *ael, NSDate *bel,bool ascending)
 
     selection = nil;
     selrow = _gameTableView.selectedRow;
-    if (selrow >= 0)
+    if (gameTableModel.count && selrow >= 0)
         selection = [gameTableModel objectAtIndex:selrow];
 
 

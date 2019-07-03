@@ -73,7 +73,7 @@
         <attribute name="myRating" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ratingCountTot" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="series" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="seriesIndex" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="seriesnumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starRating" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tuid" optional="YES" attributeType="String" syncable="YES"/>
