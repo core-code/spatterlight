@@ -34,7 +34,7 @@
 @class InfoController;
 
 @interface LibController
-    : NSWindowController <NSDraggingDestination, NSWindowDelegate, NSURLConnectionDelegate> {
+    : NSWindowController <NSDraggingDestination, NSWindowDelegate, NSURLConnectionDelegate, NSSplitViewDelegate> {
     NSURL *homepath;
 
     IBOutlet NSButton *infoButton;
@@ -116,6 +116,8 @@
 - (void)enableClickToRenameAfterDelay;
 
 @property (strong) IBOutlet NSView *leftView;
+@property (strong) IBOutlet NSView *rightView;
+
 @property (strong) IBOutlet NSSplitView *splitView;
 
 - (IBAction) toggleSidebar:(id)sender;

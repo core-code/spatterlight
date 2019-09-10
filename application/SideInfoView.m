@@ -221,6 +221,9 @@
 	NSScrollView *scrollView = (NSScrollView *)clipView.superview;
 	CGFloat superViewWidth = clipView.frame.size.width;
 
+    if (superViewWidth < 24)
+        return;
+
 	[clipView addConstraint:[NSLayoutConstraint constraintWithItem:self
 														 attribute:NSLayoutAttributeLeft
 														 relatedBy:NSLayoutRelationEqual
