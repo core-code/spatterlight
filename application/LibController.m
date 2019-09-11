@@ -1979,53 +1979,55 @@ canCollapseSubview:(NSView *)subview
 {
     if (NSWidth(_rightView.frame) <= 340)
         return NSWidth(splitView.frame) - 340;
-    NSLog(@"splitView:constrainMaxCoordinate:%f ofSubviewAt:%ld (returning %f)", proposedMaximumPosition, dividerIndex, splitView.frame.size.width / 2);
+//    NSLog(@"splitView:constrainMaxCoordinate:%f ofSubviewAt:%ld (returning %f)", proposedMaximumPosition, dividerIndex, splitView.frame.size.width / 2);
 	return NSWidth(splitView.frame) / 2;
 }
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition ofSubviewAt:(NSInteger)dividerIndex
 {
-    NSLog(@"splitView:constrainMinCoordinate:%f ofSubviewAt:%ld (returning 200)", proposedMinimumPosition, dividerIndex);
+//    NSLog(@"splitView:constrainMinCoordinate:%f ofSubviewAt:%ld (returning 200)", proposedMinimumPosition, dividerIndex);
 
 	return (CGFloat)200;
 }
 
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize
 {
-    // Get the new frame of the split view
+    // Get the current size of the split view
     NSSize size = splitView.bounds.size;
 
     // Get the divider width
     CGFloat dividerWidth = splitView.dividerThickness;
 
-    // Get the frames of the recently used equations panel and the equation entry panel
-    NSArray *views = splitView.subviews;
-    NSRect left = [[views objectAtIndex:0] frame];
-    NSRect right = [[views objectAtIndex:1] frame];
+    // Get the frames of the left and right views
+    // and assure correct heights
+    NSRect left = _leftView.frame;
+    left.size.height = size.height;
+    NSRect right = _rightView.frame;
+    right.size.height = size.height;
 
     // Set the widths
     // Sizing strategy:
-    // 1) equation entry must be a minimum of 175 pixels minus the divider width
-    // 2) recently used will stay at its current size, unless it's less than 100 pixels wide
-    // 3) If recently used is less than 100 pixels, grow it as much as possible until it reaches 100
+    // 1) Table (right) view must be a minimum of 340 pixels (RIGHT_VIEW_MIN_WIDTH) minus the divider width
+    // 2) Left view will stay at its current size, unless it's less than 100 pixels wide (PREFERRED_LEFT_VIEW_MIN_WIDTH)
+    // 3) If left view is less than 100 pixels, grow it as much as possible until it reaches 100
     float totalFrameWidth = size.width - dividerWidth;
 
-    // Set recently used to the desired size (at least 100 pixels wide), or keep at zero
-    // if it was collapsed
+    // Set left view to the desired size (at least 100 pixels wide), or keep at zero
+    // if it is collapsed
     left.size.width = left.size.width == 0 ? 0 : MAX(PREFERRED_LEFT_VIEW_MIN_WIDTH, left.size.width);
 
-    // Calculate the size of the equation entry based on the recently used width
+    // Calculate the size of the rigth view based on the left view width
     right.size.width = MAX((RIGHT_VIEW_MIN_WIDTH - dividerWidth), (totalFrameWidth - left.size.width));
 
-    // Now that the equation entry is set, recalculate the recently used
+    // Now that the equation entry is set, recalculate the left view
     left.size.width = totalFrameWidth - right.size.width;
 
-    // Set the x location of the equation entry
+    // Set the x location of the right view
     right.origin.x = left.size.width + dividerWidth;
 
     // Set the widths
-    [[views objectAtIndex:0] setFrame:left];
-    [[views objectAtIndex:1] setFrame:right];
+    _leftView.frame = left;
+    _rightView.frame = right;
 }
 
 -(IBAction)toggleSidebar:(id)sender;
@@ -2089,7 +2091,7 @@ canCollapseSubview:(NSView *)subview
     NSString *searchText = [state decodeObjectForKey:@"searchText"];
     gameTableDirty = YES;
     if (searchText.length) {
-//        NSLog(@"Restored searchbar text %@", searchText);
+        //        NSLog(@"Restored searchbar text %@", searchText);
         _searchField.stringValue = searchText;
         [self searchForGames:_searchField];
     }
@@ -2102,27 +2104,31 @@ canCollapseSubview:(NSView *)subview
             NSLog(@"Restoring selection of game with ifid %@", ifid);
         }
         NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-
+        
         for (Game *game in selectedGames) {
             if ([gameTableModel containsObject:game])
                 [indexSet addIndex:[gameTableModel indexOfObject:game]];
         }
-
+        
         [_gameTableView selectRowIndexes:indexSet byExtendingSelection:NO];
     }
-
-    NSRect newframe = _leftView.frame;
-    newframe.size.width = [state decodeFloatForKey:@"sideviewWidth"];
-    _leftView.frame = newframe;
-
-    NSLog(@"Restored left view width as %f", NSWidth(_leftView.frame))
-
-    if (_leftView.frame.size.width < 50) {
-        NSRect newRect = _leftView.frame;
+    
+    CGFloat newDividerPos = [state decodeFloatForKey:@"sideviewWidth"];
+    
+   
+    
+    if (newDividerPos < 50 && newDividerPos > 0) {
         NSLog(@"Left view width too narrow, setting to 50.");
-        newRect.size.width = 50;
-        _leftView.frame = newRect;
+        newDividerPos = 50;
     }
+    
+    [_splitView setPosition:newDividerPos
+ofDividerAtIndex:0];
+    
+     NSLog(@"Restored left view width as %f", NSWidth(_leftView.frame));
+     NSLog(@"Now _leftView.frame is %@", NSStringFromRect(_leftView.frame));
+
+
 }
 
 #pragma mark -
