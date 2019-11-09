@@ -23,7 +23,7 @@ enum { X_EDITED, X_LIBRARY, X_DATABASE }; // export selections
 #define kIfdb 5
 
 #define RIGHT_VIEW_MIN_WIDTH 340.0
-#define PREFERRED_LEFT_VIEW_MIN_WIDTH 100.0
+#define PREFERRED_LEFT_VIEW_MIN_WIDTH 200.0
 
 
 #include <ctype.h>
@@ -1936,7 +1936,7 @@ objectValueForTableColumn: (NSTableColumn*)column
 
 	NSIndexSet *rows = _gameTableView.selectedRowIndexes;
 
-	if (!rows.count)
+	if (!rows.count || [_splitView isSubviewCollapsed:_leftView])
 	{
 		NSLog(@"No game selected in table view, returning without updating side view");
 		return;
@@ -1946,7 +1946,6 @@ objectValueForTableColumn: (NSTableColumn*)column
 
 	NSLog(@"\nUpdating info pane for %@", game.metadata.title);
     NSLog(@"Side view width: %f", NSWidth(_leftView.frame));
-
 
 	SideInfoView *infoView = [[SideInfoView alloc] initWithFrame:_leftScrollView.frame andIfid:_sideIfid andController:self];
 
@@ -1977,57 +1976,21 @@ canCollapseSubview:(NSView *)subview
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMaximumPosition ofSubviewAt:(NSInteger)dividerIndex
 {
-    if (NSWidth(_rightView.frame) <= 340)
-        return NSWidth(splitView.frame) - 340;
-//    NSLog(@"splitView:constrainMaxCoordinate:%f ofSubviewAt:%ld (returning %f)", proposedMaximumPosition, dividerIndex, splitView.frame.size.width / 2);
-	return NSWidth(splitView.frame) / 2;
+    CGFloat result;
+    if (NSWidth(_rightView.frame) <= RIGHT_VIEW_MIN_WIDTH)
+        result = NSWidth(splitView.frame) - RIGHT_VIEW_MIN_WIDTH;
+    else
+        result = NSWidth(splitView.frame) / 2;
+
+    NSLog(@"splitView:constrainMaxCoordinate:%f ofSubviewAt:%ld (returning %f)", proposedMaximumPosition, dividerIndex, result);
+    return result;
 }
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition ofSubviewAt:(NSInteger)dividerIndex
 {
-//    NSLog(@"splitView:constrainMinCoordinate:%f ofSubviewAt:%ld (returning 200)", proposedMinimumPosition, dividerIndex);
+    NSLog(@"splitView:constrainMinCoordinate:%f ofSubviewAt:%ld (returning 200)", proposedMinimumPosition, dividerIndex);
 
-	return (CGFloat)200;
-}
-
-- (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize
-{
-    // Get the current size of the split view
-    NSSize size = splitView.bounds.size;
-
-    // Get the divider width
-    CGFloat dividerWidth = splitView.dividerThickness;
-
-    // Get the frames of the left and right views
-    // and assure correct heights
-    NSRect left = _leftView.frame;
-    left.size.height = size.height;
-    NSRect right = _rightView.frame;
-    right.size.height = size.height;
-
-    // Set the widths
-    // Sizing strategy:
-    // 1) Table (right) view must be a minimum of 340 pixels (RIGHT_VIEW_MIN_WIDTH) minus the divider width
-    // 2) Left view will stay at its current size, unless it's less than 100 pixels wide (PREFERRED_LEFT_VIEW_MIN_WIDTH)
-    // 3) If left view is less than 100 pixels, grow it as much as possible until it reaches 100
-    float totalFrameWidth = size.width - dividerWidth;
-
-    // Set left view to the desired size (at least 100 pixels wide), or keep at zero
-    // if it is collapsed
-    left.size.width = left.size.width == 0 ? 0 : MAX(PREFERRED_LEFT_VIEW_MIN_WIDTH, left.size.width);
-
-    // Calculate the size of the rigth view based on the left view width
-    right.size.width = MAX((RIGHT_VIEW_MIN_WIDTH - dividerWidth), (totalFrameWidth - left.size.width));
-
-    // Now that the equation entry is set, recalculate the left view
-    left.size.width = totalFrameWidth - right.size.width;
-
-    // Set the x location of the right view
-    right.origin.x = left.size.width + dividerWidth;
-
-    // Set the widths
-    _leftView.frame = left;
-    _rightView.frame = right;
+	return (CGFloat)PREFERRED_LEFT_VIEW_MIN_WIDTH;
 }
 
 -(IBAction)toggleSidebar:(id)sender;
@@ -2041,10 +2004,10 @@ canCollapseSubview:(NSView *)subview
 
 -(void)collapseLeftView
 {
-	NSRect rightFrame = _rightView.frame;
-	NSRect overallFrame = _splitView.frame;
+    lastSideviewWidth = _leftView.frame.size.width;
 	_leftView.hidden = YES;
-	[_rightView setFrameSize:NSMakeSize(overallFrame.size.width,rightFrame.size.height)];
+    [_splitView setPosition:0
+           ofDividerAtIndex:0];
 	[_splitView display];
 }
 
@@ -2052,21 +2015,29 @@ canCollapseSubview:(NSView *)subview
 {
 	_leftView.hidden = NO;
 
-	CGFloat dividerThickness = _splitView.dividerThickness;
+    CGFloat dividerThickness = _splitView.dividerThickness;
 
-	NSLog(@"dividerThickness = %f", dividerThickness);
+	// make sideview at least PREFERRED_LEFT_VIEW_MIN_WIDTH
+    if (lastSideviewWidth < PREFERRED_LEFT_VIEW_MIN_WIDTH)
+        lastSideviewWidth = PREFERRED_LEFT_VIEW_MIN_WIDTH;
+    
+    if (self.window.frame.size.width < PREFERRED_LEFT_VIEW_MIN_WIDTH + RIGHT_VIEW_MIN_WIDTH + dividerThickness) {
+        [self.window setContentSize:NSMakeSize(PREFERRED_LEFT_VIEW_MIN_WIDTH + RIGHT_VIEW_MIN_WIDTH + dividerThickness, self.window.contentView.frame.size.height)];
+    }
 
-	// get the different frames
-	NSRect leftFrame = _leftView.frame;
-	NSRect rightFrame = _rightView.frame;
+    [_splitView setPosition:lastSideviewWidth
+           ofDividerAtIndex:0];
 
-	rightFrame.size.width = (rightFrame.size.width-leftFrame.size.width-dividerThickness);
-	leftFrame.origin.x = 0;
-	[_leftView setFrameSize:leftFrame.size];
-	_rightView.frame = rightFrame;
-	[_splitView display];
+    [_splitView display];
+    [self updateSideView];
 }
-     
+
+- (void)splitViewDidResizeSubviews:(NSNotification *)notification
+{
+    // TODO: This should call a faster update method rather than rebuilding the view from scratch every time, but everything I've tried makes word wrap wonky
+    [self updateSideView];
+}
+
 #pragma mark -
 #pragma mark Windows restoration
 
@@ -2075,6 +2046,9 @@ canCollapseSubview:(NSView *)subview
 
     [state encodeFloat:NSWidth(_leftView.frame) forKey:@"sideviewWidth"];
     NSLog(@"Encoded left view width as %f", NSWidth(_leftView.frame))
+    [state encodeBool:[_splitView isSubviewCollapsed:_leftView] forKey:@"sideviewHidden"];
+    NSLog(@"Encoded left view collapsed as %@", [_splitView isSubviewCollapsed:_leftView]?@"YES":@"NO");
+
 
     NSIndexSet *selrow = _gameTableView.selectedRowIndexes;
     if (selrow) {
@@ -2115,8 +2089,6 @@ canCollapseSubview:(NSView *)subview
     
     CGFloat newDividerPos = [state decodeFloatForKey:@"sideviewWidth"];
     
-   
-    
     if (newDividerPos < 50 && newDividerPos > 0) {
         NSLog(@"Left view width too narrow, setting to 50.");
         newDividerPos = 50;
@@ -2128,7 +2100,11 @@ ofDividerAtIndex:0];
      NSLog(@"Restored left view width as %f", NSWidth(_leftView.frame));
      NSLog(@"Now _leftView.frame is %@", NSStringFromRect(_leftView.frame));
 
+    BOOL collapsed = [state decodeBoolForKey:@"sideviewHidden"];
+    NSLog(@"Decoded left view visibility as %@", collapsed?@"YES":@"NO");
 
+    if (collapsed)
+        [self collapseLeftView];
 }
 
 #pragma mark -

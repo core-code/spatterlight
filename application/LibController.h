@@ -54,6 +54,7 @@
     NSTimer *timer;
 
     NSArray *searchStrings;
+    CGFloat lastSideviewWidth;
 
     /* for the importing */
     NSInteger cursrc;
