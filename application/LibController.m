@@ -163,19 +163,12 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
 
         _coreDataManager = ((AppDelegate*)[NSApplication sharedApplication].delegate).coreDataManager;
         _managedObjectContext = _coreDataManager.mainManagedObjectContext;
-
-        //gameTableModel = [[self fetchObjects:@"Game"] mutableCopy];
-
-//        [_coreDataManager saveChanges];
     }
     return self;
 }
 
 - (void)windowDidLoad {
     NSLog(@"libctl: windowDidLoad");
-//
-//    _coreDataManager = ((AppDelegate*)[NSApplication sharedApplication].delegate).coreDataManager;
-//    _managedObjectContext = _coreDataManager.mainManagedObjectContext;
 
     self.windowFrameAutosaveName = @"LibraryWindow";
     _gameTableView.autosaveName = @"GameTable";
@@ -348,7 +341,6 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
                   completionHandler:^(NSInteger result) {
                       if (result == NSFileHandlingPanelOKButton) {
                           NSArray *urls = panel.URLs;
-                          [self beginImporting];
                           [self addInBackground:urls];
                       }
                   }];
@@ -359,22 +351,8 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
     LibController * __unsafe_unretained weakSelf = self;
     NSManagedObjectContext *childContext = [_coreDataManager privateChildManagedObjectContext];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(noteChildContextDidChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:childContext];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(noteChildContextDidSave:)
-                                                 name:NSManagedObjectContextDidSaveNotification
-                                               object:childContext];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(noteMainContextDidChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:_managedObjectContext];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(noteMainContextDidSave:)
-                                                 name:NSManagedObjectContextDidSaveNotification
-                                               object:_managedObjectContext];
+    [self beginImporting];
+
     [childContext performBlock:^{
         [weakSelf addFiles:files inContext:childContext];
         [weakSelf endImporting];
@@ -557,22 +535,6 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
         LibController * __unsafe_unretained weakSelf = self;
         NSManagedObjectContext *childContext = [_coreDataManager privateChildManagedObjectContext];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(noteChildContextDidChange:)
-                                                     name:NSManagedObjectContextObjectsDidChangeNotification
-                                                   object:childContext];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(noteChildContextDidSave:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:childContext];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(noteMainContextDidChange:)
-                                                     name:NSManagedObjectContextObjectsDidChangeNotification
-                                                   object:_managedObjectContext];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(noteMainContextDidSave:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:_managedObjectContext];
         [childContext performBlock:^{
 
             for (Game *game in selectedGames) {
@@ -590,6 +552,8 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
 
                     [_managedObjectContext performBlock:^{
                         [_coreDataManager saveChanges];
+                        [_managedObjectContext refreshObject:game
+                                                 mergeChanges:YES];
                         gameTableDirty = YES;
                         [weakSelf updateTableViews];
                         NSIndexSet *rows = _gameTableView.selectedRowIndexes;
@@ -604,21 +568,6 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
         }];
     }
 }
-
-
-- (void)noteChildContextDidChange:(id)sender {
-    NSLog(@"noteChildContextDidChange");
-}
-- (void)noteMainContextDidChange:(id)sender {
-    NSLog(@"noteMainContextDidChange");
-}
-- (void)noteChildContextDidSave:(id)sender {
-    NSLog(@"noteChildContextDidSave");
-}
-- (void)noteMainContextDidSave:(id)sender {
-    NSLog(@"noteMainContextDidSave");
-}
-
 
 - (void) extractMetadataFromFile:(Game *)game
 {
@@ -798,7 +747,6 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
         for (id tempObject in files) {
             [urls addObject:[NSURL fileURLWithPath:tempObject]];
         }
-        [self beginImporting];
         [self addInBackground:urls];
         return YES;
     }
@@ -967,10 +915,6 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
         gameTableDirty = YES;
     }
 }
-
-//- (Metadata *)fetchMetadataForIFID:(NSString *)ifid {
-//    return [self fetchMetadataForIFID:ifid inContext:_managedObjectContext];
-//}
 
 - (Metadata *)fetchMetadataForIFID:(NSString *)ifid inContext:(NSManagedObjectContext *)context {
     NSError *error = nil;
@@ -1272,51 +1216,6 @@ static void handleXMLError(char *msg, void *ctx)
     return YES;
 }
 
-//- (BOOL)downloadMetadataForIFID:(NSString*)ifid inContext:context {
-//    NSLog(@"libctl: downloadMetadataForIFID %@", ifid);
-//
-//    LibController * __unsafe_unretained weakSelf = self;
-//
-//    NSURL *url = [NSURL URLWithString:[@"https://ifdb.tads.org/viewgame?ifiction&ifid=" stringByAppendingString:ifid]];
-//
-//    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-//
-//    [NSURLConnection sendAsynchronousRequest:urlRequest queue:downloadQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-//     {
-//         if (error) {
-//             if (!data) {
-//                 [[NSOperationQueue mainQueue] addOperationWithBlock: ^{
-//                     NSLog(@"Error connecting: %@", [error localizedDescription]);
-//                 }];
-//                 return;
-//             }
-//         }
-//         else
-//         {
-//             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-//             if (httpResponse.statusCode == 200 && data) {
-//                 NSMutableData *mutableData = [data mutableCopy];
-//                 [mutableData appendBytes: "\0" length: 1];
-//
-//                 [[NSOperationQueue mainQueue] addOperationWithBlock: ^{
-//                     cursrc = kIfdb;
-//                     currentIfid = ifid;
-//                     NSLog(@"Set currentIfid to %@", currentIfid);
-//                     importContext = context;
-//                     [weakSelf importMetadataFromXML: mutableData.mutableBytes];
-//                     currentIfid = nil;
-//                     cursrc = 0;
-//                     gameTableDirty = YES;
-//                     [weakSelf updateTableViews];
-//                 }];
-//                 
-//             }
-//         }
-//     }];
-//    
-//    return YES;
-//}
-
 - (BOOL)downloadMetadataForIFID:(NSString*)ifid inContext:context {
     NSLog(@"libctl: downloadMetadataForIFID %@", ifid);
 
@@ -1390,19 +1289,6 @@ static void handleXMLError(char *msg, void *ctx)
                      inManagedObjectContext:context];
     img.data = rawImageData;
     metadata.cover = img;
-
-    NSError *error = nil;
-    
-    if (context.hasChanges) {
-        [context save:&error];
-        
-        [_managedObjectContext performBlock:^{
-            [_coreDataManager saveChanges];
-            [self updateSideView];
-        }];
-    }
-    
-    NSLog(@"added a new image to game %@ in %@", metadata.title, (context == _managedObjectContext)?@"_managedObjectContext":@"childContext");
 }
 
 static void write_xml_text(FILE *fp, NSDictionary *info, NSString *key) {
@@ -2159,9 +2045,9 @@ objectValueForTableColumn: (NSTableColumn*)column
 
 	if (!rows.count || [_splitView isSubviewCollapsed:_leftView])
 	{
-		NSLog(@"No game selected in table view, returning without updating side view");
+//		NSLog(@"No game selected in table view, returning without updating side view");
 		return;
-	} else NSLog(@"%lu rows selected.", (unsigned long)rows.count);
+	} // else NSLog(@"%lu rows selected.", (unsigned long)rows.count);
 
 	Game *game = [gameTableModel objectAtIndex:rows.firstIndex];
 
@@ -2208,13 +2094,13 @@ canCollapseSubview:(NSView *)subview
     else
         result = NSWidth(splitView.frame) / 2;
 
-    NSLog(@"splitView:constrainMaxCoordinate:%f ofSubviewAt:%ld (returning %f)", proposedMaximumPosition, dividerIndex, result);
+//    NSLog(@"splitView:constrainMaxCoordinate:%f ofSubviewAt:%ld (returning %f)", proposedMaximumPosition, dividerIndex, result);
     return result;
 }
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition ofSubviewAt:(NSInteger)dividerIndex
 {
-    NSLog(@"splitView:constrainMinCoordinate:%f ofSubviewAt:%ld (returning 200)", proposedMinimumPosition, dividerIndex);
+//    NSLog(@"splitView:constrainMinCoordinate:%f ofSubviewAt:%ld (returning 200)", proposedMinimumPosition, dividerIndex);
 
 	return (CGFloat)PREFERRED_LEFT_VIEW_MIN_WIDTH;
 }
@@ -2271,9 +2157,9 @@ canCollapseSubview:(NSView *)subview
     [state encodeObject:_searchField.stringValue forKey:@"searchText"];
 
     [state encodeFloat:NSWidth(_leftView.frame) forKey:@"sideviewWidth"];
-    NSLog(@"Encoded left view width as %f", NSWidth(_leftView.frame))
+//    NSLog(@"Encoded left view width as %f", NSWidth(_leftView.frame))
     [state encodeBool:[_splitView isSubviewCollapsed:_leftView] forKey:@"sideviewHidden"];
-    NSLog(@"Encoded left view collapsed as %@", [_splitView isSubviewCollapsed:_leftView]?@"YES":@"NO");
+//    NSLog(@"Encoded left view collapsed as %@", [_splitView isSubviewCollapsed:_leftView]?@"YES":@"NO");
 
     if (selectedGames.count) {
         NSMutableArray *selectedGameIfids = [NSMutableArray arrayWithCapacity:selectedGames.count];
@@ -2284,7 +2170,7 @@ canCollapseSubview:(NSView *)subview
                 [selectedGameIfids addObject:str];
         }
         [state encodeObject:selectedGameIfids forKey:@"selectedGames"];
-        NSLog(@"Encoded %ld selected games", (unsigned long)selectedGameIfids.count);
+//        NSLog(@"Encoded %ld selected games", (unsigned long)selectedGameIfids.count);
     }
 }
 
