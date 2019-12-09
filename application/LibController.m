@@ -238,8 +238,9 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
                                                object:_managedObjectContext];
 
     // Add metadata and games from plists to Core Data store if we have just created a new one
-    gameTableModel = [[self fetchObjects:@"Game"] mutableCopy];
-    if ([self fetchObjects:@"Metadata"].count <= 2 || gameTableModel.count == 0)
+    gameTableModel = [[self fetchObjects:@"Game" inContext:_managedObjectContext] mutableCopy];
+    NSArray *allMetadata = [self fetchObjects:@"Metadata" inContext:_managedObjectContext];
+    if (allMetadata.count <= 2 || gameTableModel.count == 0)
     {
         [self convertLibraryToCoreData];
     }
@@ -269,34 +270,43 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
         for (NSManagedObject *meta in metadataEntries) {
             [_managedObjectContext deleteObject:meta];
         }
-        NSError *saveError = nil;
-        [_managedObjectContext save:&saveError];
-        //more error handling here
+
+        NSFetchRequest *allGames = [[NSFetchRequest alloc] init];
+        [allGames setEntity:[NSEntityDescription entityForName:@"Game" inManagedObjectContext:_managedObjectContext]];
+        [allGames setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+
+        error = nil;
+        NSArray *gameEntries = [_managedObjectContext executeFetchRequest:allGames error:&error];
+        //error handling goes here
+        for (NSManagedObject *game in gameEntries) {
+            [_managedObjectContext deleteObject:game];
+        }
+
+        [_coreDataManager saveChanges];
     }
 }
 
 - (IBAction)purgeLibrary:(id)sender {
     NSInteger choice =
-        NSRunAlertPanel(@"Do you really want to purge the library?",
-                        @"Purging will delete the information about games that "
+        NSRunAlertPanel(@"Do you really want to prune the library?",
+                        @"Pruning will delete the information about games that "
                         @"are not in the library at the moment.",
-                        @"Purge", NULL, @"Cancel");
+                        @"Prune", NULL, @"Cancel");
     if (choice != NSAlertOtherReturn) {
 
         if (choice != NSAlertOtherReturn) {
-            NSFetchRequest *allMetadata = [[NSFetchRequest alloc] init];
-            [allMetadata setEntity:[NSEntityDescription entityForName:@"Metadata" inManagedObjectContext:_managedObjectContext]];
-            [allMetadata setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+            NSFetchRequest *orphanedMetadata = [[NSFetchRequest alloc] init];
+            [orphanedMetadata setEntity:[NSEntityDescription entityForName:@"Metadata" inManagedObjectContext:_managedObjectContext]];
+
+            orphanedMetadata.predicate = [NSPredicate predicateWithFormat: @"(game == nil)"];
 
             NSError *error = nil;
-            NSArray *metadataEntries = [_managedObjectContext executeFetchRequest:allMetadata error:&error];
+            NSArray *metadataEntriesToDelete = [_managedObjectContext executeFetchRequest:orphanedMetadata error:&error];
             //error handling goes here
-            for (NSManagedObject *meta in metadataEntries) {
+            for (NSManagedObject *meta in metadataEntriesToDelete) {
                 [_managedObjectContext deleteObject:meta];
             }
-            NSError *saveError = nil;
-            [_managedObjectContext save:&saveError];
-            //more error handling here
+            [_coreDataManager saveChanges];
         }
     }
 }
@@ -983,10 +993,6 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
     return [fetchedObjects objectAtIndex:0];
 }
 
-- (NSArray *) fetchObjects:(NSString *)entityName {
-    return [self fetchObjects:entityName inContext:_managedObjectContext];
-}
-
 - (NSArray *) fetchObjects:(NSString *)entityName inContext:(NSManagedObjectContext *)context {
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -1023,6 +1029,7 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
     currentlyAddingGames = YES;
 
     [private performBlock:^{
+        // First, we try to load the Metadata.plist and add all entries as Metadata entities
         NSMutableDictionary *metadata = load_mutable_plist([homepath.path stringByAppendingPathComponent: @"Metadata.plist"]);
 
         NSString *ifid;
@@ -1033,6 +1040,8 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
         {
             [weakSelf addMetadata:[metadata objectForKey:ifid] forIFIDs:@[ifid] inContext:private];
         }
+
+        // Second, we try to load the Games.plist and add all entries as Game entities
         NSMutableDictionary *games = load_mutable_plist([homepath.path stringByAppendingPathComponent: @"Games.plist"]);
 
         enumerator = [games keyEnumerator];
@@ -1044,13 +1053,20 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
             Game *game;
 
             if (!meta) {
+                // If we did not create a matching Metadata entity for this Game above, we simply
+                // import it again, creating new metadata. This could happen if the user has deleted
+                // the Metadata.plist but not the Games.plist file, or if the Metadata and Games plists
+                // have gone out of sync somehow.
                 meta = [weakSelf importGame: [games valueForKey:ifid] inContext:private reportFailure: NO];
                 game = meta.game;
             } else {
+                // Otherwise we simply use the Metadata entity we created
                 game = (Game *) [NSEntityDescription
                                  insertNewObjectForEntityForName:@"Game"
                                  inManagedObjectContext:private];
             }
+            // Now we should have a Game with corresponding Metadata
+            // (but we check anyway just to make sure)
             if (meta) {
                 game.setting = (Settings *) [NSEntityDescription
                                              insertNewObjectForEntityForName:@"Settings"
@@ -1077,7 +1093,7 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
                 NSURL *imgpath = [NSURL URLWithString:pathstring relativeToURL:appSuppDir];
                 NSData *imgdata = [[NSData alloc] initWithContentsOfURL:imgpath];
 
-                // If that fails, we try babel
+                // If that fails, we try Babel
                 if (!imgdata) {
                     const char *format = babel_init((char *)((NSString *)[games valueForKey:ifid]).UTF8String);
                     if (format) {
@@ -1098,23 +1114,25 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
                 if (imgdata)
                     [weakSelf addImage:imgdata toMetadata:game.metadata inContext:private];
 
-                NSError *error = nil;
-                if (private.hasChanges) {
-                    if (![private save:&error]) {
-                        NSLog(@"Unable to Save Changes of private managed object context!");
-                        if (error) {
-                            [[NSApplication sharedApplication] presentError:error];
-                        }
-                    } else NSLog(@"Changes in private were saved");
-                } else {
-                    NSLog(@"No changes to save in private");
-                }
-
-                [_managedObjectContext performBlock:^{
-                    [_coreDataManager saveChanges];
-                }];
-            } else NSLog (@"Could not import game with ifid %@ and path %@", ifid, [games valueForKey:ifid]);
+            } else NSLog (@"Error! Could not create Game entity for game with ifid %@ and path %@", ifid, [games valueForKey:ifid]);
         }
+
+        [private performBlockAndWait:^{
+            NSError *error = nil;
+            if (private.hasChanges) {
+                if (![private save:&error]) {
+                    NSLog(@"Unable to Save Changes of private managed object context!");
+                    if (error) {
+                        [[NSApplication sharedApplication] presentError:error];
+                    }
+                } else NSLog(@"Changes in private were saved");
+            } else NSLog(@"No changes to save in private");
+        }];
+
+        [_managedObjectContext performBlock:^{
+            [_coreDataManager saveChanges];
+            [weakSelf endImporting];
+        }];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             _addButton.enabled = YES;
@@ -1122,7 +1140,6 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
         });
         
         cursrc = 0;
-        [weakSelf endImporting];
     }];
 }
 
