@@ -1021,6 +1021,8 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
     currentlyAddingGames = YES;
 
     [private performBlock:^{
+
+        // First, we try to load the Metadata.plist and add all entries as Metadata entities
         NSMutableDictionary *metadata = load_mutable_plist([homepath.path stringByAppendingPathComponent: @"Metadata.plist"]);
 
         NSString *ifid;
@@ -1031,6 +1033,8 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
         {
             [weakSelf addMetadata:[metadata objectForKey:ifid] forIFIDs:@[ifid] inContext:private];
         }
+
+        // Second, we try to load the Games.plist and add all entries as Game entities
         NSMutableDictionary *games = load_mutable_plist([homepath.path stringByAppendingPathComponent: @"Games.plist"]);
 
         enumerator = [games keyEnumerator];
@@ -1042,13 +1046,20 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
             Game *game;
 
             if (!meta) {
+                // If we did not create a matching Metadata entity for this Game above, we simply
+                // import it again, creating new metadata. This could happen if the user has deleted
+                // the Metadata.plist but not the Games.plist file, or if the Metadata and Games plists
+                // have gone out of sync somehow.
                 meta = [weakSelf importGame: [games valueForKey:ifid] inContext:private reportFailure: NO];
                 game = meta.game;
             } else {
+                // Otherwise we simply use the Metadata entity we created
                 game = (Game *) [NSEntityDescription
                                  insertNewObjectForEntityForName:@"Game"
                                  inManagedObjectContext:private];
             }
+            // Now we should have a Game with corresponding Metadata
+            // (but we check anyway just to make sure)
             if (meta) {
                 game.setting = (Settings *) [NSEntityDescription
                                              insertNewObjectForEntityForName:@"Settings"
@@ -1075,7 +1086,7 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
                 NSURL *imgpath = [NSURL URLWithString:pathstring relativeToURL:appSuppDir];
                 NSData *imgdata = [[NSData alloc] initWithContentsOfURL:imgpath];
 
-                // If that fails, we try babel
+                // If that fails, we try Babel
                 if (!imgdata) {
                     const char *format = babel_init((char *)((NSString *)[games valueForKey:ifid]).UTF8String);
                     if (format) {
@@ -1111,7 +1122,7 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
                 [_managedObjectContext performBlock:^{
                     [_coreDataManager saveChanges];
                 }];
-            } else NSLog (@"Could not import game with ifid %@ and path %@", ifid, [games valueForKey:ifid]);
+            } else NSLog (@"Error! Could not create Game entity for game with ifid %@ and path %@", ifid, [games valueForKey:ifid]);
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
