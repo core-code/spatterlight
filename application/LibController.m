@@ -2,14 +2,15 @@
  *
  */
 
+#import "Compatibility.h"
+#import "NSString+Categories.h"
+#import "NSDate+relative.h"
+#import "CoreDataManager.h"
 #import "Game.h"
 #import "Image.h"
 #import "Metadata.h"
 #import "Settings.h"
 #import "SideInfoView.h"
-#import "NSString+Categories.h"
-#import "NSDate+relative.h"
-#import "CoreDataManager.h"
 #import "InfoController.h"
 #import "IFictionMetadata.h"
 #import "IFStory.h"
@@ -600,14 +601,17 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
                                 [[NSApplication sharedApplication] presentError:error];
                             }
                         }
-                        
-//                        NSManagedObjectID *objID = game.objectID;
 
-//                        [_managedObjectContext performBlock:^{
-//                            Game *updatedGame = (Game *)[_managedObjectContext objectWithID:objID];
-//                            [_managedObjectContext refreshObject:updatedGame
-//                                                    mergeChanges:YES];
-//                        }];
+                        if (NSAppKitVersionNumber < NSAppKitVersionNumber10_9) {
+
+                        NSManagedObjectID *objID = game.objectID;
+
+                        [_managedObjectContext performBlock:^{
+                            Game *updatedGame = (Game *)[_managedObjectContext objectWithID:objID];
+                            [_managedObjectContext refreshObject:updatedGame
+                                                    mergeChanges:YES];
+                        }];
+                        }
 
                     }
 
@@ -1155,12 +1159,15 @@ static BOOL save_plist(NSString *path, NSDictionary *plist) {
     [self importMetadataFromXML:data inContext:_managedObjectContext];
     cursrc = 0;
 
-//    [_coreDataManager saveChanges];
+    if (NSAppKitVersionNumber < NSAppKitVersionNumber10_9) {
 
-//    for (Game *game in gameTableModel) {
-//        [_managedObjectContext refreshObject:game.metadata
-//                                mergeChanges:YES];
-//    }
+    [_coreDataManager saveChanges];
+
+    for (Game *game in gameTableModel) {
+        [_managedObjectContext refreshObject:game.metadata
+                                mergeChanges:YES];
+    }
+    }
     return YES;
 }
 
