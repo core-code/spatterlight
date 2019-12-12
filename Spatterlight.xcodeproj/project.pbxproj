@@ -1069,7 +1069,6 @@
 		6D73E55621873509009CD59A /* LibraryWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LibraryWindow.xib; sourceTree = "<group>"; };
 		6D76353422C4F113000873F3 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreDataManager.h; path = ../application/CoreDataManager.h; sourceTree = "<group>"; };
 		6D76353522C4F113000873F3 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataManager.m; path = ../application/CoreDataManager.m; sourceTree = "<group>"; };
-		6D7673D4239FFB0900FB24C0 /* babel.ifiction */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = babel.ifiction; sourceTree = "<group>"; };
 		6D7673D7239FFB0900FB24C0 /* IFBibliographic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFBibliographic.h; sourceTree = "<group>"; };
 		6D7673D8239FFB0900FB24C0 /* IFBibliographic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IFBibliographic.m; sourceTree = "<group>"; };
 		6D7673DB239FFB0900FB24C0 /* IFDB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFDB.h; sourceTree = "<group>"; };
@@ -2786,7 +2785,6 @@
 				6D7673D8239FFB0900FB24C0 /* IFBibliographic.m */,
 				6D7673DB239FFB0900FB24C0 /* IFDB.h */,
 				6D7673DC239FFB0900FB24C0 /* IFDB.m */,
-				6D7673D4239FFB0900FB24C0 /* babel.ifiction */,
 				C300D48223A11786000B2165 /* IFDBDownloader.h */,
 				C300D48323A11786000B2165 /* IFDBDownloader.m */,
 			);
