@@ -278,6 +278,7 @@
 													<reference key="NSControlView" ref="51326337"/>
 													<array class="NSMutableArray" key="NSSegmentImages">
 														<object class="NSSegmentItem">
+															<double key="NSSegmentItemWidth">24</double>
 															<object class="NSCustomResource" key="NSSegmentItemImage">
 																<string key="NSClassName">NSImage</string>
 																<string key="NSResourceName">NSAddTemplate</string>
@@ -286,6 +287,7 @@
 															<int key="NSSegmentItemImageScaling">0</int>
 														</object>
 														<object class="NSSegmentItem">
+															<double key="NSSegmentItemWidth">24</double>
 															<object class="NSCustomResource" key="NSSegmentItemImage">
 																<string key="NSClassName">NSImage</string>
 																<string key="NSResourceName">NSRemoveTemplate</string>
@@ -303,10 +305,10 @@
 											<object class="NSButton" id="165891764">
 												<reference key="NSNextResponder" ref="284727235"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{146, 10}, {286, 18}}</string>
+												<string key="NSFrame">{{167, 10}, {286, 18}}</string>
 												<reference key="NSSuperview" ref="284727235"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="781334758"/>
+												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="524616798">
@@ -334,7 +336,7 @@
 											<object class="NSPopUpButton" id="936790052">
 												<reference key="NSNextResponder" ref="284727235"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{81, 6}, {40, 25}}</string>
+												<string key="NSFrame">{{82, 6}, {40, 25}}</string>
 												<reference key="NSSuperview" ref="284727235"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="165891764"/>
@@ -1183,7 +1185,6 @@
 																<int key="NSvFlags">256</int>
 																<string key="NSFrame">{{67, 13}, {50, 19}}</string>
 																<reference key="NSSuperview" ref="736343980"/>
-																<reference key="NSNextKeyView" ref="781334758"/>
 																<int key="NSTag">13</int>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="802491957">
@@ -1476,6 +1477,7 @@
 									<string key="NSFrameSize">{516, 121}</string>
 									<reference key="NSSuperview" ref="781334758"/>
 									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
 									<string key="NSClassName">GlkHelperView</string>
 								</object>
 							</array>
@@ -2709,9 +2711,9 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="1046819282"/>
 							<reference ref="828829770"/>
-							<reference ref="165891764"/>
 							<reference ref="51326337"/>
 							<reference ref="936790052"/>
+							<reference ref="165891764"/>
 						</array>
 						<reference key="parent" ref="907437729"/>
 					</object>
