@@ -14,6 +14,11 @@ typedef enum kZoomDirectionType : NSUInteger {
     ZOOMOUT,
 } kZoomDirectionType;
 
+typedef enum kDefaultPrefWindowSize : NSUInteger {
+    kDefaultPrefWindowWidth = 516, 
+    kDefaultPrefWindowHeight = 305
+} kDefaultPrefWindowSize;
+
 
 @class Theme, Game, CoreDataManager, GlkHelperView, GlkController, GlkTextBufferWindow, ThemeArrayController, LibController;
 
@@ -58,7 +63,8 @@ typedef enum kZoomDirectionType : NSUInteger {
 - (IBAction)changeEnableSound:(id)sender;
 - (IBAction)changeEnableStyles:(id)sender;
 
-- (IBAction)clickedSegmentedControl:(id)sender;
+- (IBAction)addTheme:(id)sender;
+- (IBAction)removeTheme:(id)sender;
 - (IBAction)clickedOneThemeForAll:(id)sender;
 
 #pragma mark Action menu
@@ -113,7 +119,6 @@ typedef enum kZoomDirectionType : NSUInteger {
 @property BOOL oneThemeForAll;
 @property LibController *libcontroller;
 
-@property (strong) IBOutlet NSSegmentedControl *addAndRemove;
 @property (strong) IBOutlet ThemeArrayController *arrayController;
 @property (strong) IBOutlet NSScrollView *scrollView;
 
@@ -122,5 +127,8 @@ typedef enum kZoomDirectionType : NSUInteger {
 @property (strong) IBOutlet NSButton *btnOneThemeForAll;
 
 @property (strong) IBOutlet NSPopUpButton *actionButton;
+
+@property (strong) IBOutlet NSButton *btnAdd;
+@property (strong) IBOutlet NSButton *btnRemove;
 
 @end

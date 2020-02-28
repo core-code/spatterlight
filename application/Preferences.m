@@ -426,22 +426,46 @@ NSString *fontToString(NSFont *font) {
     _scrollView.borderType = NSNoBorder;
 
     [self changeThemeName:theme.name];
-    [_addAndRemove setEnabled:theme.editable forSegment:1];
+    _btnRemove.enabled = YES;
     [self performSelector:@selector(restoreThemeSelection:) withObject:theme afterDelay:0.1];
 }
 
 - (void)notePreferencesChanged:(NSNotification *)notify {
-    // Change the theme of the samle text field
+    // Change the theme of the sample text field
 
-    NSLog(@"Preferences notePreferencesChanged:%@", [(Theme *)notify.object name]);
+//    NSLog(@"Preferences notePreferencesChanged:%@", [(Theme *)notify.object name]);
     glktxtbuf.theme = theme;
-    NSRect sampleTextFrame;
+    if (previewHidden) return;
+
+    [self resizeWindowToHeight:[self previewHeight]+20];
+
+    NSRect sampleTextFrame = glktxtbuf.frame;
     sampleTextFrame.origin = NSMakePoint(theme.border, theme.border);
-    sampleTextFrame.size = NSMakeSize(sampleTextView.frame.size.width - theme.border * 2,
-                                      sampleTextView.frame.size.height - theme.border * 2);
+    sampleTextFrame.size.width = ((NSView *)self.window.contentView).frame.size.width - 2 * theme.border;
+
+    NSLog(@"sampleTextFrame: %@", NSStringFromRect(sampleTextFrame));
+    NSTextView *textview = glktxtbuf.textview;
+    
+    [textview.layoutManager ensureLayoutForTextContainer:textview.textContainer];
+
+    textview.frame = [textview.layoutManager usedRectForTextContainer:textview.textContainer];
+
+    NSLog(@" textview.frame: %@", NSStringFromRect(textview.frame));
+
+//
+//    sampleTextFrame.size = NSMakeSize(sampleTextView.frame.size.width - theme.border * 2,
+//                                      sampleTextView.frame.size.height - theme.border * 2);
+
+    sampleTextFrame.size.height = textview.frame.size.height;
     glktxtbuf.frame = sampleTextFrame;
     [glktxtbuf restoreScrollBarStyle];
     [glktxtbuf prefsDidChange];
+    NSRect previewFrame = self.window.frame;
+    previewFrame.size.height = previewFrame.size.height - kDefaultPrefWindowHeight;
+    previewFrame.size.width = previewFrame.size.width - 2 * theme.bufferMarginX;
+
+    previewFrame.origin = NSZeroPoint;
+    glktxtbuf.textview.frame = previewFrame;
 }
 
 - (void)updatePrefsPanel {
@@ -605,53 +629,54 @@ NSString *fontToString(NSFont *font) {
 
 #pragma mark Preview
 
-- (void)resizePreview {
-    NSWindow *prefsPanel= self.window;
-
-
-        CGRect screenframe = self.window.screen.visibleFrame;
-
-        CGFloat oldheight = prefsPanel.frame.size.height;
-
-
-        CGRect winrect = [self previewRect];
-        winrect.origin = prefsPanel.frame.origin;
-
-        // If the entire text does not fit on screen, don't change height at all
-        if (winrect.size.height > screenframe.size.height)
-            winrect.size.height = oldheight;
-
-        // When we reuse the window it will remember our last scroll position,
-        // so we reset it here
-
-        // Scroll the vertical scroller to top
-        _scrollView.verticalScroller.floatValue = 0;
-
-        // Scroll the contentView to top
-        [_scrollView.contentView scrollToPoint:NSMakePoint(0, 0)];
-
-        CGFloat offset = winrect.size.height - oldheight;
-
-        winrect.origin.y -= offset;
-
-        // If window is partly off the screen, move it (just) inside
-        if (NSMaxX(winrect) > NSMaxX(screenframe))
-            winrect.origin.x = NSMaxX(screenframe) - winrect.size.width;
-
-        if (NSMinY(winrect) < 0)
-            winrect.origin.y = NSMinY(screenframe);
-
-        [prefsPanel setFrame:winrect display:YES animate:YES];
-        [sampleTextView scrollRectToVisible:NSMakeRect(0, 0, 0, 0)];
-}
+//- (void)resizePreview {
+//    NSWindow *prefsPanel= self.window;
+//
+//
+//        CGRect screenframe = self.window.screen.visibleFrame;
+//
+//        CGFloat oldheight = prefsPanel.frame.size.height;
+//
+//
+//        CGRect winrect = [self previewRect];
+//        winrect.origin = prefsPanel.frame.origin;
+//
+//        // If the entire text does not fit on screen, don't change height at all
+//        if (winrect.size.height > screenframe.size.height)
+//            winrect.size.height = oldheight;
+//
+//        // When we reuse the window it will remember our last scroll position,
+//        // so we reset it here
+//
+//        // Scroll the vertical scroller to top
+//        _scrollView.verticalScroller.floatValue = 0;
+//
+//        // Scroll the contentView to top
+//        [_scrollView.contentView scrollToPoint:NSMakePoint(0, 0)];
+//
+//        CGFloat offset = winrect.size.height - oldheight;
+//
+//        winrect.origin.y -= offset;
+//
+//        // If window is partly off the screen, move it (just) inside
+//        if (NSMaxX(winrect) > NSMaxX(screenframe))
+//            winrect.origin.x = NSMaxX(screenframe) - winrect.size.width;
+//
+//        if (NSMinY(winrect) < 0)
+//            winrect.origin.y = NSMinY(screenframe);
+//
+//        [prefsPanel setFrame:winrect display:YES animate:YES];
+//        [sampleTextView scrollRectToVisible:NSMakeRect(0, 0, 0, 0)];
+//}
 
 - (void)resizeWindowToHeight:(CGFloat)height {
+
+    NSLog(@"resizeWindowToHeight %f", height);
 
     NSWindow *prefsPanel= self.window;
     CGRect screenframe = prefsPanel.screen.visibleFrame;
 
     CGFloat oldheight = prefsPanel.frame.size.height;
-
 
     CGRect winrect = prefsPanel.frame;
     winrect.origin = prefsPanel.frame.origin;
@@ -689,42 +714,50 @@ NSString *fontToString(NSFont *font) {
     [sampleTextView scrollRectToVisible:NSMakeRect(0, 0, 0, 0)];
 }
 
-- (CGRect)previewRect {
+- (CGFloat)previewHeight {
 
-    NSSize size = ((NSView *)self.window.contentView).bounds.size;
-
-    CGFloat textWidth = 0;
-    NSUInteger stringLength = 0;
-    NSTextView *textview = nil;
-    for (NSView *view in sampleTextView.subviews) {
-        if ([view isKindOfClass:[NSTextView class]]) {
-            textview = (NSTextView *)view;
-         stringLength = ((NSTextView *)view).textStorage.length;
-            break;
-        }
-    }
-
+    NSTextView *textview = [[NSTextView alloc] initWithFrame:glktxtbuf.textview.frame];   
     if (textview == nil) {
         NSLog(@"No NSTextView in sampleTextView");
-        return NSZeroRect;
+        return 0;
     }
-    
-    textWidth = size.width - 2 * theme.border;
 
-    CGRect screenframe = [NSScreen mainScreen].visibleFrame;
+    CGFloat textWidth = self.window.frame.size.width - 2 * theme.border - 2 * theme.bufferMarginX;
 
-    if (textWidth > screenframe.size.width)
-        textWidth = screenframe.size.width / 3;
+    NSLog(@"textWidth: %f", textWidth);
 
-    textWidth = ceil(textWidth);
+    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:[glktxtbuf.textview.textStorage copy]];
+
+    NSTextContainer *textContainer = [[NSTextContainer alloc]
+                                      initWithContainerSize:NSMakeSize(textWidth, FLT_MAX)];
+
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [layoutManager addTextContainer:textContainer];
+    [textStorage addLayoutManager:layoutManager];
+
+    [layoutManager glyphRangeForTextContainer:textContainer];
 
     CGRect proposedRect =
-    [textview.layoutManager usedRectForTextContainer:textview.textContainer];
+    [layoutManager usedRectForTextContainer:textContainer];
 
-    proposedRect = NSMakeRect(0, 0, NSWidth(proposedRect) + theme.border * 2,  NSHeight(proposedRect) + theme.border * 2);
-    // Hopefully, by using frameRectForContentRect, this code will still work
-    // on OS versions with a different window title bar height
-    return [self.window frameRectForContentRect:proposedRect];
+//    NSRect textFrame = textview.frame;
+//    NSLog(@"Textview original frame: %@", NSStringFromRect(textview.frame));
+//    textview.frame = textFrame;
+//
+//    NSLog(@"Textview new frame: %@", NSStringFromRect(textview.frame));
+//
+//    
+//    CGRect proposedRect =
+//    [textview.layoutManager usedRectForTextContainer:textview.textContainer];
+
+    NSLog(@"proposedRect: %@", NSStringFromRect(proposedRect));
+
+
+    CGFloat totalHeight = kDefaultPrefWindowHeight + proposedRect.size.height + 2 * theme.border + 2 * theme.bufferMarginY;
+    NSLog(@"total height = kDefaultPrefWindowHeight (%ld) + proposedRect.size.height (%f) + 2 * theme.border (%d)", kDefaultPrefWindowHeight,  proposedRect.size.height, theme.border);
+    CGRect screenframe = [NSScreen mainScreen].visibleFrame;
+    if (totalHeight > screenframe.size.height) totalHeight = screenframe.size.height;
+    return totalHeight;
 }
 
 
@@ -761,7 +794,7 @@ NSString *fontToString(NSFont *font) {
 
         [self updatePrefsPanel];
         [self changeThemeName:theme.name];
-        [_addAndRemove setEnabled:theme.editable forSegment:1];
+        _btnRemove.enabled = YES;
 //        [Preferences readSettingsFromTheme:theme];
 
         if (_oneThemeForAll) {
@@ -980,6 +1013,29 @@ textShouldEndEditing:(NSText *)fieldEditor {
     }
 }
 
+- (IBAction)addTheme:(id)sender {
+    NSInteger row = (NSInteger)[_arrayController selectionIndex];
+    NSTableCellView *cellView = (NSTableCellView*)[themesTableView viewAtColumn:0 row:row makeIfNecessary:YES];
+    if ([self notDuplicate:cellView.textField.stringValue]) {
+        // For some reason, tableViewSelectionDidChange will be called twice here,
+        // so we disregard the first call
+        disregardTableSelection = YES;
+        [_arrayController add:sender];
+        [self performSelector:@selector(editNewEntry:) withObject:nil afterDelay:0.1];
+    } else NSBeep();
+}
+
+- (IBAction)removeTheme:(id)sender {
+    if (!_arrayController.selectedTheme.editable) {
+        NSBeep();
+        return;
+    }
+    NSSet *orphanedGames = _arrayController.selectedTheme.games;
+    NSInteger row = (NSInteger)[_arrayController selectionIndex] - 1;
+    [_arrayController remove:sender];
+    _arrayController.selectionIndex = (NSUInteger)row;
+    [_arrayController.selectedTheme addGames:orphanedGames];
+}
 
 - (IBAction)applyToSelected:(id)sender {
     [theme addGames:[NSSet setWithArray:_libcontroller.selectedGames]];
@@ -1019,12 +1075,25 @@ textShouldEndEditing:(NSText *)fieldEditor {
 
 - (IBAction)togglePreview:(id)sender {
     if (!previewHidden) {
-        [self resizeWindowToHeight:308];
+        NSLog(@"togglePreview: preview is shown, so we shrink the window to %ld points high", kDefaultPrefWindowHeight);
+
+        [self resizeWindowToHeight:kDefaultPrefWindowHeight];
         previewHidden = YES;
         
     } else {
-        [self resizeWindowToHeight:430];
+        NSLog(@"togglePreview: preview is shown, so we grow the window to %f points high", [self previewHeight]);
         previewHidden = NO;
+        [self resizeWindowToHeight:[self previewHeight]+20];
+        NSRect previewFrame = self.window.frame;
+        previewFrame.size.height = previewFrame.size.height - kDefaultPrefWindowHeight;
+        previewFrame.size.width = previewFrame.size.width - theme.border;
+
+        previewFrame.origin = NSZeroPoint;
+        previewFrame.origin.y = 20;
+
+        glktxtbuf.textview.frame = previewFrame;
+
+        [self notePreferencesChanged:(NSNotification *)theme];
     }
 }
 
@@ -1172,6 +1241,7 @@ textShouldEndEditing:(NSText *)fieldEditor {
         [self cloneThemeIfNotEditable];
         key = @"GridMargin";
         theme.gridMarginX = val;
+        theme.gridMarginY = val;
     }
     if (sender == txtBufferMargin) {
         if (theme.bufferMarginX == val)
@@ -1179,6 +1249,7 @@ textShouldEndEditing:(NSText *)fieldEditor {
         [self cloneThemeIfNotEditable];
         key = @"BufferMargin";
         theme.bufferMarginX = val;
+        theme.bufferMarginY = val;
     }
 
     if (key) {
@@ -1280,7 +1351,7 @@ textShouldEndEditing:(NSText *)fieldEditor {
         clonedTheme.name = name;
         theme = clonedTheme;
         [self changeThemeName:name];
-        [_addAndRemove setEnabled:YES forSegment:1];
+        _btnRemove.enabled = YES;
         [self performSelector:@selector(restoreThemeSelection:) withObject:theme afterDelay:0.1];
     }
 }

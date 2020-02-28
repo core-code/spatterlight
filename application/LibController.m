@@ -854,6 +854,14 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
         }
     }
 
+    if (action == @selector(reset:)) {
+        NSArray *selection = [gameTableModel objectsAtIndexes:rows];
+        for (Game *game in selection) {
+            if (game.autosaved) return YES;
+        }
+        return NO;
+    }
+
     if (action == @selector(toggleSidebar:))
     {
         NSString* title = [_leftView isHidden] ? @"Show Sidebar" : @"Hide Sidebar";
