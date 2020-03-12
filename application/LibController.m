@@ -637,7 +637,7 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
                         [_managedObjectContext refreshObject:aGame.metadata
                                                 mergeChanges:YES];
                     }
-                    [self updateSideViewForce:YES];
+                    [weakSelf updateSideViewForce:YES];
                 }
             });
 
