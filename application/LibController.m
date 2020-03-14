@@ -425,8 +425,8 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
 
     if (filenames.count > 0) {
         NSInteger choice =
-        NSRunAlertPanel([NSString stringWithFormat:@"%@ %@ also in this folder.", [NSString stringWithSummaryOf:fetchedObjects], (fetchedObjects.count > 1) ? @"are" : @"is"],
-                        @"%@", [NSString stringWithFormat:@"Do you want to add %@ as well?", (fetchedObjects.count > 1) ? @"them" : @"it" ],
+        NSRunAlertPanel(@"%@ %@ also in this folder.", [NSString stringWithSummaryOf:fetchedObjects], (fetchedObjects.count > 1) ? @"are" : @"is",
+                        @"Do you want to update %@ as well?", (fetchedObjects.count > 1) ? @"them" : @"it" ,
                         @"Yes", NULL, @"Cancel");
         if (choice != NSAlertOtherReturn) {
             for (filename in filenames) {
