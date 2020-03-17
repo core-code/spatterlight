@@ -352,7 +352,7 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
         [panel beginSheetModalForWindow:self.window
                       completionHandler:^(NSInteger result) {
                           if (result == NSFileHandlingPanelOKButton) {
-                              NSString *newPath = ((NSURL *)panel.URLs.firstObject).path;
+                              NSString *newPath = ((NSURL *)panel.URLs[0]).path;
                               NSString *ifid = [weakSelf ifidFromFile:newPath];
                               if (ifid && [ifid isEqualToString:game.ifid]) {
                                   [game bookmarkForPath:newPath];
@@ -1217,7 +1217,7 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
             for (Game *game in ((Theme *)fetchedObjects[i]).games)
                 [storedSet addObject:game];
         }
-        [(Theme *)fetchedObjects.firstObject addGames:storedSet];
+        [((Theme *)fetchedObjects[0]) addGames:storedSet];
 
      }
     else if (fetchedObjects.count == 0)
@@ -1226,7 +1226,7 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
         return nil;
     }
 
-    return fetchedObjects.firstObject;
+    return fetchedObjects[0];
 }
 
 
@@ -1254,7 +1254,7 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
         return nil;
     }
 
-    return ((Ifid *)fetchedObjects.firstObject).metadata;
+    return ((Ifid *)fetchedObjects[0]).metadata;
 }
 
 - (Game *)fetchGameForIFID:(NSString *)ifid inContext:(NSManagedObjectContext *)context {
@@ -1281,7 +1281,7 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
         return nil;
     }
 
-    return fetchedObjects.firstObject;
+    return fetchedObjects[0];
 }
 
 - (NSArray *) fetchObjects:(NSString *)entityName inContext:(NSManagedObjectContext *)context {
@@ -1441,7 +1441,7 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
     IFictionMetadata *metadata = [[IFictionMetadata alloc] initWithData:mdbuf andContext:context];
     if (metadata.stories.count == 0)
         return nil;
-    return ((IFStory *)metadata.stories.firstObject).identification.metadata;
+    return ((IFStory *)(metadata.stories)[0]).identification.metadata;
 }
 
 - (BOOL)importMetadataFromFile:(NSString *)filename {
@@ -1943,7 +1943,7 @@ static void write_xml_text(FILE *fp, Metadata *info, NSString *key) {
 
 - (void) addFiles: (NSArray*)urls inContext:(NSManagedObjectContext *)context {
 
-    NSLog(@"libctl: adding %lu files. First: %@", (unsigned long)urls.count, ((NSURL *)urls.firstObject).path);
+    NSLog(@"libctl: adding %lu files. First: %@", (unsigned long)urls.count, ((NSURL *)urls[0]).path);
 
     NSMutableArray *select = [NSMutableArray arrayWithCapacity: urls.count];
 
@@ -1955,12 +1955,12 @@ static void write_xml_text(FILE *fp, Metadata *info, NSString *key) {
         // If the user only selects one file, and it is invalid
         // (and not a directory) we should report the failure.
         BOOL isDir;
-        [[NSFileManager defaultManager] fileExistsAtPath:((NSURL *)urls.firstObject).path isDirectory:&isDir];
+        [[NSFileManager defaultManager] fileExistsAtPath:((NSURL *)urls[0]).path isDirectory: &isDir];
         if (!isDir)
             reportFailure = YES;
     }
 
-
+    
     [self beginImporting];
     NSLog(@"urls.count is%@1", (urls.count == 1) ? @" " : @" not ");
     for (NSURL *url in urls)
@@ -2296,7 +2296,7 @@ objectValueForTableColumn: (NSTableColumn*)column
         [self invalidateRestorableState];
         if (gameTableModel.count && rows.count) {
             _selectedGames = [gameTableModel objectsAtIndexes:rows];
-            [(Preferences *)[Preferences instance] restoreThemeSelection:((Game *)_selectedGames.firstObject).theme];
+            [(Preferences *)[Preferences instance] restoreThemeSelection:((Game *)_selectedGames[0]).theme];
         } else _selectedGames = nil;
         [self updateSideViewForce:NO];
     }
@@ -2340,7 +2340,7 @@ objectValueForTableColumn: (NSTableColumn*)column
 
         string = (_selectedGames.count > 1) ? @"Multiple selections" : @"No selection";
 
-    } else game = _selectedGames.firstObject;
+    } else game = _selectedGames[0];
 
     if (force == NO && game && game == currentSideView) {
         //NSLog(@"updateSideView: %@ is already shown and force is NO", game.metadata.title);

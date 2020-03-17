@@ -1172,7 +1172,7 @@ fprintf(stderr, "%s\n",                                                    \
                       struct message reply;
 
                       if (result == NSFileHandlingPanelOKButton) {
-                          NSURL *theDoc = panel.URLs.firstObject;
+                          NSURL *theDoc = (panel.URLs)[0];
 
                           [[NSUserDefaults standardUserDefaults]
                            setObject:theDoc.path
@@ -1720,7 +1720,7 @@ NSInteger colorToInteger(NSColor *color) {
 
             if (_queue.count) {
                 GlkEvent *gevent;
-                gevent = _queue.firstObject;
+                gevent = _queue[0];
 //            NSLog(@"glkctl: writing queued event %s", msgnames[[gevent type]]);
 
                 [gevent writeEvent:sendfh.fileDescriptor];
