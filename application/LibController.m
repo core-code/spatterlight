@@ -437,8 +437,8 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
 
     if (filenames.count > 0) {
         NSInteger choice =
-        NSRunAlertPanel(@"%@ %@ also in this folder.", [NSString stringWithSummaryOf:fetchedObjects], (fetchedObjects.count > 1) ? @"are" : @"is",
-                        @"Do you want to update %@ as well?", (fetchedObjects.count > 1) ? @"them" : @"it" ,
+        NSRunAlertPanel([NSString stringWithFormat:@"%@ %@ also in this folder.", [NSString stringWithSummaryOf:fetchedObjects], (fetchedObjects.count > 1) ? @"are" : @"is"],
+                        [NSString stringWithFormat:@"Do you want to update %@ as well?", (fetchedObjects.count > 1) ? @"them" : @"it" ],
                         @"Yes", NULL, @"Cancel");
         if (choice != NSAlertOtherReturn) {
             for (filename in filenames) {
@@ -1348,6 +1348,7 @@ static NSMutableDictionary *load_mutable_plist(NSString *path) {
                 game.metadata = meta;
                 game.added = [NSDate date];
                 [game bookmarkForPath:[games valueForKey:ifid]];
+                game.path = [games valueForKey:ifid];
 
                 // First, we look for a cover image file in Spatterlight Application Support folder
                 NSURL *imgpath = [NSURL URLWithString:[ifid stringByAppendingPathExtension:@"tiff"] relativeToURL:imageDir];
