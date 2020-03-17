@@ -729,7 +729,7 @@ NSColor *dataToColor(NSData *data) {
     if (fetchedObjects && fetchedObjects.count) {
         NSLog(@"Theme %@ already exists. Returning old theme with this name.", themeName);
         *existsFlagPointer = YES;
-        return fetchedObjects[0];
+        return fetchedObjects.firstObject;
     } else if (error != nil) {
         NSLog(@"Preferences findOrCreateTheme: %@", error);
         return nil;
@@ -1075,7 +1075,7 @@ NSString *fontToString(NSFont *font) {
         NSArray *fetchedObjects = [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
         if (fetchedObjects && fetchedObjects.count) {
-            _defaultTheme = fetchedObjects[0];
+            _defaultTheme = fetchedObjects.firstObject;
         } else {
             if (error != nil)
                 NSLog(@"Preferences defaultTheme: %@", error);

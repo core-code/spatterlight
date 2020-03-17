@@ -240,7 +240,7 @@ NSDictionary *gFormatMap;
         NSLog(@"directory = %@", directory);
         [panel beginWithCompletionHandler:^(NSInteger result) {
             if (result == NSFileHandlingPanelOKButton) {
-                NSURL *theDoc = (panel.URLs)[0];
+                NSURL *theDoc = panel.URLs.firstObject;
                 if (theDoc) {
                     NSString *pathString =
                     theDoc.path.stringByDeletingLastPathComponent;

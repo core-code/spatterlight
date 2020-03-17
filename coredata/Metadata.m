@@ -76,7 +76,7 @@
                          inManagedObjectContext:self.managedObjectContext];
         ifid.ifidString = ifidstring;
 
-    } else ifid = fetchedObjects[0];
+    } else ifid = fetchedObjects.firstObject;
 
     [self addIfidsObject:ifid];
     
