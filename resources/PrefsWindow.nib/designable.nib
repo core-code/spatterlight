@@ -72,6 +72,7 @@
 							<string key="NSFrame">{{14, 149}, {488, 286}}</string>
 							<reference key="NSSuperview" ref="1040721980"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="284727235"/>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="907437729">
 									<string key="NSIdentifier">1</string>
@@ -184,12 +185,7 @@
 																					<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 																				</object>
 																			</object>
-																			<object class="NSColor" key="NSTextColor" id="85187046">
-																				<int key="NSColorSpace">6</int>
-																				<string key="NSCatalogName">System</string>
-																				<string key="NSColorName">controlTextColor</string>
-																				<reference key="NSColor" ref="743019438"/>
-																			</object>
+																			<reference key="NSTextColor" ref="1016277735"/>
 																		</object>
 																		<int key="NSResizingMask">3</int>
 																		<bool key="NSIsResizeable">YES</bool>
@@ -217,8 +213,7 @@
 																<int key="NSDraggingSourceMaskForLocal">15</int>
 																<int key="NSDraggingSourceMaskForNonLocal">0</int>
 																<bool key="NSAllowsTypeSelect">YES</bool>
-																<int key="NSTableViewSelectionHighlightStyle">-1</int>
-																<int key="NSTableViewDraggingDestinationStyle">0</int>
+																<int key="NSTableViewDraggingDestinationStyle">1</int>
 																<int key="NSTableViewGroupRowStyle">1</int>
 															</object>
 														</array>
@@ -271,7 +266,7 @@
 												<string key="NSFrame">{{129, 7}, {286, 18}}</string>
 												<reference key="NSSuperview" ref="284727235"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="937055038"/>
+												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="524616798">
@@ -522,7 +517,12 @@
 													<reference key="NSSupport" ref="27"/>
 													<reference key="NSControlView" ref="186555417"/>
 													<reference key="NSBackgroundColor" ref="532176556"/>
-													<reference key="NSTextColor" ref="85187046"/>
+													<object class="NSColor" key="NSTextColor" id="85187046">
+														<int key="NSColorSpace">6</int>
+														<string key="NSCatalogName">System</string>
+														<string key="NSColorName">controlTextColor</string>
+														<reference key="NSColor" ref="743019438"/>
+													</object>
 												</object>
 											</object>
 											<object class="NSTextField" id="780309970">
@@ -1199,7 +1199,6 @@
 																<int key="NSvFlags">256</int>
 																<string key="NSFrame">{{67, 13}, {50, 19}}</string>
 																<reference key="NSSuperview" ref="736343980"/>
-																<reference key="NSNextKeyView" ref="781334758"/>
 																<int key="NSTag">13</int>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="802491957">
@@ -1517,6 +1516,7 @@
 									<string key="NSFrameSize">{516, 139}</string>
 									<reference key="NSSuperview" ref="781334758"/>
 									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
 									<string key="NSClassName">GlkHelperView</string>
 								</object>
 							</array>
@@ -2143,8 +2143,8 @@
 										<string key="NSContents">Table View Cell</string>
 										<reference key="NSSupport" ref="26"/>
 										<reference key="NSControlView" ref="986089142"/>
-										<reference key="NSBackgroundColor" ref="532176556"/>
-										<reference key="NSTextColor" ref="85187046"/>
+										<reference key="NSBackgroundColor" ref="309798081"/>
+										<reference key="NSTextColor" ref="1016277735"/>
 									</object>
 								</object>
 							</array>
@@ -3061,6 +3061,7 @@
 				<string key="599.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="675.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="676.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<boolean value="YES" key="676.ibExternalAutomaticallyCalculatesRowSizeFromViewHeight"/>
 				<string key="677.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="679.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="680.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
