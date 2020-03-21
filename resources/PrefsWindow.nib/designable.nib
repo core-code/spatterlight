@@ -102,7 +102,7 @@
 														<int key="NSColorSpace">6</int>
 														<string key="NSCatalogName">System</string>
 														<string key="NSColorName">textBackgroundColor</string>
-														<object class="NSColor" key="NSColor" id="646108978">
+														<object class="NSColor" key="NSColor">
 															<int key="NSColorSpace">3</int>
 															<bytes key="NSWhite">MQA</bytes>
 														</object>
@@ -176,15 +176,7 @@
 																				<int key="NSfFlags">1044</int>
 																			</object>
 																			<reference key="NSControlView" ref="1004143078"/>
-																			<object class="NSColor" key="NSBackgroundColor" id="467917995">
-																				<int key="NSColorSpace">6</int>
-																				<string key="NSCatalogName">System</string>
-																				<string key="NSColorName">controlBackgroundColor</string>
-																				<object class="NSColor" key="NSColor" id="108558257">
-																					<int key="NSColorSpace">3</int>
-																					<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
-																				</object>
-																			</object>
+																			<reference key="NSBackgroundColor" ref="309798081"/>
 																			<reference key="NSTextColor" ref="1016277735"/>
 																		</object>
 																		<int key="NSResizingMask">3</int>
@@ -194,7 +186,7 @@
 																</array>
 																<double key="NSIntercellSpacingWidth">3</double>
 																<double key="NSIntercellSpacingHeight">2</double>
-																<reference key="NSBackgroundColor" ref="646108978"/>
+																<reference key="NSBackgroundColor" ref="309798081"/>
 																<object class="NSColor" key="NSGridColor">
 																	<int key="NSColorSpace">6</int>
 																	<string key="NSCatalogName">System</string>
@@ -204,7 +196,7 @@
 																		<bytes key="NSWhite">MC41AA</bytes>
 																	</object>
 																</object>
-																<double key="NSRowHeight">17</double>
+																<double key="NSRowHeight">14</double>
 																<int key="NSTvFlags">312475648</int>
 																<reference key="NSDelegate"/>
 																<reference key="NSDataSource"/>
@@ -223,7 +215,15 @@
 														<reference key="NSNextKeyView" ref="1004143078"/>
 														<string key="NSReuseIdentifierKey">_NS:11</string>
 														<reference key="NSDocView" ref="1004143078"/>
-														<reference key="NSBGColor" ref="467917995"/>
+														<object class="NSColor" key="NSBGColor">
+															<int key="NSColorSpace">6</int>
+															<string key="NSCatalogName">System</string>
+															<string key="NSColorName">controlBackgroundColor</string>
+															<object class="NSColor" key="NSColor" id="108558257">
+																<int key="NSColorSpace">3</int>
+																<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
+															</object>
+														</object>
 														<int key="NScvFlags">6</int>
 													</object>
 													<object class="NSScroller" id="736899205">
@@ -258,7 +258,7 @@
 												<reference key="NSVScroller" ref="736899205"/>
 												<reference key="NSHScroller" ref="443132569"/>
 												<reference key="NSContentView" ref="732792440"/>
-												<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
+												<bytes key="NSScrollAmts">QSAAAEEgAABBgAAAQYAAAA</bytes>
 											</object>
 											<object class="NSButton" id="165891764">
 												<reference key="NSNextResponder" ref="284727235"/>
@@ -3061,7 +3061,6 @@
 				<string key="599.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="675.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="676.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<boolean value="YES" key="676.ibExternalAutomaticallyCalculatesRowSizeFromViewHeight"/>
 				<string key="677.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="679.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="680.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
