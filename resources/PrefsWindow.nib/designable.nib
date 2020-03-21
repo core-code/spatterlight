@@ -72,7 +72,6 @@
 							<string key="NSFrame">{{14, 149}, {488, 286}}</string>
 							<reference key="NSSuperview" ref="1040721980"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="284727235"/>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="907437729">
 									<string key="NSIdentifier">1</string>
@@ -204,8 +203,8 @@
 																		<bytes key="NSWhite">MC41AA</bytes>
 																	</object>
 																</object>
-																<double key="NSRowHeight">25</double>
-																<int key="NSTvFlags">304087040</int>
+																<double key="NSRowHeight">17</double>
+																<int key="NSTvFlags">312475648</int>
 																<reference key="NSDelegate"/>
 																<reference key="NSDataSource"/>
 																<string key="NSAutosaveName">ThemesTable</string>
@@ -213,6 +212,7 @@
 																<int key="NSDraggingSourceMaskForLocal">15</int>
 																<int key="NSDraggingSourceMaskForNonLocal">0</int>
 																<bool key="NSAllowsTypeSelect">YES</bool>
+																<int key="NSTableViewSelectionHighlightStyle">-1</int>
 																<int key="NSTableViewDraggingDestinationStyle">0</int>
 																<int key="NSTableViewGroupRowStyle">1</int>
 															</object>
@@ -224,7 +224,7 @@
 														<string key="NSReuseIdentifierKey">_NS:11</string>
 														<reference key="NSDocView" ref="1004143078"/>
 														<reference key="NSBGColor" ref="467917995"/>
-														<int key="NScvFlags">4</int>
+														<int key="NScvFlags">2</int>
 													</object>
 													<object class="NSScroller" id="736899205">
 														<reference key="NSNextResponder" ref="1046819282"/>
@@ -258,7 +258,7 @@
 												<reference key="NSVScroller" ref="736899205"/>
 												<reference key="NSHScroller" ref="443132569"/>
 												<reference key="NSContentView" ref="732792440"/>
-												<bytes key="NSScrollAmts">QSAAAEEgAABB2AAAQdgAAA</bytes>
+												<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
 											</object>
 											<object class="NSButton" id="165891764">
 												<reference key="NSNextResponder" ref="284727235"/>
@@ -1517,7 +1517,6 @@
 									<string key="NSFrameSize">{516, 139}</string>
 									<reference key="NSSuperview" ref="781334758"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView"/>
 									<string key="NSClassName">GlkHelperView</string>
 								</object>
 							</array>
@@ -3062,7 +3061,6 @@
 				<string key="599.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="675.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="676.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<boolean value="YES" key="676.ibExternalAutomaticallyCalculatesRowSizeFromViewHeight"/>
 				<string key="677.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="679.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="680.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
