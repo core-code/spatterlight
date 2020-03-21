@@ -224,7 +224,7 @@
 														<string key="NSReuseIdentifierKey">_NS:11</string>
 														<reference key="NSDocView" ref="1004143078"/>
 														<reference key="NSBGColor" ref="467917995"/>
-														<int key="NScvFlags">2</int>
+														<int key="NScvFlags">6</int>
 													</object>
 													<object class="NSScroller" id="736899205">
 														<reference key="NSNextResponder" ref="1046819282"/>
