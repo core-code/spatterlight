@@ -210,7 +210,7 @@
         [self updateSideViewWithString:somedata.title];
         return;
     }
-    
+
 	NSLayoutConstraint *xPosConstraint;
 	NSLayoutConstraint *yPosConstraint;
 	NSLayoutConstraint *widthConstraint;
@@ -220,7 +220,7 @@
 
 	NSFont *font;
 	CGFloat spaceBefore;
-	NSView *lastView;    
+	NSView *lastView;
 
 	self.translatesAutoresizingMaskIntoConstraints = NO;
 
