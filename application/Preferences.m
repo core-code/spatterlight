@@ -7,13 +7,12 @@
 #import "GlkStyle.h"
 #import "LibController.h"
 #import "NSString+Categories.h"
-
 #import "main.h"
 
 #ifdef DEBUG
 #define NSLog(FORMAT, ...)                                                     \
-    fprintf(stderr, "%s\n",                                                    \
-            [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+fprintf(stderr, "%s\n",                                                    \
+[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 #else
 #define NSLog(...)
 #endif
@@ -953,8 +952,7 @@ NSString *fontToString(NSFont *font) {
     glkcntrl.contentView = sampleTextView;
     sampleTextView.glkctrl = glkcntrl;
 
-    sampleTextBorderView.wantsLayer = YES;
-    [glkcntrl setBorderColor:theme.bufferBackground];
+    sampleTextBorderView.fillColor = theme.bufferBackground;
     sampleTextBorderView.frame = NSMakeRect(0, 312, self.window.frame.size.width, ((NSView *)self.window.contentView).frame.size.height - 312);
 
     _divider.frame = NSMakeRect(0, 311, self.window.frame.size.width, 1);
@@ -1184,7 +1182,10 @@ NSString *fontToString(NSFont *font) {
 
     previewTextHeight = [self textHeight];
 
-    [glktxtbuf prefsDidChange];
+    sampleTextBorderView.fillColor = theme.bufferBackground;
+
+    [glktxtbuf sampleViewDidChange];
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [_coreDataManager saveChanges];
     });
@@ -1193,6 +1194,7 @@ NSString *fontToString(NSFont *font) {
         return;
 
     [self adjustPreview:nil];
+    [self performSelector:@selector(adjustPreview:) withObject:nil afterDelay:0.1];
 }
 
 - (void)adjustPreview:(id)sender {
@@ -1230,13 +1232,10 @@ NSString *fontToString(NSFont *font) {
     }
 
     sampleTextView.frame = newSampleFrame;
-    glktxtbuf.frame = sampleTextView.bounds;
     glktxtbuf.textview.enclosingScrollView.frame = sampleTextView.bounds;
+    glktxtbuf.frame = sampleTextView.bounds;
 
     glktxtbuf.autoresizingMask = NSViewHeightSizable;
-
-    [glktxtbuf restoreScrollBarStyle];
-    [glktxtbuf scrollToTop];
 }
 
 - (NSSize)windowWillResize:(NSWindow *)sender
@@ -1329,6 +1328,8 @@ NSString *fontToString(NSFont *font) {
 
          if (!previewHidden) {
              [weakSelf adjustPreview:nil];
+             [glktxtbuf restoreScrollBarStyle];
+             [glktxtbuf scrollToTop];
          }
      }];
 }

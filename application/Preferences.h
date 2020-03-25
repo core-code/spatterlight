@@ -15,7 +15,7 @@ typedef enum kZoomDirectionType : NSUInteger {
 } kZoomDirectionType;
 
 typedef enum kDefaultPrefWindowSize : NSUInteger {
-    kDefaultPrefWindowWidth = 516, 
+    kDefaultPrefWindowWidth = 516,
     kDefaultPrefWindowHeight = 330,
     kDefaultPrefsLowerViewHeight = 311
 } kDefaultPrefWindowSize;
@@ -36,12 +36,12 @@ typedef enum kDefaultPrefWindowSize : NSUInteger {
     IBOutlet NSButton *btnEnableSound;
     IBOutlet NSButton *btnEnableStyles;
     IBOutlet NSTableView *themesTableView;
-    IBOutlet NSView *sampleTextBorderView;
+    IBOutlet NSBox *sampleTextBorderView;
     IBOutlet GlkHelperView *sampleTextView;
 
     GlkController *glkcntrl;
     GlkTextBufferWindow *glktxtbuf;
-    
+
     NSButton *selectedFontButton;
 
     BOOL disregardTableSelection;
