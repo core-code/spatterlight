@@ -7,7 +7,6 @@
 #import "GlkStyle.h"
 #import "LibController.h"
 #import "NSString+Categories.h"
-#import "MyScroller.h"
 
 #import "main.h"
 
@@ -954,7 +953,8 @@ NSString *fontToString(NSFont *font) {
     glkcntrl.contentView = sampleTextView;
     sampleTextView.glkctrl = glkcntrl;
 
-    sampleTextBorderView.fillColor = theme.bufferBackground;
+    sampleTextBorderView.wantsLayer = YES;
+    [glkcntrl setBorderColor:theme.bufferBackground];
     sampleTextBorderView.frame = NSMakeRect(0, 312, self.window.frame.size.width, ((NSView *)self.window.contentView).frame.size.height - 312);
 
     _divider.frame = NSMakeRect(0, 311, self.window.frame.size.width, 1);
@@ -974,15 +974,6 @@ NSString *fontToString(NSFont *font) {
 
     glktxtbuf.textview.editable = NO;
     [sampleTextView addSubview:glktxtbuf];
-//    glktxtbuf.textview.enclosingScrollView.wantsLayer = YES;
-//    [glktxtbuf restoreScrollBarStyle];
-    MyScroller *YScroller = [[MyScroller alloc] init];
-    MyScroller *XScroller = [[MyScroller alloc] init];
-    NSScrollView *scrollview = glktxtbuf.textview.enclosingScrollView;
-    scrollview.horizontalScroller = XScroller;
-    scrollview.verticalScroller = YScroller;
-    
-
 
     [glktxtbuf putString:@"Palace Gate" style:style_Subheader];
     [glktxtbuf putString:@" A tide of perambulators surges north along the crowded Broad Walk. "
@@ -1193,35 +1184,7 @@ NSString *fontToString(NSFont *font) {
 
     previewTextHeight = [self textHeight];
 
-    sampleTextBorderView.fillColor = theme.bufferBackground;
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:_managedObjectContext];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                 name:@"PreferencesChanged"
-                                               object:nil];
-    
-    NSInteger oldMarginX = theme.bufferMarginX;
-    NSInteger oldMarginY = theme.bufferMarginY;
-    theme.bufferMarginX = 0;
-    theme.bufferMarginY = 0;
     [glktxtbuf prefsDidChange];
-    theme.bufferMarginX = oldMarginX;
-    theme.bufferMarginY = oldMarginY;
-
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(notePreferencesChanged:)
-                                                 name:@"PreferencesChanged"
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(noteManagedObjectContextDidChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:_managedObjectContext];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         [_coreDataManager saveChanges];
     });
@@ -1230,8 +1193,6 @@ NSString *fontToString(NSFont *font) {
         return;
 
     [self adjustPreview:nil];
-    [self performSelector:@selector(adjustPreview:) withObject:nil afterDelay:0.1];
-
 }
 
 - (void)adjustPreview:(id)sender {
@@ -1269,73 +1230,13 @@ NSString *fontToString(NSFont *font) {
     }
 
     sampleTextView.frame = newSampleFrame;
-    glktxtbuf.textview.enclosingScrollView.frame = sampleTextView.bounds;
     glktxtbuf.frame = sampleTextView.bounds;
+    glktxtbuf.textview.enclosingScrollView.frame = sampleTextView.bounds;
 
     glktxtbuf.autoresizingMask = NSViewHeightSizable;
 
-
-//    [self performSelector:@selector(checkFramesWithDelay:) withObject:nil afterDelay:0.5];
-}
-
-- (void)checkFramesWithDelay:(id)sender {
-
-
-//    [glktxtbuf restoreScrollBarStyle];
-//    
-
-//    if (sampleTextView.frame.size.height < glktxtbuf.textview.frame.size.height) {
-
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//
-//        NSScrollView *scrollview = glktxtbuf.textview.enclosingScrollView;
-//        scrollview.wantsLayer = YES;
-//        scrollview.scrollerStyle = NSScrollerStyleOverlay;
-//    });
-//
-//    [glktxtbuf scrollToTop];
-//    NSScrollView *scrollview = glktxtbuf.textview.enclosingScrollView;
-//
-//    scrollview.drawsBackground = YES;
-//    scrollview.hasHorizontalScroller = NO;
-//    scrollview.hasVerticalScroller = YES;
-//    scrollview.verticalScroller.alphaValue = 100;
-//    scrollview.autohidesScrollers = YES;
-//    scrollview.borderType = NSNoBorder;
-
-
-    NSLog(@"Preferences checkFramesWithDelay: self.window.frame:%@", NSStringFromRect(self.window.frame));
-    NSLog(@"Preferences checkFramesWithDelay: self.window.contentView.frame:%@", NSStringFromRect([self.window.contentView frame]));
-
-    NSLog(@"Preferences checkFramesWithDelay: sampleTextBorderView.frame:%@", NSStringFromRect(sampleTextBorderView.frame));
-
-    NSLog(@"Preferences checkFramesWithDelay: sampleTextView.frame:%@", NSStringFromRect(sampleTextView.frame));
-
-    if (sampleTextView.frame.size.height < sampleTextBorderView.frame.size.height) {
-
-        NSRect newFrame = sampleTextView.frame;
-
-//        if (sampleTextView.frame.size.height < glktxtbuf.textview.frame.size.height && glktxtbuf.frame.size.height < glktxtbuf.textview.frame.size.height) {
-//            newFrame.size.height = glktxtbuf.textview.frame.size.height;
-//            sampleTextView.frame = newFrame;
-//            glktxtbuf.frame = sampleTextView.bounds;
-//            glktxtbuf.textview.enclosingScrollView.frame = sampleTextView.bounds;
-//        }
-
-           CGFloat preferredH = round((sampleTextBorderView.bounds.size.height - sampleTextView.frame.size.height) / 2);
-        if (abs(sampleTextView.frame.origin.y - preferredH) > 2) {
-//            [self adjustPreview:nil];
-        }
-    }
-    
-    NSLog(@"Preferences checkFramesWithDelay: glktxtbuf.frame:%@", NSStringFromRect(glktxtbuf.frame));
-    NSScrollView *scrollView = glktxtbuf.textview.enclosingScrollView;
-    NSLog(@"Preferences checkFramesWithDelay scrollView.frame:%@", NSStringFromRect(scrollView.frame));
-
-    NSTextView *textview = glktxtbuf.textview;
-    NSLog(@"Preferences checkFramesWithDelay: textview.frame:%@", NSStringFromRect(textview.frame));
-
-    
+    [glktxtbuf restoreScrollBarStyle];
+    [glktxtbuf scrollToTop];
 }
 
 - (NSSize)windowWillResize:(NSWindow *)sender
@@ -1349,17 +1250,17 @@ NSString *fontToString(NSFont *font) {
                 sampleTextView.autoresizingMask = NSViewMinYMargin | NSViewMaxYMargin;
             } else sampleTextView.autoresizingMask = NSViewHeightSizable;
         } else {
-//            NSRect newFrame = sampleTextView.frame;
-//
-//            if (sampleTextView.frame.size.height < glktxtbuf.textview.frame.size.height && glktxtbuf.frame.size.height < glktxtbuf.textview.frame.size.height) {
-//                newFrame.size.height = glktxtbuf.textview.frame.size.height;
-//                sampleTextView.frame = newFrame;
-//                glktxtbuf.frame = sampleTextView.bounds;
-//                glktxtbuf.textview.enclosingScrollView.frame = sampleTextView.bounds;
-//            }
-//
-//            newFrame.origin.y = round((sampleTextBorderView.bounds.size.height - newFrame.size.height) / 2);
-//            sampleTextView.frame = newFrame;
+            NSRect newFrame = sampleTextView.frame;
+
+            if (sampleTextView.frame.size.height < glktxtbuf.textview.frame.size.height && glktxtbuf.frame.size.height < glktxtbuf.textview.frame.size.height) {
+                newFrame.size.height = glktxtbuf.textview.frame.size.height;
+                sampleTextView.frame = newFrame;
+                glktxtbuf.frame = sampleTextView.bounds;
+                glktxtbuf.textview.enclosingScrollView.frame = sampleTextView.bounds;
+            }
+
+            newFrame.origin.y = round((sampleTextBorderView.bounds.size.height - newFrame.size.height) / 2);
+            sampleTextView.frame = newFrame;
         }
     }
 
