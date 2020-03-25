@@ -36,7 +36,7 @@ typedef enum kDefaultPrefWindowSize : NSUInteger {
     IBOutlet NSButton *btnEnableSound;
     IBOutlet NSButton *btnEnableStyles;
     IBOutlet NSTableView *themesTableView;
-    IBOutlet NSView *sampleTextBorderView;
+    IBOutlet NSBox *sampleTextBorderView;
     IBOutlet GlkHelperView *sampleTextView;
 
     GlkController *glkcntrl;
