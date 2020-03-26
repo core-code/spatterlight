@@ -46,6 +46,7 @@ typedef enum kDefaultPrefWindowSize : NSUInteger {
 
     BOOL disregardTableSelection;
     BOOL previewHidden;
+    BOOL overwriteStyles;
     CGFloat previewTextHeight;
 }
 
@@ -122,6 +123,8 @@ typedef enum kDefaultPrefWindowSize : NSUInteger {
 @property (readonly) NSManagedObjectContext *managedObjectContext;
 @property Game *currentGame;
 @property BOOL oneThemeForAll;
+@property BOOL appliesToSelected;
+
 @property LibController *libcontroller;
 
 @property (strong) IBOutlet ThemeArrayController *arrayController;

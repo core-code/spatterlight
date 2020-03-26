@@ -74,7 +74,7 @@
 - (Theme *)clone;
 - (void)copyAttributesFrom:(Theme *)theme;
 - (void)populateStyles;
-
+- (NSArray *)allStyles;
 
 @end
 

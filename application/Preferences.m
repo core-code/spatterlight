@@ -1444,8 +1444,13 @@ NSString *fontToString(NSFont *font) {
             fetchRequest.includesPropertyValues = NO;
             fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
             [theme addGames:[NSSet setWithArray:fetchedObjects]];
-        } else if (_currentGame) {
-            _currentGame.theme = theme;
+        } else {
+            if (_appliesToSelected) {
+                [self applyToSelected:nil];
+            }
+            if (_currentGame) {
+                _currentGame.theme = theme;
+            }
         }
 
         [[NSNotificationCenter defaultCenter]
@@ -1570,11 +1575,28 @@ textShouldEndEditing:(NSText *)fieldEditor {
     } else {
         _btnOneThemeForAll.state = NSOffState;
     }
-
 }
 
 - (BOOL)oneThemeForAll {
     return _oneThemeForAll;
+}
+
+@synthesize appliesToSelected = _appliesToSelected;
+
+- (void)setAppliesToSelected:(BOOL)appliesToSelected {
+    _appliesToSelected = appliesToSelected;
+    [[NSUserDefaults standardUserDefaults] setBool:_appliesToSelected forKey:@"appliesToSelected"];
+    _themesHeader.stringValue = [self themeScopeTitle];
+    if (appliesToSelected) {
+        _btnAppliesToSelected.state = NSOnState;
+        [self applyToSelected:nil];
+    } else {
+        _btnAppliesToSelected.state = NSOffState;
+    }
+}
+
+- (BOOL)appliesToSelected {
+    return _appliesToSelected;
 }
 
 - (IBAction)clickedOneThemeForAll:(id)sender {
@@ -1629,7 +1651,7 @@ textShouldEndEditing:(NSText *)fieldEditor {
     NSAlert *anAlert = alert;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    NSString *alertSuppressionKey = @"UseForAllAlertAlertSuppression";
+    NSString *alertSuppressionKey = @"UseForAllAlertSuppression";
 
     if (anAlert.suppressionButton.state == NSOnState) {
         // Suppress this alert from now on
@@ -1644,10 +1666,86 @@ textShouldEndEditing:(NSText *)fieldEditor {
 }
 
 - (IBAction)clickedAppliesToSelected:(id)sender {
+    if ([sender state] == 1) {
+        if (![[NSUserDefaults standardUserDefaults] valueForKey:@"appliesToSelectedAlertSuppression"]) {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            NSError *error = nil;
+            fetchRequest.entity = [NSEntityDescription entityForName:@"Game" inManagedObjectContext:self.managedObjectContext];
+            fetchRequest.includesPropertyValues = NO;
+            NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+            NSUInteger numberOfGames = fetchedObjects.count;
+            if (_libcontroller.selectedGames.count == numberOfGames) { // All games are selected
+                Theme *mostPopularTheme = nil;
+                NSUInteger highestCount = 0;
+                NSUInteger currentCount = 0;
+                for (Theme *t in _arrayController.arrangedObjects) {
+                    currentCount = t.games.count;
+                    if (currentCount > highestCount) {
+                        highestCount = t.games.count;
+                        mostPopularTheme = t;
+                    }
+                }
+                if (highestCount < numberOfGames) {
+                    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"theme != %@", mostPopularTheme];
+                    fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+                    [self showAppliesToSelectedAlert:fetchedObjects];
+                    return;
+                }
+            }
+        }
+    }
+    [self setAppliesToSelected:[sender state]];
+}
+
+- (void)showAppliesToSelectedAlert:(NSArray *)games {
+    NSAlert *anAlert = [[NSAlert alloc] init];
+    anAlert.messageText =
+    [NSString stringWithFormat:@"%@ %@ individual theme settings.", [NSString stringWithSummaryOf:games], (games.count == 1) ? @"has" : @"have"];
+    anAlert.informativeText = [NSString stringWithFormat:@"Would you like to use theme %@ for all selected games?", theme.name];
+    anAlert.showsSuppressionButton = YES;
+    anAlert.suppressionButton.title = @"Do not show again.";
+    [anAlert addButtonWithTitle:@"Okay"];
+    [anAlert addButtonWithTitle:@"Cancel"];
+
+    [anAlert beginSheetModalForWindow:self.window
+                        modalDelegate:self
+                       didEndSelector:@selector(appliesToSelectedAlertDidFinish:
+                                                rc:ctx:)
+                          contextInfo:NULL];
+}
+
+- (void)appliesToSelectedAlertDidFinish:(id)alert rc:(int)result ctx:(void *)ctx {
+
+    NSAlert *anAlert = alert;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    NSString *alertSuppressionKey = @"appliesToSelectedAlertSuppression";
+
+    if (anAlert.suppressionButton.state == NSOnState) {
+        // Suppress this alert from now on
+        [defaults setBool:YES forKey:alertSuppressionKey];
+    }
+
+    if (result == NSAlertFirstButtonReturn) {
+        [self setAppliesToSelected:YES];
+    } else {
+        _btnAppliesToSelected.state = NSOffState;
+    }
 }
 
 - (NSString *)themeScopeTitle {
-    if (_oneThemeForAll) return @"Theme setting for all games";
+    if (_oneThemeForAll) {
+        return @"Theme setting for all games";
+    }
+    if (_appliesToSelected) {
+        NSUInteger numberOfSelected = _libcontroller.selectedGames.count;
+        if (_currentGame && [_libcontroller.selectedGames indexOfObject:_currentGame] == NSNotFound)
+            numberOfSelected++;
+        if (numberOfSelected > 1)
+            return [NSString stringWithFormat: @"Theme setting for %ld selected games", numberOfSelected];
+        if (_libcontroller.selectedGames.count == 1 && _currentGame == nil)
+            return [@"Theme setting for selected game " stringByAppendingString:((Game *)_libcontroller.selectedGames[0]).metadata.title];
+    }
     if ( _currentGame == nil)
         return @"No game is currently running";
     else
@@ -1947,7 +2045,74 @@ textShouldEndEditing:(NSText *)fieldEditor {
 }
 
 - (IBAction)changeOverwriteStyles:(id)sender {
+    if (overwriteStyles == (BOOL)[sender state])
+        return;
+    if ([sender state] == 1) {
+        if (![[NSUserDefaults standardUserDefaults] valueForKey:@"OverwriteStylesAlertSuppression"]) {
+            NSMutableArray *customStyles = [[NSMutableArray alloc] initWithCapacity:style_NUMSTYLES * 2];
+            for (GlkStyle *style in theme.allStyles) {
+                if (!style.autogenerated) {
+                    [customStyles addObject:style];
+                }
+            }
+            if (customStyles.count) {
+                [self showOverwriteStylesAlert:customStyles];
+                return;
+            }
+        }
+        [self overWriteStyles];
+    }
+    overwriteStyles = (BOOL)[sender state];
 }
+
+- (void)showOverwriteStylesAlert:(NSArray *)styles {
+    NSAlert *anAlert = [[NSAlert alloc] init];
+    anAlert.messageText =
+    [NSString stringWithFormat:@"This theme uses %ld custom %@.", styles.count, (styles.count == 1) ? @"style" : @"styles"];
+    if (styles.count == 1)
+        anAlert.informativeText = @"Do you want to replace it with a standard style?";
+    else
+        anAlert.informativeText = @"Do you want to replace them with standard styles?";
+
+    anAlert.showsSuppressionButton = YES;
+    anAlert.suppressionButton.title = @"Do not show again.";
+    [anAlert addButtonWithTitle:@"Okay"];
+    [anAlert addButtonWithTitle:@"Cancel"];
+
+    [anAlert beginSheetModalForWindow:self.window
+                        modalDelegate:self
+                       didEndSelector:@selector(overwriteStylesAlertDidFinish:
+                                                rc:ctx:)
+                          contextInfo:(__bridge void * _Nullable)(styles)];
+}
+
+- (void)overwriteStylesAlertDidFinish:(id)alert rc:(int)result ctx:(void *)ctx {
+
+    NSAlert *anAlert = alert;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    NSString *alertSuppressionKey = @"OverwriteStylesAlertSuppression";
+
+    if (anAlert.suppressionButton.state == NSOnState) {
+        // Suppress this alert from now on
+        [defaults setBool:YES forKey:alertSuppressionKey];
+    }
+
+    if (result == NSAlertFirstButtonReturn) {
+        [self overWriteStyles];
+    } else {
+        _btnOverwriteStyles.state = NSOffState;
+    }
+}
+
+- (void)overWriteStyles {
+    [self cloneThemeIfNotEditable];
+    for (GlkStyle *style in theme.allStyles) {
+        style.autogenerated = NO;
+    }
+    [theme populateStyles];
+}
+
 
 - (IBAction)changeBorderSize:(id)sender {
     if (theme.border == [sender intValue])

@@ -2293,14 +2293,22 @@ objectValueForTableColumn: (NSTableColumn*)column
         infoButton.enabled = rows.count > 0;
         playButton.enabled = rows.count == 1;
         [self invalidateRestorableState];
+        Preferences *prefs = [Preferences instance];
         if (gameTableModel.count && rows.count) {
             _selectedGames = [gameTableModel objectsAtIndexes:rows];
             Game *game = _selectedGames[0];
             if (!game.theme)
                 game.theme = [Preferences currentTheme];
             else
-                [(Preferences *)[Preferences instance] restoreThemeSelection:game.theme];
-        } else _selectedGames = nil;
+                [prefs restoreThemeSelection:game.theme];
+            prefs.btnAppliesToSelected.enabled = YES;
+            [prefs setAppliesToSelected:prefs.appliesToSelected];
+        } else {
+            _selectedGames = nil;
+            prefs.btnAppliesToSelected.enabled = NO;
+            [prefs setAppliesToSelected:prefs.appliesToSelected];
+        }
+
         [self updateSideViewForce:NO];
     }
 }
