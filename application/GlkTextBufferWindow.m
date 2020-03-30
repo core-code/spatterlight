@@ -2234,7 +2234,7 @@
                              effectiveRange:nil];
 
         _lastseen = (NSInteger)NSMaxY(line); // bottom of the line
-        NSLog(@"GlkTextBufferWindow: markLastSeen: %ld", (long)_lastseen);
+        // NSLog(@"GlkTextBufferWindow: markLastSeen: %ld", (long)_lastseen);
     }
 }
 
