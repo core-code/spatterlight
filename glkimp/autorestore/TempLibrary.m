@@ -125,11 +125,6 @@ static channel_t *temp_channellist = NULL;  /* linked list of all sound channels
     if (!_schannels)
         NSLog(@"TempLibrary initWithCoder: No sound channels in archive file!");
 
-	// will be zero if no timerinterval was saved
-	// timerinterval = [decoder decodeInt32ForKey:@"timerinterval"];
-
-	// skip the calendar and filemanager fields; they're not needed
-
     _rootwintag = [decoder decodeInt32ForKey:@"rootwintag"];
     _currentstrtag = [decoder decodeInt32ForKey:@"currentstrtag"];
 
@@ -160,6 +155,7 @@ static channel_t *temp_channellist = NULL;  /* linked list of all sound channels
 	if (extra_unarchive_hook)
 		extra_unarchive_hook(self, decoder);
 
+    // will be zero if no timerinterval was saved
     _timerInterval = [decoder decodeInt32ForKey:@"timerInterval"];
     _autosaveTag = [decoder decodeInt32ForKey:@"autosaveTag"];
 

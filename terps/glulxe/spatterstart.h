@@ -12,9 +12,11 @@ extern void spatterglk_set_can_restart_flag(int);
 extern int spatterglk_can_restart_cleanly(void);
 extern void spatterglk_shut_down_process(void) GLK_ATTRIBUTE_NORETURN;
 
+NSDate *lastAutosaveTimestamp;
+
 /* This object contains VM state which is not stored in a normal save file, but which is needed for an autorestore.
 
- (The reason it's not stored in a normal save file is that it's useless unless you serialize the entire Glk state along with the VM. Glulx normally doesn't do that, but for an iOS autosave, we do.)
+ (The reason it's not stored in a normal save file is that it's useless unless you serialize the entire Glk state along with the VM. Glulx normally doesn't do that, but for an autosave, we do.)
  */
 
 @interface LibraryState : NSObject {}

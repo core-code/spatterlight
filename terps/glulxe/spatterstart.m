@@ -212,6 +212,7 @@ int glkunix_startup_code(glkunix_startup_t *data)
     set_library_autorestore_hook(&spatterglk_game_autorestore);
     set_library_select_hook(&spatterglk_game_select);
     max_undo_level = 32; // allow 32 undo steps
+    lastAutosaveTimestamp = [NSDate distantPast];
 
     return TRUE;
 }
@@ -360,11 +361,12 @@ static void spatterglk_game_select(glui32 eventaddr)
 //    NSLog(@"### game called select, last event was %d", lasteventtype);
 
 	/* Do not autosave if we've just started up, or if the last event was a rearrange event. (We get rearranges in clusters, and they don't change anything interesting anyhow.) */
-	if (lasteventtype == -1 || lasteventtype == evtype_Arrange)
+	if (lasteventtype == -1 || lasteventtype == evtype_Arrange || [lastAutosaveTimestamp timeIntervalSinceNow] > -1)
     {
 		return;
     }
 
+    lastAutosaveTimestamp = [NSDate date];
 	spatterglk_do_autosave(eventaddr);
 }
 
