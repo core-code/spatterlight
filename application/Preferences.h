@@ -75,9 +75,6 @@ typedef enum kBZArrowsPrefsType : int32_t {
 - (void)createDefaultThemes;
 - (void)restoreThemeSelection:(id)sender;
 
-+ (void)zoomIn;
-+ (void)zoomOut;
-+ (void)zoomToActualSize;
 + (void)scale:(CGFloat)scalefactor;
 - (void)updatePanelAfterZoom;
 

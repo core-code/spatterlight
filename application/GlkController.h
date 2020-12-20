@@ -13,7 +13,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@class Game, Theme, LibController, GlkEvent, GlkWindow, ZMenu, BureaucracyForm, GlkTextGridWindow, GlkSoundChannel, AudioResourceHandler;
+@class Game, Theme, LibController, GlkEvent, GlkWindow, ZMenu, BureaucracyForm, GlkTextGridWindow, GlkSoundChannel, AudioResourceHandler, ScalingScrollView;
 
 #define MAXWIN 64
 #define MAXSND 32
@@ -32,7 +32,7 @@
 @property AudioResourceHandler *audioResourceHandler;
 @property NSMutableArray *windowsToBeAdded;
 @property NSMutableArray *windowsToBeRemoved;
-@property IBOutlet NSView *borderView;
+@property IBOutlet NSScrollView *borderView;
 @property IBOutlet GlkHelperView *contentView;
 
 // stylehints need to be copied to new windows, so we keep the values around
