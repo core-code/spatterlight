@@ -55,6 +55,9 @@
         return nil;
     }
 
+//    NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.spatterlight.core.data"];
+//    NSURL *persistentStoreURL = [groupURL URLByAppendingPathComponent:@"spatterlight.sqlite"];
+
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *applicationFilesDirectory = [self applicationFilesDirectory];
     NSError *error = nil;
@@ -67,7 +70,8 @@
             ok = [fileManager createDirectoryAtPath:[applicationFilesDirectory path] withIntermediateDirectories:YES attributes:nil error:&error];
         }
         if (!ok) {
-            [[NSApplication sharedApplication] presentError:error];
+//            [[NSApplication sharedApplication] presentError:error];
+            NSLog(@"Error: %@", error);
             return nil;
         }
     } else {
@@ -79,7 +83,8 @@
             [dict setValue:failureDescription forKey:NSLocalizedDescriptionKey];
             error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:101 userInfo:dict];
 
-            [[NSApplication sharedApplication] presentError:error];
+//            [[NSApplication sharedApplication] presentError:error];
+            NSLog(@"Error: %@", error);
             return nil;
         }
     }
@@ -93,8 +98,16 @@
                              [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                              [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
 
+//    if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:persistentStoreURL options:options error:&error]) {
+//        //[[NSApplication sharedApplication] presentError:error];
+//        NSLog(@"Error: %@", error);
+//        return nil;
+//    }
+
+
     if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:options error:&error]) {
-        [[NSApplication sharedApplication] presentError:error];
+        //[[NSApplication sharedApplication] presentError:error];
+       //        NSLog(@"Error: %@", error);
         return nil;
     }
     _persistentStoreCoordinator = coordinator;
@@ -115,7 +128,8 @@
         [dict setValue:@"Failed to initialize the store" forKey:NSLocalizedDescriptionKey];
         [dict setValue:@"There was an error building up the data file." forKey:NSLocalizedFailureReasonErrorKey];
         NSError *error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
-        [[NSApplication sharedApplication] presentError:error];
+        //[[NSApplication sharedApplication] presentError:error];
+        NSLog(@"Error: %@", error);
         exit(0);
     }
     privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
@@ -166,7 +180,8 @@
             if (![_mainManagedObjectContext save:&error]) {
                 NSLog(@"Unable to Save Changes of Main Managed Object Context! Error: %@", error);
                 if (error) {
-                    [[NSApplication sharedApplication] presentError:error];
+                    //[[NSApplication sharedApplication] presentError:error];
+                    NSLog(@"Error: %@", error);
                 }
             } //else NSLog(@"Changes in _mainManagedObjectContext were saved");
 
@@ -191,7 +206,8 @@
             if (!result) {
                 NSLog(@"Unable to Save Changes of Private Managed Object Context! Error:%@", error);
                 if (error) {
-                    [[NSApplication sharedApplication] presentError:error];
+//                    [[NSApplication sharedApplication] presentError:error];
+                    NSLog(@"Error: %@", error);
                 } //else NSLog(@"Changes in privateManagedObjectContext were saved");
             }
 

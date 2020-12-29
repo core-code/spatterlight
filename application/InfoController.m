@@ -8,8 +8,8 @@
 #import "IFDBDownloader.h"
 #import "main.h"
 
-#include "babel_handler.h"
-#include "treaty.h"
+//#include "babel_handler.h"
+//#include "treaty.h"
 
 #ifdef DEBUG
 #define NSLog(FORMAT, ...)                                                     \

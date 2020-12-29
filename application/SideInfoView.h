@@ -9,7 +9,6 @@
 #import <CoreData/CoreData.h>
 
 @class Game;
-@class Preferences;
 
 @interface SideInfoView : NSView <NSTextFieldDelegate>
 {
