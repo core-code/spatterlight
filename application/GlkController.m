@@ -9,6 +9,10 @@
 #import "GlkStyle.h"
 #import "NSColor+integer.h"
 
+#import "CoverImageWindow.h"
+#import "Image.h"
+
+
 #import "main.h"
 #include "glkimp.h"
 
@@ -563,6 +567,11 @@ fprintf(stderr, "%s\n",                                                    \
     lastSizeInChars = [self contentSizeToCharCells:_contentView.frame.size];
     [self forkInterpreterTask];
     [self showWindow:nil];
+    if (_game.metadata.cover.data) {
+        CoverImageWindow *coverImage = [[CoverImageWindow alloc] init];
+        coverImage.glkctl = self;
+        [coverImage showLogoWindow];
+    }
 }
 
 - (void)restoreWindowWhenDead {
