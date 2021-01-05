@@ -611,6 +611,7 @@
 		C3B3779F1ECBA3DD006432BE /* vmtz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3B3779E1ECBA3DD006432BE /* vmtz.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3B377A11ECBA3E8006432BE /* vmtzobj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3B377A01ECBA3E8006432BE /* vmtzobj.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3B377A71ECBA4D5006432BE /* vmconnom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3B377A61ECBA4D5006432BE /* vmconnom.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C3CDF2F125A3E94500FA3451 /* CoverImageWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = C3CDF2F025A3E94500FA3451 /* CoverImageWindow.m */; };
 		C3D6AD711ECF373000ADB69C /* tadsr in Copy Interpreter Files */ = {isa = PBXBuildFile; fileRef = 96FE867109F38BF600D41D78 /* tadsr */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C3D6AD721ECF381A00ADB69C /* vmuni_cs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C343E49E1ECC67AC000F15B6 /* vmuni_cs.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3D8177B256CBA21005DBC1F /* InputTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D81779256CBA20005DBC1F /* InputTextField.m */; };
@@ -2558,6 +2559,8 @@
 		C3B377A01ECBA3E8006432BE /* vmtzobj.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vmtzobj.cpp; sourceTree = "<group>"; };
 		C3B377A21ECBA41B006432BE /* vmconhtm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vmconhtm.cpp; sourceTree = "<group>"; };
 		C3B377A61ECBA4D5006432BE /* vmconnom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vmconnom.cpp; sourceTree = "<group>"; };
+		C3CDF2EF25A3E94500FA3451 /* CoverImageWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverImageWindow.h; sourceTree = "<group>"; };
+		C3CDF2F025A3E94500FA3451 /* CoverImageWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverImageWindow.m; sourceTree = "<group>"; };
 		C3D155671EDC4C820072D259 /* defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = defs.h; path = Generic/defs.h; sourceTree = "<group>"; };
 		C3D81779256CBA20005DBC1F /* InputTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputTextField.m; sourceTree = "<group>"; };
 		C3D8177A256CBA20005DBC1F /* InputTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputTextField.h; sourceTree = "<group>"; };
@@ -3542,6 +3545,8 @@
 				96FBD8F50A0950EA002F6087 /* InfoController.m */,
 				96A9BB7A0A0662FA001B5B9B /* GlkController.h */,
 				C38101291EDA297E00B87B68 /* GlkController.m */,
+				C3CDF2EF25A3E94500FA3451 /* CoverImageWindow.h */,
+				C3CDF2F025A3E94500FA3451 /* CoverImageWindow.m */,
 				C302E93625914789005F3B3B /* FadingView.h */,
 				C302E93725914789005F3B3B /* FadingView.m */,
 				961CCED909F239E700528FF9 /* GlkEvent.h */,
@@ -5591,6 +5596,7 @@
 				96A9C0F00A07AE17001B5B9B /* LibController.m in Sources */,
 				96FBD8F70A0950EA002F6087 /* InfoController.m in Sources */,
 				961CCEEF09F23A0000528FF9 /* GlkEvent.m in Sources */,
+				C3CDF2F125A3E94500FA3451 /* CoverImageWindow.m in Sources */,
 				961CCEF709F23A0000528FF9 /* GlkWindow.m in Sources */,
 				C3D8177B256CBA21005DBC1F /* InputTextField.m in Sources */,
 				C381012A1EDA297E00B87B68 /* GlkController.m in Sources */,
