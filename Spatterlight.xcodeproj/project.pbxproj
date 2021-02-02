@@ -549,7 +549,6 @@
 		C32036E51ED7738700FF60DF /* libglkimp.dylib in Copy Interpreter Files */ = {isa = PBXBuildFile; fileRef = 961CCE7B09F237E700528FF9 /* libglkimp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C335D9DE25C57B18000D5D72 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D76353522C4F113000873F3 /* CoreDataManager.m */; };
 		C335DA0125C5CF8F000D5D72 /* MetaDataReader.m in Sources */ = {isa = PBXBuildFile; fileRef = C335DA0025C5CF8F000D5D72 /* MetaDataReader.m */; };
-		C335DA1B25C5D8B2000D5D72 /* libbabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A9BA790A06558F001B5B9B /* libbabel.a */; };
 		C335DA3525C5E683000D5D72 /* libbabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A9BA790A06558F001B5B9B /* libbabel.a */; };
 		C33B4504257E84500017EA26 /* ZMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C33B4502257E84500017EA26 /* ZMenu.m */; };
 		C343E4861ECC5E81000F15B6 /* osportable.cc in Sources */ = {isa = PBXBuildFile; fileRef = C343E4851ECC5E81000F15B6 /* osportable.cc */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -2837,7 +2836,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C335DA1B25C5D8B2000D5D72 /* libbabel.a in Frameworks */,
 				C311DEF725C472E500484639 /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
