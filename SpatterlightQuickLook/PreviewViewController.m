@@ -8,8 +8,14 @@
 
 #import "PreviewViewController.h"
 #import <Quartz/Quartz.h>
+#import <Cocoa/Cocoa.h>
+#import <CoreData/CoreData.h>
 
-#import "MetaDataReader.h"
+#import "Game.h"
+#import "Metadata.h"
+#import "Image.h"
+
+#import "Blorb.h"
 
 //#import "CoreDataManager.h"
 //#import "Game.h"
@@ -72,6 +78,43 @@
     // Do any additional setup after loading the view.
 }
 
+@synthesize persistentContainer = _persistentContainer;
+
+- (NSPersistentContainer *)persistentContainer  API_AVAILABLE(macos(10.12)){
+    /*
+     The persistent container for the application. This implementation
+     creates and returns a container, having loaded the store for the
+     application to it. This property is optional since there are legitimate
+     error conditions that could cause the creation of the store to fail.
+     */
+    @synchronized (self) {
+        if (_persistentContainer == nil) {
+            _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"Spatterlight"];
+
+            NSURL *directory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.net.ccxvii.spatterlight"];
+
+        NSURL *url = [NSURL fileURLWithPath:[directory.path stringByAppendingPathComponent:@"Spatterlight.storedata"]];
+
+            NSPersistentStoreDescription *description = [[NSPersistentStoreDescription alloc] initWithURL:url];
+
+            description.readOnly = NO;
+            description.shouldMigrateStoreAutomatically = YES;
+
+            _persistentContainer.persistentStoreDescriptions = @[ description ];
+
+            NSLog(@"persistentContainer url path:%@", url.path);
+
+            [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
+                if (error != nil) {
+                    NSLog(@"Failed to load Core Data stack: %@", error);
+                    abort();
+                }
+            }];
+        }
+    }
+    return _persistentContainer;
+}
+
 /*
  * Implement this method and set QLSupportsSearchableItems to YES in the Info.plist of the extension if you support CoreSpotlight.
  */
@@ -98,38 +141,68 @@
     // Quick Look will display a loading spinner while the completion handler is not called.
 
 
-//    NSManagedObjectContext *context = self.managedObjectContext;
-//    if (!context)
-//        NSLog(@"context is nil!");
-//
-//
-//
-//    NSError *error = nil;
-//    NSArray *fetchedObjects;
-//
-//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-//
-//    fetchRequest.entity = [NSEntityDescription entityForName:@"Game" inManagedObjectContext:context];
-//    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"path like[c] %@", url.path];
-//
-//    fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-//    if (fetchedObjects == nil) {
-//        NSLog(@"ThumbnailProvider: %@",error);
-//        return;
-//    }
-//
-//    if (fetchedObjects.count == 0) {
-//        NSLog(@"ThumbnailProvider: Found no Game object with with path %@", url.path);
-//        return;
-//    }
-//
-//    Game *game = fetchedObjects[0];
+    NSManagedObjectContext *context = self.persistentContainer.newBackgroundContext;
+    if (!context)
+        NSLog(@"context is nil!");
 
-    MetaDataReader *metaDataReader = [[MetaDataReader alloc] initWithURL:url];
-    NSDictionary *metadata = [metaDataReader.metaData allValues].firstObject;
-    [self updateSideViewWithMetadata:metadata];
 
-    handler(nil);
+
+    [context performBlockAndWait:^{
+    NSError *error = nil;
+    NSArray *fetchedObjects;
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+
+    fetchRequest.entity = [NSEntityDescription entityForName:@"Game" inManagedObjectContext:context];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fileName like[c] %@", url.path.lastPathComponent];
+
+    fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil) {
+        NSLog(@"QuickLook: %@",error);
+        return;
+    }
+
+    if (fetchedObjects.count == 0) {
+        NSLog(@"QuickLook: Found no Game object with fileName %@", url.path.lastPathComponent);
+
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"path like[c] %@", url.path];
+
+        fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"QuickLook: %@",error);
+            return;
+        }
+        if (fetchedObjects.count == 0) {
+            NSLog(@"QuickLook: Found no Game object with path %@", url.path);
+            return;
+        }
+    }
+
+    Game *game = fetchedObjects[0];
+        NSLog(@"filename: %@", game.fileName);
+
+//    MetaDataReader *metaDataReader = [[MetaDataReader alloc] initWithURL:url];
+//    NSDictionary *metadata = [metaDataReader.metaData allValues].firstObject;
+
+    Metadata *meta = game.metadata;
+
+    NSDictionary *attributes = [NSEntityDescription
+                                entityForName:@"Metadata"
+                                inManagedObjectContext:context].attributesByName;
+
+    NSMutableDictionary *metadata = [[NSMutableDictionary alloc] initWithCapacity:attributes.count];
+
+    for (NSString *attr in attributes) {
+        //NSLog(@"Setting my %@ to %@", attr, [theme valueForKey:attr]);
+        if ([attr isEqualToString:@"cover"])
+            [metadata setValue:(NSData *)meta.cover.data forKey:attr];
+        else
+            [metadata setValue:[meta valueForKey:attr] forKey:attr];
+    }
+        [self updateSideViewWithMetadata:metadata];
+
+        handler(nil);
+    }];
 }
 
 - (void) updateSideViewWithMetadata:(NSDictionary *)somedata
@@ -190,7 +263,7 @@
     if (somedata[@"cover"])
     {
 
-        NSImage *theImage = somedata[@"cover"];
+        NSImage *theImage = [[NSImage alloc] initWithData:somedata[@"cover"]];
 
         CGFloat ratio = theImage.size.width / theImage.size.height;
 

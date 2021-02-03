@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Game, CoreDataManager;
+@class Game, NSPersistentContainer;
 
 @interface PreviewViewController : NSViewController {
     NSBox *topSpacer;
@@ -25,7 +25,7 @@
 }
 
 //@property (readonly) CoreDataManager *coreDataManager;
-//@property (weak) NSManagedObjectContext *managedObjectContext;
+@property (readonly) NSPersistentContainer *persistentContainer;
 
 //@property (weak) Game *game;
 @property (weak) NSString *string;

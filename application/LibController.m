@@ -952,11 +952,11 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
     if (action == @selector(addGamesToLibrary:))
         return !_currentlyAddingGames;
 
-    if (action == @selector(importMetadata:))
-         return !_currentlyAddingGames;
+//    if (action == @selector(importMetadata:))
+//         return !_currentlyAddingGames;
 
-    if (action == @selector(download:))
-        return !_currentlyAddingGames;
+//    if (action == @selector(download:))
+//        return !_currentlyAddingGames;
 
     if (action == @selector(delete:) || action == @selector(deleteGame:)) {
         if (count == 0)
@@ -1329,6 +1329,7 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
                 game.added = [NSDate date];
                 [game bookmarkForPath:[games valueForKey:ifid]];
                 game.path = [games valueForKey:ifid];
+                game.fileName = game.path.lastPathComponent;
 
                 // First, we look for a cover image file in Spatterlight Application Support folder
                 NSURL *imgpath = [NSURL URLWithString:[ifid stringByAppendingPathExtension:@"tiff"] relativeToURL:weakSelf.imageDir];
@@ -2406,7 +2407,10 @@ objectValueForTableColumn: (NSTableColumn*)column
 
         string = (_selectedGames.count > 1) ? @"Multiple selections" : @"No selection";
 
-    } else game = _selectedGames[0];
+    } else {
+        game = _selectedGames[0];
+        NSLog(@"Selected game file name = %@", game.fileName);
+    }
 
     if (force == NO && game && game == currentSideView) {
         //NSLog(@"updateSideView: %@ is already shown and force is NO", game.metadata.title);

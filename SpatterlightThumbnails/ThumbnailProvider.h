@@ -7,10 +7,14 @@
 
 #import <QuickLookThumbnailing/QuickLookThumbnailing.h>
 
+@class NSPersistentContainer;
+
 NS_ASSUME_NONNULL_BEGIN
 
 API_AVAILABLE(macos(10.15))
 @interface ThumbnailProvider : QLThumbnailProvider
+
+@property (readonly) NSPersistentContainer *persistentContainer;
 
 @end
 

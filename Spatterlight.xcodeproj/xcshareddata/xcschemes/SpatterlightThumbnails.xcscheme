@@ -57,16 +57,26 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "0"
+         BundleIdentifier = "net.ccxvii.spatterlight"
+         RemotePath = "/Applications/Spatterlight.app">
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "961CCEC309F239C100528FF9"
-            BuildableName = "Spatterlight.app"
-            BlueprintName = "Spatterlight"
+            BlueprintIdentifier = "C311DF3A25C473B700484639"
+            BuildableName = "SpatterlightThumbnails.appex"
+            BlueprintName = "SpatterlightThumbnails"
             ReferencedContainer = "container:Spatterlight.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-com.apple.coreData.concurrencyDebug 1"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

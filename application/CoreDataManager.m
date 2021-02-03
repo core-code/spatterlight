@@ -58,8 +58,11 @@
 //    NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.spatterlight.core.data"];
 //    NSURL *persistentStoreURL = [groupURL URLByAppendingPathComponent:@"spatterlight.sqlite"];
 
+//    container.persistentStoreDescriptions = @[ [[NSPersistentStoreDescription alloc] initWithURL: [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier: [@"6U7YY3724Y.net.ccxvii.spatterlight.container" stringByAppendingPathComponent:@".storedata"]]] ];
+
+
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *applicationFilesDirectory = [self applicationFilesDirectory];
+    NSURL *applicationFilesDirectory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier: @"group.net.ccxvii.spatterlight"];
     NSError *error = nil;
 
     NSDictionary *properties = [applicationFilesDirectory resourceValuesForKeys:@[NSURLIsDirectoryKey] error:&error];
@@ -89,9 +92,16 @@
         }
     }
 
-    NSString *storeFileName = [modelName stringByAppendingString:@".storedata"];
+//    NSString *storeFileName = [modelName stringByAppendingString:@".storedata"];
 
-    NSURL *url = [applicationFilesDirectory URLByAppendingPathComponent:storeFileName];
+
+    NSURL *url = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier: @"group.net.ccxvii.spatterlight"];
+
+    NSLog(@"persistentStoreCoordinator in CoreDataManager: url.path: %@", url.path);
+    
+    NSString *storeFileName =  [url.path stringByAppendingPathComponent:@"Spatterlight.storedata"];
+    NSURL *url2 = [NSURL fileURLWithPath:storeFileName];
+
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
 
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -105,9 +115,11 @@
 //    }
 
 
-    if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:options error:&error]) {
+    NSLog(@"persistentStoreCoordinator in CoreDataManager: url.path: %@", url.path);
+
+    if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url2 options:options error:&error]) {
         //[[NSApplication sharedApplication] presentError:error];
-       //        NSLog(@"Error: %@", error);
+      NSLog(@"Error: %@", error);
         return nil;
     }
     _persistentStoreCoordinator = coordinator;
@@ -219,7 +231,7 @@
     // Initialize Managed Object Context
     NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     // Configure Managed Object Context
-    [managedObjectContext setParentContext:_mainManagedObjectContext];
+    [managedObjectContext setParentContext:self.mainManagedObjectContext];
     
     return managedObjectContext;
 }
