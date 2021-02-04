@@ -17,12 +17,12 @@
 		<key>SpatterlightQuickLook.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>23</integer>
+			<integer>24</integer>
 		</dict>
-		<key>SpatterlightThumbnails.xcscheme_^#shared#^_</key>
+		<key>SpatterlightThumbnailer.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>21</integer>
+			<integer>23</integer>
 		</dict>
 		<key>advsys.xcscheme</key>
 		<dict>
@@ -57,12 +57,12 @@
 		<key>bocfel.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>25</integer>
+			<integer>26</integer>
 		</dict>
 		<key>fizmo.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>24</integer>
+			<integer>25</integer>
 		</dict>
 		<key>frotz.xcscheme</key>
 		<dict>
@@ -238,6 +238,21 @@
 			<true/>
 		</dict>
 		<key>96FE876409F3A12B00D41D78</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C311DECB25C472C000484639</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C311DEF425C472E500484639</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C322714925CC214A0083BD5B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

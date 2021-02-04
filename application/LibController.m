@@ -1785,7 +1785,8 @@ static inline uint16_t word(NSData *mem, uint32_t addr)
 
     if (([extension isEqualToString:@"dat"] &&
         !(([@(format) isEqualToString:@"zcode"] && [self checkZcode:path]) ||
-          [@(format) isEqualToString:@"level9"])) ||
+          [@(format) isEqualToString:@"level9"] ||
+          [@(format) isEqualToString:@"advsys"])) ||
         ([extension isEqualToString:@"gam"] && ![@(format) isEqualToString:@"tads2"])) {
         if (report) {
             dispatch_async(dispatch_get_main_queue(), ^{
