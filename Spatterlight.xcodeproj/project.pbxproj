@@ -983,13 +983,6 @@
 			remoteGlobalIDString = C322714925CC214A0083BD5B;
 			remoteInfo = SpatterlightThumbnailer;
 		};
-		C399294925C9A78A0069E73A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 96A9BA780A06558F001B5B9B;
-			remoteInfo = babel;
-		};
 		C3B61C4F1ECCDB4600607CE7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
@@ -2572,6 +2565,8 @@
 		C35ED513256DD37A00C14847 /* InputHistory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InputHistory.h; sourceTree = "<group>"; };
 		C35ED514256DD37A00C14847 /* InputHistory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InputHistory.m; sourceTree = "<group>"; };
 		C38101291EDA297E00B87B68 /* GlkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlkController.m; sourceTree = "<group>"; };
+		C38C221325CC66FC004C4D68 /* YazminBabel */ = {isa = PBXFileReference; lastKnownFileType = folder; path = YazminBabel; sourceTree = "<group>"; };
+		C38C226025CC7EB3004C4D68 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		C399292E25C99F2C0069E73A /* Spatterlight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Spatterlight.entitlements; sourceTree = "<group>"; };
 		C39DE25F1ECB76A100CE5B70 /* glk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = glk.c; path = terps/level9/Glk/glk.c; sourceTree = SOURCE_ROOT; };
 		C39DE2611ECB76C400CE5B70 /* bitmap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bitmap.c; path = terps/level9/bitmap.c; sourceTree = SOURCE_ROOT; };
@@ -3703,6 +3698,7 @@
 		961CCF6509F295CA00528FF9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C38C226025CC7EB3004C4D68 /* QuickLook.framework */,
 				C35813941ED83DF8001E49C4 /* SDL2.framework */,
 				C35813931ED83DF0001E49C4 /* SDL2_mixer.framework */,
 				6D79B0D9223262CA008C9CB7 /* Cocoa.framework */,
@@ -4941,6 +4937,7 @@
 		C311DEF825C472E500484639 /* SpatterlightQuickLook */ = {
 			isa = PBXGroup;
 			children = (
+				C38C221325CC66FC004C4D68 /* YazminBabel */,
 				C311DEF925C472E500484639 /* PreviewViewController.h */,
 				C311DEFA25C472E500484639 /* PreviewViewController.m */,
 				C311DEFC25C472E500484639 /* PreviewViewController.xib */,
@@ -5494,7 +5491,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C399294A25C9A78A0069E73A /* PBXTargetDependency */,
 			);
 			name = SpatterlightQuickLook;
 			productName = SpatterlightQuickLook;
@@ -6670,11 +6666,6 @@
 			isa = PBXTargetDependency;
 			target = C322714925CC214A0083BD5B /* SpatterlightThumbnailer */;
 			targetProxy = C322715325CC214A0083BD5B /* PBXContainerItemProxy */;
-		};
-		C399294A25C9A78A0069E73A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 96A9BA780A06558F001B5B9B /* babel */;
-			targetProxy = C399294925C9A78A0069E73A /* PBXContainerItemProxy */;
 		};
 		C3B61C501ECCDB4600607CE7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

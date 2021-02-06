@@ -59,7 +59,6 @@
     }
     self.path = bookmarkURL.path;
     self.fileName = bookmarkURL.path.lastPathComponent;
-    NSLog(@"set filename to %@", self.fileName);
     return bookmarkURL;
 }
 
@@ -82,7 +81,6 @@
 
     self.path = path;
     self.fileName = path.lastPathComponent;
-    NSLog(@"set filename to %@", self.fileName);
     self.fileLocation = bookmark;
 }
 

@@ -349,10 +349,28 @@
 			<string>iFiction Metadata</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.ifiction</string>
+			</array>
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>NSPersistentStoreTypeKey</key>
 			<string>XML</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Glk Save File</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.glksave</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -396,6 +414,8 @@
 			<string>Glk Save File</string>
 			<key>UTTypeIconFile</key>
 			<string>icon-glksave.icns</string>
+			<key>UTTypeIcons</key>
+			<dict/>
 			<key>UTTypeIdentifier</key>
 			<string>public.glksave</string>
 			<key>UTTypeReferenceURL</key>
@@ -403,7 +423,9 @@
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<string>glksave</string>
+				<array>
+					<string>glksave</string>
+				</array>
 				<key>public.mime-type</key>
 				<string>application/x-glksave</string>
 			</dict>
@@ -418,6 +440,8 @@
 			<string>Glk Data File</string>
 			<key>UTTypeIconFile</key>
 			<string>icon-glkdata.icns</string>
+			<key>UTTypeIcons</key>
+			<dict/>
 			<key>UTTypeIdentifier</key>
 			<string>public.glkdata</string>
 			<key>UTTypeReferenceURL</key>
@@ -425,7 +449,9 @@
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<string>glkdata</string>
+				<array>
+					<string>glkdata</string>
+				</array>
 				<key>public.mime-type</key>
 				<string>application/x-glkdata</string>
 			</dict>

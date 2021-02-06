@@ -7,27 +7,30 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Game, NSPersistentContainer;
+@class NSPersistentContainer;
 
+API_AVAILABLE(macos(10.12))
 @interface PreviewViewController : NSViewController {
-    NSBox *topSpacer;
-    NSImageView *imageView;
-    NSTextField *titleField;
-    NSTextField *headlineField;
-    NSTextField *authorField;
-    NSTextField *blurbField;
-    NSTextField *ifidField;
-
-    CGFloat totalHeight;
-
     NSMutableArray *ifidbuf;
     NSMutableDictionary *metabuf;
 }
+
+@property NSSize originalImageSize;
 
 //@property (readonly) CoreDataManager *coreDataManager;
 @property (readonly) NSPersistentContainer *persistentContainer;
 
 //@property (weak) Game *game;
 @property (weak) NSString *string;
+
+//@property (weak) IBOutlet NSTextField *titleField;
+//@property (weak) IBOutlet NSTextField *authorField;
+//@property (weak) IBOutlet NSTextField *headlineField;
+//@property (weak) IBOutlet NSTextField *ifidField;
+//@property (weak) IBOutlet NSTextField *titleField;
+
+@property (unsafe_unretained) IBOutlet NSTextView *textview;
+
+@property (weak) IBOutlet NSImageView *imageView;
 
 @end

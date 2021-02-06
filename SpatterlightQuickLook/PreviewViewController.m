@@ -5,6 +5,7 @@
 //  Created by Administrator on 2021-01-29.
 //
 #import <Cocoa/Cocoa.h>
+#import <QuickLookThumbnailing/QuickLookThumbnailing.h>
 
 #import "PreviewViewController.h"
 #import <Quartz/Quartz.h>
@@ -16,48 +17,11 @@
 #import "Image.h"
 
 
-@interface VerticallyCenteredTextFieldCell : NSTextFieldCell
-
-@end
-
-@implementation VerticallyCenteredTextFieldCell
-
-- (NSRect) titleRectForBounds:(NSRect)frame {
-
-    CGFloat stringHeight = self.attributedStringValue.size.height;
-    NSRect titleRect = [super titleRectForBounds:frame];
-    CGFloat oldOriginY = frame.origin.y;
-    titleRect.origin.y = frame.origin.y + (frame.size.height - stringHeight) / 2.0;
-    titleRect.size.height = titleRect.size.height - (titleRect.origin.y - oldOriginY);
-    return titleRect;
-}
-
-- (void) drawInteriorWithFrame:(NSRect)cFrame inView:(NSView*)cView {
-    [super drawInteriorWithFrame:[self titleRectForBounds:cFrame] inView:cView];
-}
-
-@end
-
 @interface PreviewViewController () <QLPreviewingController>
 
 @end
 
 @implementation PreviewViewController
-
-//#pragma mark - Core Data stack
-//
-//@synthesize coreDataManager = _coreDataManager;
-//
-//- (CoreDataManager *)coreDataManager {
-//    // The persistent container for the application. This implementation creates and returns a container, having loaded the store for the application to it.
-//    @synchronized (self) {
-//        if (_coreDataManager == nil) {
-//            _coreDataManager = [[CoreDataManager alloc] initWithModelName:@"Spatterlight"];
-//        }
-//    }
-//
-//    return _coreDataManager;
-//}
 
 - (NSString *)nibName {
     return @"PreviewViewController";
@@ -67,31 +31,27 @@
     [super loadView];
     NSLog(@"loadView");
 
-    //    _managedObjectContext = self.coreDataManager.mainManagedObjectContext;
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     // Do any additional setup after loading the view.
 }
 
+#pragma mark - Core Data stack
+
 @synthesize persistentContainer = _persistentContainer;
 
-- (NSPersistentContainer *)persistentContainer  API_AVAILABLE(macos(10.12)){
-    /*
-     The persistent container for the application. This implementation
-     creates and returns a container, having loaded the store for the
-     application to it. This property is optional since there are legitimate
-     error conditions that could cause the creation of the store to fail.
-     */
+- (NSPersistentContainer *)persistentContainer {
     @synchronized (self) {
         if (_persistentContainer == nil) {
             _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"Spatterlight"];
 
             NSURL *directory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.net.ccxvii.spatterlight"];
 
-        NSURL *url = [NSURL fileURLWithPath:[directory.path stringByAppendingPathComponent:@"Spatterlight.storedata"]];
+            NSURL *url = [NSURL fileURLWithPath:[directory.path stringByAppendingPathComponent:@"Spatterlight.storedata"]];
 
             NSPersistentStoreDescription *description = [[NSPersistentStoreDescription alloc] initWithURL:url];
 
-            description.readOnly = NO;
-            description.shouldMigrateStoreAutomatically = YES;
+            description.readOnly = YES;
+            description.shouldMigrateStoreAutomatically = NO;
 
             _persistentContainer.persistentStoreDescriptions = @[ description ];
 
@@ -123,7 +83,6 @@
 }
 
 
-
 - (void)preparePreviewOfFileAtURL:(NSURL *)url completionHandler:(void (^)(NSError * _Nullable))handler {
     NSLog(@"preparePreviewOfFileAtURL");
     // Add the supported content types to the QLSupportedContentTypes array in the Info.plist of the extension.
@@ -135,597 +94,229 @@
 
 
     NSManagedObjectContext *context = self.persistentContainer.newBackgroundContext;
-    if (!context)
+    if (!context) {
         NSLog(@"context is nil!");
-
-
-
-    [context performBlockAndWait:^{
-    NSError *error = nil;
-    NSArray *fetchedObjects;
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-
-    fetchRequest.entity = [NSEntityDescription entityForName:@"Game" inManagedObjectContext:context];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fileName like[c] %@", url.path.lastPathComponent];
-
-    fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    if (fetchedObjects == nil) {
-        NSLog(@"QuickLook: %@",error);
-        return;
+        handler(nil);
     }
 
-    if (fetchedObjects.count == 0) {
-        NSLog(@"QuickLook: Found no Game object with fileName %@", url.path.lastPathComponent);
+    [context performBlockAndWait:^{
+        NSError *error = nil;
+        NSArray *fetchedObjects;
 
-        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"path like[c] %@", url.path];
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+
+        fetchRequest.entity = [NSEntityDescription entityForName:@"Game" inManagedObjectContext:context];
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fileName like[c] %@", url.path.lastPathComponent];
 
         fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
             NSLog(@"QuickLook: %@",error);
+            handler(nil);
             return;
         }
-        if (fetchedObjects.count == 0) {
-            NSLog(@"QuickLook: Found no Game object with path %@", url.path);
-            return;
-        }
-    }
 
-    Game *game = fetchedObjects[0];
+        if (fetchedObjects.count == 0) {
+            NSLog(@"QuickLook: Found no Game object with fileName %@", url.path.lastPathComponent);
+
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"path like[c] %@", url.path];
+
+            fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+            if (fetchedObjects == nil) {
+                NSLog(@"QuickLook: %@",error);
+                handler(nil);
+                return;
+            }
+            if (fetchedObjects.count == 0) {
+                NSLog(@"QuickLook: Found no Game object with path %@", url.path);
+                fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fileName like[c] %@", url.path.lastPathComponent];
+                fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+                if (fetchedObjects.count == 0) {
+                    NSLog(@"QuickLook: Found no Game object with file name  %@", url.path.lastPathComponent);
+                    handler(nil);
+                    return;
+
+                }
+
+            }
+        }
+
+        Game *game = fetchedObjects[0];
         NSLog(@"filename: %@", game.fileName);
 
-//    MetaDataReader *metaDataReader = [[MetaDataReader alloc] initWithURL:url];
-//    NSDictionary *metadata = [metaDataReader.metaData allValues].firstObject;
+        //    MetaDataReader *metaDataReader = [[MetaDataReader alloc] initWithURL:url];
+        //    NSDictionary *metadata = [metaDataReader.metaData allValues].firstObject;
 
-    Metadata *meta = game.metadata;
+        Metadata *meta = game.metadata;
 
-    NSDictionary *attributes = [NSEntityDescription
-                                entityForName:@"Metadata"
-                                inManagedObjectContext:context].attributesByName;
+        NSDictionary *attributes = [NSEntityDescription
+                                    entityForName:@"Metadata"
+                                    inManagedObjectContext:context].attributesByName;
 
-    NSMutableDictionary *metadata = [[NSMutableDictionary alloc] initWithCapacity:attributes.count];
+        NSMutableDictionary *metadata = [[NSMutableDictionary alloc] initWithCapacity:attributes.count];
 
-    for (NSString *attr in attributes) {
-        //NSLog(@"Setting my %@ to %@", attr, [theme valueForKey:attr]);
-        if ([attr isEqualToString:@"cover"])
-            [metadata setValue:(NSData *)meta.cover.data forKey:attr];
-        else
+        for (NSString *attr in attributes) {
+            //NSLog(@"Setting my %@ to %@", attr, [theme valueForKey:attr]);
             [metadata setValue:[meta valueForKey:attr] forKey:attr];
-    }
-        [self updateSideViewWithMetadata:metadata];
-
+        }
+        metadata[@"ifid"] = game.ifid;
+        metadata[@"cover"] = game.metadata.cover.data;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BOOL generatingThumbnail = NO;
+            if (metadata[@"cover"]) {
+                self.imageView.image = [[NSImage alloc] initWithData:(NSData *)metadata[@"cover"]];
+                self.imageView.accessibilityLabel = metadata[@"coverArtDescription"];
+            } else {
+                generatingThumbnail = YES;
+                [self generateThumbnailRepresentationsForURL:url];
+            }
+            [self sizeImage];
+            self.textview.hidden = YES;
+            [self updateWithMetadata:metadata];
+            [self sizeText];
+            double delayInSeconds = 0.01;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self sizeImage];
+                [self sizeText];
+                if (!generatingThumbnail)
+                    self.textview.hidden = NO;
+            });
+        });
         handler(nil);
     }];
 }
 
-- (void) updateSideViewWithMetadata:(NSDictionary *)somedata
-{
-//    Metadata *somedata = somegame.metadata;
+- (void)sizeImage {
 
-    if (somedata[@"description"] == nil && somedata[@"author"] == nil && somedata[@"headline"] == nil && somedata[@"cover"] == nil) {
-//        ifidField.stringValue = somegame.ifid;
-        [self updateSideViewWithString:somedata[@"title"]];
-        return;
-    }
+    self.preferredContentSize = NSMakeSize(582, 296);
 
-    totalHeight = 0;
+    NSSize imgsize;
 
-    NSLayoutConstraint *xPosConstraint;
-    NSLayoutConstraint *yPosConstraint;
-    NSLayoutConstraint *widthConstraint;
-    NSLayoutConstraint *heightConstraint;
-    NSLayoutConstraint *rightMarginConstraint;
-    NSLayoutConstraint *topSpacerYConstraint;
+    if (_imageView.image) {
+        imgsize = _originalImageSize;
+        if (imgsize.width == 0 || imgsize.height == 0) {
+            imgsize = _imageView.image.size;
+            _originalImageSize = imgsize;
+        }
 
-    NSFont *font;
-    CGFloat spaceBefore = 0.0;
-    NSView *lastView;
+        CGFloat ratio = imgsize.width / imgsize.height;
 
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        imgsize.height = _imageView.frame.size.height;
+        imgsize.width = imgsize.height * ratio;
 
-    NSView *clipView = self.view;
-    CGFloat superViewWidth = clipView.frame.size.width;
-
-    //    if (superViewWidth < 24)
-    //        return;
-
-    [clipView addConstraint:[NSLayoutConstraint constraintWithItem:self.view
-                                                         attribute:NSLayoutAttributeLeft
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:clipView
-                                                         attribute:NSLayoutAttributeLeft
-                                                        multiplier:1.0
-                                                          constant:0]];
-
-    [clipView addConstraint:[NSLayoutConstraint constraintWithItem:self.view
-                                                         attribute:NSLayoutAttributeRight
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:clipView
-                                                         attribute:NSLayoutAttributeRight
-                                                        multiplier:1.0
-                                                          constant:0]];
-
-    [clipView addConstraint:[NSLayoutConstraint constraintWithItem:self.view
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:clipView
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1.0
-                                                          constant:0]];
-
-    if (somedata[@"cover"])
-    {
-
-        NSImage *theImage = [[NSImage alloc] initWithData:somedata[@"cover"]];
-
-        CGFloat ratio = theImage.size.width / theImage.size.height;
-
-        // We make the image double size to make enlarging when draggin divider to the right work
-        theImage.size = NSMakeSize(superViewWidth * 2, superViewWidth * 2 / ratio );
-
-        imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0,0,theImage.size.width,theImage.size.height)];
-
-        [self.view addSubview:imageView];
-
-        imageView.imageScaling = NSImageScaleProportionallyUpOrDown;
-        imageView.translatesAutoresizingMaskIntoConstraints = NO;
-
-        imageView.imageScaling = NSImageScaleProportionallyUpOrDown;
-
-        xPosConstraint = [NSLayoutConstraint constraintWithItem:imageView
-                                                      attribute:NSLayoutAttributeLeft
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view
-                                                      attribute:NSLayoutAttributeLeft
-                                                     multiplier:1.0
-                                                       constant:0];
-
-        yPosConstraint = [NSLayoutConstraint constraintWithItem:imageView
-                                                      attribute:NSLayoutAttributeTop
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view
-                                                      attribute:NSLayoutAttributeTop
-                                                     multiplier:1.0
-                                                       constant:0];
-
-        widthConstraint = [NSLayoutConstraint constraintWithItem:imageView
-                                                       attribute:NSLayoutAttributeWidth
-                                                       relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                          toItem:self.view
-                                                       attribute:NSLayoutAttributeWidth
-                                                      multiplier:1.0
-                                                        constant:0];
-
-        heightConstraint = [NSLayoutConstraint constraintWithItem:imageView
-                                                        attribute:NSLayoutAttributeHeight
-                                                        relatedBy:NSLayoutRelationLessThanOrEqual
-                                                           toItem:imageView
-                                                        attribute:NSLayoutAttributeWidth
-                                                       multiplier:( 1 / ratio)
-                                                         constant:0];
-
-        rightMarginConstraint = [NSLayoutConstraint constraintWithItem:imageView
-                                                             attribute:NSLayoutAttributeRight
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self.view
-                                                             attribute:NSLayoutAttributeRight
-                                                            multiplier:1.0
-                                                              constant:0];
-
-        [self.view addConstraint:xPosConstraint];
-        [self.view addConstraint:yPosConstraint];
-        [self.view addConstraint:widthConstraint];
-        [self.view addConstraint:heightConstraint];
-        rightMarginConstraint.priority = 999;
-        [self.view addConstraint:rightMarginConstraint];
-
-        imageView.image = theImage;
-
-        lastView = imageView;
+        CGFloat maxWidth = (self.view.frame.size.width / 3) * 2;
+        if (imgsize.width > maxWidth) {
+            imgsize.width = maxWidth;
+            imgsize.height =  imgsize.width / ratio;
+        }
+        //        [_imageView setFrameSize:imgsize];
+        _imageView.image.size = imgsize;
     } else {
-        imageView = nil;
-        //NSLog(@"No image");
-        topSpacer = [[NSBox alloc] initWithFrame:NSMakeRect(0, 0, superViewWidth, 0)];
-        topSpacer.boxType = NSBoxSeparator;
-
-
-        [self.view addSubview:topSpacer];
-
-        topSpacer.frame = NSMakeRect(0,0, superViewWidth, 1);
-
-        topSpacer.translatesAutoresizingMaskIntoConstraints = NO;
-
-
-        xPosConstraint = [NSLayoutConstraint constraintWithItem:topSpacer
-                                                      attribute:NSLayoutAttributeLeft
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view
-                                                      attribute:NSLayoutAttributeLeft
-                                                     multiplier:1.0
-                                                       constant:0];
-
-        yPosConstraint = [NSLayoutConstraint constraintWithItem:topSpacer
-                                                      attribute:NSLayoutAttributeTop
-                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                         toItem:self.view
-                                                      attribute:NSLayoutAttributeTop
-                                                     multiplier:1.0
-                                                       constant:clipView.frame.size.height/4];
-
-        yPosConstraint.priority = NSLayoutPriorityDefaultLow;
-
-        widthConstraint = [NSLayoutConstraint constraintWithItem:topSpacer
-                                                       attribute:NSLayoutAttributeWidth
-                                                       relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                          toItem:self.view
-                                                       attribute:NSLayoutAttributeWidth
-                                                      multiplier:1.0
-                                                        constant:0];
-
-
-        [self.view addConstraint:xPosConstraint];
-        [self.view addConstraint:yPosConstraint];
-        [self.view addConstraint:widthConstraint];
-
-        lastView = topSpacer;
+        imgsize = NSMakeSize(1, _imageView.frame.size.height);
     }
 
-    if (somedata[@"title"]) // Every game will have a title unless something is broken
-    {
+    imgsize.height = _imageView.frame.size.height;
+    [_imageView setFrameSize:imgsize];
 
-        font = [NSFont fontWithName:@"Playfair Display Black" size:30];
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowOffset = NSMakeSize(1, -1);
+    shadow.shadowColor = [NSColor controlShadowColor];
+    shadow.shadowBlurRadius = 1;
+    _imageView.wantsLayer = YES;
+    _imageView.superview.wantsLayer = YES;
+    _imageView.shadow = shadow;
+}
 
-        NSFontDescriptor *descriptor = font.fontDescriptor;
+- (void)sizeText {
 
-        NSArray *array = @[@{NSFontFeatureTypeIdentifierKey : @(kNumberCaseType),
-                             NSFontFeatureSelectorIdentifierKey : @(kUpperCaseNumbersSelector)}];
-
-        descriptor = [descriptor fontDescriptorByAddingAttributes:@{NSFontFeatureSettingsAttribute : array}];
-
-        NSString *title = (NSString *)somedata[@"title"];
-        if (title.length > 9)
-        {
-            font = [NSFont fontWithDescriptor:descriptor size:30];
-            //NSLog(@"Long title (length = %lu), smaller text.", agame.metadata.title.length);
-        }
-        else
-        {
-            font = [NSFont fontWithDescriptor:descriptor size:50];
-        }
-
-        NSString *longestWord = @"";
-
-        for (NSString *word in [title componentsSeparatedByString:@" "])
-        {
-            if (word.length > longestWord.length) longestWord = word;
-        }
-        //NSLog (@"Longest word: %@", longestWord);
-
-        // The magic number -24 means 10 points of margin and two points of textfield border on each side.
-        while ([longestWord sizeWithAttributes:@{ NSFontAttributeName:font }].width > superViewWidth - 24)
-        {
-            //            NSLog(@"Font too large! Width %f, max allowed %f", [longestWord sizeWithAttributes:@{NSFontAttributeName:font}].width,  superViewWidth - 24);
-            font = [[NSFontManager sharedFontManager] convertFont:font toSize:font.pointSize - 2];
-        }
-        //        NSLog(@"Font not too large! Width %f, max allowed %f", [longestWord sizeWithAttributes:@{NSFontAttributeName:font}].width,  superViewWidth - 24);
-
-        spaceBefore = [@"X" sizeWithAttributes:@{NSFontAttributeName:font}].height * 0.7;
-
-        lastView = [self addSubViewWithtext:title andFont:font andSpaceBefore:spaceBefore andLastView:lastView];
-
-        titleField = (NSTextField *)lastView;
+    NSScrollView *scrollView = _textview.enclosingScrollView;
+    NSRect frame = scrollView.frame;
+    frame.origin.x = NSMaxX(_imageView.frame) + 10;
+    frame.size.width = self.view.frame.size.width - frame.origin.x - 20;
+    [_textview.layoutManager glyphRangeForTextContainer:_textview.textContainer];
+    CGFloat textHeight = [_textview.layoutManager
+                          usedRectForTextContainer:_textview.textContainer].size.height;
+    if (textHeight < self.view.frame.size.height - 50) {
+        frame.size.height = MIN(textHeight + _textview.textContainer.lineFragmentPadding * 2, self.view.frame.size.height);
+        frame.origin.y = ceil((self.view.frame.size.height - textHeight) / 2);
     }
-    else
-    {
-        NSLog(@"Error! No title!");
-        titleField = nil;
-        //        return;
+    if (frame.size.width < 50) {
+        frame.size.width = scrollView.frame.size.width;
     }
 
-    NSBox *divider = [[NSBox alloc] initWithFrame:NSMakeRect(0, 0, superViewWidth, 1)];
-
-    divider.boxType = NSBoxSeparator;
-    divider.translatesAutoresizingMaskIntoConstraints = NO;
-
-    xPosConstraint = [NSLayoutConstraint constraintWithItem:divider
-                                                  attribute:NSLayoutAttributeLeft
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.view
-                                                  attribute:NSLayoutAttributeLeft
-                                                 multiplier:1.0
-                                                   constant:0];
-
-    yPosConstraint = [NSLayoutConstraint constraintWithItem:divider
-                                                  attribute:NSLayoutAttributeTop
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:lastView
-                                                  attribute:NSLayoutAttributeBottom
-                                                 multiplier:1.0
-                                                   constant:spaceBefore * 0.9];
-
-    widthConstraint = [NSLayoutConstraint constraintWithItem:divider
-                                                   attribute:NSLayoutAttributeWidth
-                                                   relatedBy:NSLayoutRelationEqual
-                                                      toItem:self.view
-                                                   attribute:NSLayoutAttributeWidth
-                                                  multiplier:1.0
-                                                    constant:0];
-
-    heightConstraint = [NSLayoutConstraint constraintWithItem:divider
-                                                    attribute:NSLayoutAttributeHeight
-                                                    relatedBy:NSLayoutRelationEqual
-                                                       toItem:nil
-                                                    attribute:NSLayoutAttributeNotAnAttribute
-                                                   multiplier:1.0
-                                                     constant:1];
-
-    [self.view addSubview:divider];
-
-    [self.view addConstraint:xPosConstraint];
-    [self.view addConstraint:yPosConstraint];
-    [self.view addConstraint:widthConstraint];
-    [self.view addConstraint:heightConstraint];
-
-    lastView = divider;
-
-    if (somedata[@"headline"])
-    {
-        //font = [NSFont fontWithName:@"Playfair Display Regular" size:13];
-        font = [NSFont fontWithName:@"HoeflerText-Regular" size:16];
-
-        NSFontDescriptor *descriptor = font.fontDescriptor;
-
-        NSArray *array = @[@{ NSFontFeatureTypeIdentifierKey : @(kLetterCaseType),
-                              NSFontFeatureSelectorIdentifierKey : @(kSmallCapsSelector)}];
-
-        descriptor = [descriptor fontDescriptorByAddingAttributes:@{NSFontFeatureSettingsAttribute : array}];
-        font = [NSFont fontWithDescriptor:descriptor size:16.f];
-
-        NSString *headline = (NSString *)somedata[@"headline"];
-        lastView = [self addSubViewWithtext:headline.lowercaseString andFont:font andSpaceBefore:4 andLastView:lastView];
-
-        headlineField = (NSTextField *)lastView;
-    }
-    else
-    {
-        //        NSLog(@"No headline");
-        headlineField = nil;
+    if (frame.size.height > self.view.frame.size.height) {
+        frame.size.height = self.view.frame.size.height - 50;
+        frame.origin.y = 0;
     }
 
-    if (somedata[@"author"])
-    {
-        font = [NSFont fontWithName:@"Gentium Plus Italic" size:14.f];
+    NSLog(@"New scrollview frame: %@", NSStringFromRect(frame));
+    NSLog(@"Superview frame: %@", NSStringFromRect(self.view.frame));
 
-        NSString *author = (NSString *)somedata[@"author"];
-        lastView = [self addSubViewWithtext:author andFont:font andSpaceBefore:25 andLastView:lastView];
+    scrollView.frame = frame;
+    [scrollView.contentView scrollToPoint:NSZeroPoint];
+}
 
-        authorField = (NSTextField *)lastView;
-    }
-    else
-    {
-        //        NSLog(@"No author");
-        authorField = nil;
-    }
+- (void)updateWithMetadata:(NSDictionary *)metadict {
 
-    if (somedata[@"description"])
-    {
-        font = [NSFont fontWithName:@"Gentium Plus" size:14.f];
-
-        NSString *blurb = (NSString *)somedata[@"description"];
-
-        lastView = [self addSubViewWithtext:blurb andFont:font andSpaceBefore:23 andLastView:lastView];
-
-        blurbField = (NSTextField *)lastView;
-
-    }
-    else
-    {
-        //        NSLog(@"No blurb.");
-        blurbField = nil;
-    }
-
-    NSLayoutConstraint *bottomPinConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                           attribute:NSLayoutAttributeBottom
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:lastView
-                                                                           attribute:NSLayoutAttributeBottom
-                                                                          multiplier:1.0
-                                                                            constant:0];
-    [self.view addConstraint:bottomPinConstraint];
-
-    if (imageView == nil) {
-        CGFloat windowHeight = self.view.frame.size.height;
-
-        CGFloat topConstraintConstant = (windowHeight - totalHeight - 60) / 2;
-        if (topConstraintConstant < 0)
-            topConstraintConstant = 0;
-
-        topSpacerYConstraint = [NSLayoutConstraint constraintWithItem:topSpacer
-                                                            attribute:NSLayoutAttributeTop
-                                                            relatedBy:NSLayoutRelationLessThanOrEqual
-                                                               toItem:self.view
-                                                            attribute:NSLayoutAttributeTop
-                                                           multiplier:1.0
-                                                             constant:topConstraintConstant];
-        topSpacerYConstraint.priority = 999;
-
-        if (clipView.frame.size.height < self.view.frame.size.height) {
-            topSpacerYConstraint.constant = 0;
-            yPosConstraint.constant = 0;
-        }
-
-        [self.view addConstraint:topSpacerYConstraint];
-
+    if (metadict) {
+        NSFont *systemFont = [NSFont systemFontOfSize:20 weight:NSFontWeightBold];
+        NSMutableDictionary *attrDict = [[NSMutableDictionary alloc] init];
+        attrDict[NSFontAttributeName] = systemFont;
+        attrDict[NSForegroundColorAttributeName] = [NSColor controlTextColor];
+        [self addInfoLine:metadict[@"title"] attributes:attrDict linebreak:NO];
+        attrDict[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont systemFontSize]];
+        [self addInfoLine:metadict[@"headline"] attributes:attrDict linebreak:YES];
+        [self addInfoLine:metadict[@"author"] attributes:attrDict linebreak:YES];
+        [self addInfoLine:metadict[@"blurb"] attributes:attrDict linebreak:YES];
+        attrDict[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
+        [self addInfoLine:[@"IFID: " stringByAppendingString:metadict[@"ifid"]] attributes:attrDict linebreak:YES];
     }
 }
 
-- (NSTextField *) addSubViewWithtext:(NSString *)text andFont:(NSFont *)font andSpaceBefore:(CGFloat)space andLastView:(id)lastView
-{
-    NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
-
-    para.minimumLineHeight = font.pointSize + 3;
-    para.maximumLineHeight = para.minimumLineHeight;
-
-    if (font.pointSize > 40)
-        para.maximumLineHeight = para.maximumLineHeight + 3;
-
-    if (font.pointSize > 25)
-        para.maximumLineHeight = para.maximumLineHeight + 3;
-
-    para.alignment = NSCenterTextAlignment;
-    para.lineSpacing = 1;
-
-    if (font.pointSize > 25)
-        para.lineSpacing = 0.2f;
-
-    NSMutableDictionary *attr = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 font,
-                                 NSFontAttributeName,
-                                 para,
-                                 NSParagraphStyleAttributeName,
-                                 nil];
-
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text attributes:attr];
-
-
-    if (font.pointSize == 16.f)
-    {
-        [attrString addAttribute:NSKernAttributeName value:@1.f range:NSMakeRange(0, text.length)];
-    }
-
-    [attrString addAttribute:NSForegroundColorAttributeName value:[NSColor textColor] range:NSMakeRange(0, text.length)] ;
-
-    CGRect contentRect = [attrString boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 24, FLT_MAX) options:NSStringDrawingUsesLineFragmentOrigin];
-    // I guess the magic number -24 here means that the text field inner width differs 4 points from the outer width. 2-point border?
-
-    NSTextField *textField = [[NSTextField alloc] initWithFrame:contentRect];
-
-    //    textField.delegate = self;
-
-    textField.translatesAutoresizingMaskIntoConstraints = NO;
-
-    textField.bezeled=NO;
-    textField.drawsBackground = NO;
-    textField.editable = NO;
-    textField.selectable = YES;
-    textField.bordered = NO;
-    [textField.cell setUsesSingleLineMode:NO];
-    textField.allowsEditingTextAttributes = YES;
-    textField.alignment = para.alignment;
-
-    [textField.cell setWraps:YES];
-    [textField.cell setScrollable:NO];
-
-    [textField setContentCompressionResistancePriority:25 forOrientation:NSLayoutConstraintOrientationHorizontal];
-    [textField setContentCompressionResistancePriority:25 forOrientation:NSLayoutConstraintOrientationVertical];
-
-    NSLayoutConstraint *xPosConstraint = [NSLayoutConstraint constraintWithItem:textField
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                     multiplier:1.0
-                                                                       constant:10];
-
-    NSLayoutConstraint *yPosConstraint;
-
-    if (lastView)
-    {
-        yPosConstraint = [NSLayoutConstraint constraintWithItem:textField
-                                                      attribute:NSLayoutAttributeTop
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:lastView
-                                                      attribute:NSLayoutAttributeBottom
-                                                     multiplier:1.0
-                                                       constant:space];
-    }
-    else
-    {
-        yPosConstraint = [NSLayoutConstraint constraintWithItem:textField
-                                                      attribute:NSLayoutAttributeTop
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view
-                                                      attribute:NSLayoutAttributeTop
-                                                     multiplier:1.0
-                                                       constant:space];
-    }
-
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:textField
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.view
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                      multiplier:1.0
-                                                                        constant:-20];
-
-    NSLayoutConstraint *rightMarginConstraint = [NSLayoutConstraint constraintWithItem:textField
-                                                                             attribute:NSLayoutAttributeRight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.view
-                                                                             attribute:NSLayoutAttributeRight
-                                                                            multiplier:1.0
-                                                                              constant:-10];
-
-    textField.attributedStringValue = attrString;
-
-    [[self view] addSubview:textField];
-
-    [[self view] addConstraint:xPosConstraint];
-    [[self view] addConstraint:yPosConstraint];
-    [[self view] addConstraint:widthConstraint];
-    [[self view] addConstraint:rightMarginConstraint];
-
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:textField
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1.0
-                                                                         constant: contentRect.size.height + 1];
-
-    [[self view] addConstraint:heightConstraint];
-
-    totalHeight += NSHeight(textField.bounds) + space;
-
-    return textField;
-}
-
-- (void) updateSideViewWithString:(NSString *)aString {
-    NSFont *font;
-    NSClipView *clipView = (NSClipView *)self.view;
-    if (!aString)
+- (void)addInfoLine:(NSString *)string attributes:(NSDictionary *)attrDict linebreak:(BOOL)linebreak {
+    if (string == nil || string.length == 0)
         return;
-    [titleField removeFromSuperview];
-    titleField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, clipView.frame.size.width, clipView.frame.size.height)];
-    titleField.drawsBackground = NO;
-    self.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    titleField.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-
-
-    titleField.cell = [[VerticallyCenteredTextFieldCell alloc] initTextCell:aString];
-
-    [self.view addSubview:titleField];
-
-    NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
-
-    font = [NSFont titleBarFontOfSize:16];
-
-    para.alignment = NSCenterTextAlignment;
-    para.lineBreakMode = NSLineBreakByTruncatingMiddle;
-
-    NSMutableDictionary *attr = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 font,
-                                 NSFontAttributeName,
-                                 para,
-                                 NSParagraphStyleAttributeName,
-                                 [NSColor disabledControlTextColor],
-                                 NSForegroundColorAttributeName,
-                                 nil];
-
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:aString attributes:attr];
-    titleField.attributedStringValue = attrString;
+    NSTextStorage *textstorage = _textview.textStorage;
+    if (linebreak)
+        string = [@"\n\n" stringByAppendingString:string];
+    NSAttributedString *attString = [[NSAttributedString alloc] initWithString:string attributes:attrDict];
+    [textstorage appendAttributedString:attString];
 }
 
+- (void)generateThumbnailRepresentationsForURL:(NSURL *)url {
+
+    // Set up the parameters of the request.
+    CGSize size = NSMakeSize(60, 90);
+    CGFloat scale = [NSScreen mainScreen].backingScaleFactor;
+
+    // Create the thumbnail request.
+    if (@available(macOS 10.15, *)) {
+        QLThumbnailGenerationRequest *request = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:url size:size scale:scale representationTypes:QLThumbnailGenerationRequestRepresentationTypeAll];
+
+        QLThumbnailGenerator *generator = [QLThumbnailGenerator sharedGenerator];
+
+        __unsafe_unretained PreviewViewController *weakSelf = self;
+
+        [generator generateBestRepresentationForRequest:request completionHandler:^(QLThumbnailRepresentation *thumbnail, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (thumbnail == nil || error != nil) {
+                    NSLog(@"Failed to generate thumbnail!");
+                    // Handle the error case gracefully.60
+                } else {
+                    // Display the thumbnail that you created.
+                    NSLog(@"Generated thumbnail!");
+                    weakSelf.imageView.image = thumbnail.NSImage;
+                    [weakSelf.imageView setFrameSize:NSMakeSize(256,256)];
+                    NSLog(@"self.imageView.image.size %@", NSStringFromSize(weakSelf.imageView.image.size));
+                    NSLog(@"self.imageView.frame.size %@", NSStringFromSize(weakSelf.imageView.frame.size));
+                    [weakSelf sizeText];
+                    weakSelf.textview.hidden = NO;
+
+                }
+            });
+        }];
+    } else NSLog(@"QLThumbnailGenerationRequest not available!");
+}
 
 @end
 

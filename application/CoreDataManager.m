@@ -97,8 +97,6 @@
 
     NSURL *url = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier: @"group.net.ccxvii.spatterlight"];
 
-    NSLog(@"persistentStoreCoordinator in CoreDataManager: url.path: %@", url.path);
-    
     NSString *storeFileName =  [url.path stringByAppendingPathComponent:@"Spatterlight.storedata"];
     NSURL *url2 = [NSURL fileURLWithPath:storeFileName];
 
@@ -107,15 +105,6 @@
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
                              [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                              [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-
-//    if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:persistentStoreURL options:options error:&error]) {
-//        //[[NSApplication sharedApplication] presentError:error];
-//        NSLog(@"Error: %@", error);
-//        return nil;
-//    }
-
-
-    NSLog(@"persistentStoreCoordinator in CoreDataManager: url.path: %@", url.path);
 
     if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url2 options:options error:&error]) {
         //[[NSApplication sharedApplication] presentError:error];
