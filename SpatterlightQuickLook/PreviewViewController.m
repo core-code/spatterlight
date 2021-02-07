@@ -7,7 +7,6 @@
 #import <Cocoa/Cocoa.h>
 #import <QuickLookThumbnailing/QuickLookThumbnailing.h>
 
-#import "PreviewViewController.h"
 #import <Quartz/Quartz.h>
 #import <Cocoa/Cocoa.h>
 #import <CoreData/CoreData.h>
@@ -15,6 +14,20 @@
 #import "Game.h"
 #import "Metadata.h"
 #import "Image.h"
+
+#import "PreviewViewController.h"
+
+#import "YazIFBibliographic.h"
+#import "YazIFIdentification.h"
+#import "YazIFStory.h"
+#import "YazIFictionMetadata.h"
+#import "LibraryEntry.h"
+
+#import "Blorb.h"
+
+/* the treaty of babel headers */
+#include "babel_handler.h"
+
 
 
 @interface PreviewViewController () <QLPreviewingController>
@@ -60,7 +73,6 @@
             [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
                 if (error != nil) {
                     NSLog(@"Failed to load Core Data stack: %@", error);
-                    abort();
                 }
             }];
         }
@@ -92,14 +104,15 @@
     // Call the completion handler so Quick Look knows that the preview is fully loaded.
     // Quick Look will display a loading spinner while the completion handler is not called.
 
-
     NSManagedObjectContext *context = self.persistentContainer.newBackgroundContext;
     if (!context) {
         NSLog(@"context is nil!");
-        handler(nil);
+        [self noPreviewForURL:url handler:handler];
+        return;
     }
 
     [context performBlockAndWait:^{
+        NSMutableDictionary *metadata = nil;
         NSError *error = nil;
         NSArray *fetchedObjects;
 
@@ -111,7 +124,7 @@
         fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
             NSLog(@"QuickLook: %@",error);
-            handler(nil);
+            [self noPreviewForURL:url handler:handler];
             return;
         }
 
@@ -123,7 +136,7 @@
             fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
             if (fetchedObjects == nil) {
                 NSLog(@"QuickLook: %@",error);
-                handler(nil);
+                [self noPreviewForURL:url handler:handler];
                 return;
             }
             if (fetchedObjects.count == 0) {
@@ -132,34 +145,46 @@
                 fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
                 if (fetchedObjects.count == 0) {
                     NSLog(@"QuickLook: Found no Game object with file name  %@", url.path.lastPathComponent);
-                    handler(nil);
-                    return;
+                    metadata = [self metadataFromURL:url];
+                    if (metadata == nil || metadata.count == 0) {
+                        [self noPreviewForURL:url handler:handler];
+                        return;
+                    }
 
                 }
 
             }
         }
 
-        Game *game = fetchedObjects[0];
-        NSLog(@"filename: %@", game.fileName);
+        if (metadata == nil || metadata.count == 0) {
 
-        //    MetaDataReader *metaDataReader = [[MetaDataReader alloc] initWithURL:url];
-        //    NSDictionary *metadata = [metaDataReader.metaData allValues].firstObject;
+            Game *game = fetchedObjects[0];
+            NSLog(@"filename: %@", game.fileName);
 
-        Metadata *meta = game.metadata;
+            //    MetaDataReader *metaDataReader = [[MetaDataReader alloc] initWithURL:url];
+            //    NSDictionary *metadata = [metaDataReader.metaData allValues].firstObject;
 
-        NSDictionary *attributes = [NSEntityDescription
-                                    entityForName:@"Metadata"
-                                    inManagedObjectContext:context].attributesByName;
+            Metadata *meta = game.metadata;
 
-        NSMutableDictionary *metadata = [[NSMutableDictionary alloc] initWithCapacity:attributes.count];
+            NSDictionary *attributes = [NSEntityDescription
+                                        entityForName:@"Metadata"
+                                        inManagedObjectContext:context].attributesByName;
 
-        for (NSString *attr in attributes) {
-            //NSLog(@"Setting my %@ to %@", attr, [theme valueForKey:attr]);
-            [metadata setValue:[meta valueForKey:attr] forKey:attr];
+            metadata = [[NSMutableDictionary alloc] initWithCapacity:attributes.count];
+
+            for (NSString *attr in attributes) {
+                //NSLog(@"Setting my %@ to %@", attr, [theme valueForKey:attr]);
+                [metadata setValue:[meta valueForKey:attr] forKey:attr];
+            }
+            metadata[@"ifid"] = game.ifid;
+            metadata[@"cover"] = game.metadata.cover.data;
         }
-        metadata[@"ifid"] = game.ifid;
-        metadata[@"cover"] = game.metadata.cover.data;
+
+        if (metadata == nil || metadata.count == 0) {
+            [self noPreviewForURL:url handler:handler];
+            return;
+        }
+
         dispatch_async(dispatch_get_main_queue(), ^{
             BOOL generatingThumbnail = NO;
             if (metadata[@"cover"]) {
@@ -258,7 +283,7 @@
 
 - (void)updateWithMetadata:(NSDictionary *)metadict {
 
-    if (metadict) {
+    if (metadict && metadict.count) {
         NSFont *systemFont = [NSFont systemFontOfSize:20 weight:NSFontWeightBold];
         NSMutableDictionary *attrDict = [[NSMutableDictionary alloc] init];
         attrDict[NSFontAttributeName] = systemFont;
@@ -269,7 +294,8 @@
         [self addInfoLine:metadict[@"author"] attributes:attrDict linebreak:YES];
         [self addInfoLine:metadict[@"blurb"] attributes:attrDict linebreak:YES];
         attrDict[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
-        [self addInfoLine:[@"IFID: " stringByAppendingString:metadict[@"ifid"]] attributes:attrDict linebreak:YES];
+        if  (metadict[@"ifid"])
+            [self addInfoLine:[@"IFID: " stringByAppendingString:metadict[@"ifid"]] attributes:attrDict linebreak:YES];
     }
 }
 
@@ -283,6 +309,23 @@
     [textstorage appendAttributedString:attString];
 }
 
+- (void)noPreviewForURL:(NSURL *)url handler:(void (^)(NSError *))handler {
+    [self generateThumbnailRepresentationsForURL:url];
+    NSFont *systemFont = [NSFont systemFontOfSize:20 weight:NSFontWeightBold];
+    NSMutableDictionary *attrDict = [[NSMutableDictionary alloc] init];
+    attrDict[NSFontAttributeName] = systemFont;
+    attrDict[NSForegroundColorAttributeName] = [NSColor controlTextColor];
+    [self addInfoLine:url.path.lastPathComponent attributes:attrDict linebreak:NO];
+    NSString *ifid = [self ifidFromFile:url.path];
+    if (ifid && ifid.length) {
+        attrDict[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
+        [self addInfoLine:[@"IFID: " stringByAppendingString:ifid] attributes:attrDict linebreak:YES];
+    }
+    [self sizeImage];
+    [self sizeText];
+    handler(nil);
+}
+
 - (void)generateThumbnailRepresentationsForURL:(NSURL *)url {
 
     // Set up the parameters of the request.
@@ -291,7 +334,7 @@
 
     // Create the thumbnail request.
     if (@available(macOS 10.15, *)) {
-        QLThumbnailGenerationRequest *request = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:url size:size scale:scale representationTypes:QLThumbnailGenerationRequestRepresentationTypeAll];
+        QLThumbnailGenerationRequest *request = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:url size:size scale:scale representationTypes:QLThumbnailGenerationRequestRepresentationTypeIcon];
 
         QLThumbnailGenerator *generator = [QLThumbnailGenerator sharedGenerator];
 
@@ -299,8 +342,8 @@
 
         [generator generateBestRepresentationForRequest:request completionHandler:^(QLThumbnailRepresentation *thumbnail, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (thumbnail == nil || error != nil) {
-                    NSLog(@"Failed to generate thumbnail!");
+                if (thumbnail == nil || error) {
+                    NSLog(@"Failed to generate thumbnail! %@", error);
                     // Handle the error case gracefully.60
                 } else {
                     // Display the thumbnail that you created.
@@ -316,6 +359,59 @@
             });
         }];
     } else NSLog(@"QLThumbnailGenerationRequest not available!");
+}
+
+
+- (NSMutableDictionary *)metadataFromURL:(NSURL *)url {
+    NSMutableDictionary *metaDict = [[NSMutableDictionary alloc] init];
+    if (![Blorb isBlorbURL:url])
+        return nil;
+
+    Blorb *blorb = [[Blorb alloc] initWithData:[NSData dataWithContentsOfFile:url.path]];
+    metaDict[@"cover"] = [blorb coverImageData];
+
+    NSData *data = blorb.metaData;
+
+    LibraryEntry *entry = nil;
+
+    IFictionMetadata *metadata = nil;
+    if (data) {
+        metadata = [[IFictionMetadata alloc] initWithData:data];
+        for (IFStory *storyMetadata in metadata.stories) {
+            entry = [[LibraryEntry alloc] initWithStoryMetadata:storyMetadata];
+            break;
+        }
+    }
+
+    metaDict[@"title"] = entry.title;
+    metaDict[@"blurb"] = entry.storyMetadata.bibliographic.storyDescription;
+    metaDict[@"author"] = entry.storyMetadata.bibliographic.author;
+    metaDict[@"headline"] = entry.storyMetadata.bibliographic.headline;
+    metaDict[@"ifid"] = entry.storyMetadata.identification.ifids.firstObject;
+
+    return metaDict;
+}
+
+- (NSString *)ifidFromFile:(NSString *)path {
+
+    char *format = babel_init((char*)path.UTF8String);
+    if (!format || !babel_get_authoritative())
+    {
+        babel_release();
+        return nil;
+    }
+
+    char buf[TREATY_MINIMUM_EXTENT];
+
+    int rv = babel_treaty(GET_STORY_FILE_IFID_SEL, buf, sizeof buf);
+    if (rv <= 0)
+    {
+        babel_release();
+        return nil;
+    }
+
+    babel_release();
+    return @(buf);
 }
 
 @end

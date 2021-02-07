@@ -584,6 +584,19 @@
 		C381012A1EDA297E00B87B68 /* GlkController.m in Sources */ = {isa = PBXBuildFile; fileRef = C38101291EDA297E00B87B68 /* GlkController.m */; };
 		C39DE2601ECB76A100CE5B70 /* glk.c in Sources */ = {isa = PBXBuildFile; fileRef = C39DE25F1ECB76A100CE5B70 /* glk.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C39DE2621ECB76C400CE5B70 /* bitmap.c in Sources */ = {isa = PBXBuildFile; fileRef = C39DE2611ECB76C400CE5B70 /* bitmap.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C3AE6BB525CF2A8300B7AB0A /* Blorb.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807B25C70F2F0040AE79 /* Blorb.m */; };
+		C3AE6BCF25CF2A9300B7AB0A /* iff.c in Sources */ = {isa = PBXBuildFile; fileRef = C3C180AE25C70FD80040AE79 /* iff.c */; };
+		C3AE6BD025CF2A9300B7AB0A /* BlorbResource.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807D25C70F2F0040AE79 /* BlorbResource.m */; };
+		C3AE6BFB25CF2ADA00B7AB0A /* IFDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6BEC25CF2AD900B7AB0A /* IFDB.m */; };
+		C3AE6BFC25CF2ADA00B7AB0A /* IFYazmin.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6BF325CF2AD900B7AB0A /* IFYazmin.m */; };
+		C3AE6BFD25CF2ADA00B7AB0A /* YazIFAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6BF425CF2AD900B7AB0A /* YazIFAnnotation.m */; };
+		C3AE6BFE25CF2ADA00B7AB0A /* IFColophon.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6BF625CF2AD900B7AB0A /* IFColophon.m */; };
+		C3AE6BFF25CF2ADA00B7AB0A /* YazIFStory.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6BF725CF2AD900B7AB0A /* YazIFStory.m */; };
+		C3AE6C0025CF2ADA00B7AB0A /* YazIFBibliographic.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6BF825CF2AD900B7AB0A /* YazIFBibliographic.m */; };
+		C3AE6C0125CF2ADA00B7AB0A /* YazIFictionMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6BF925CF2AD900B7AB0A /* YazIFictionMetadata.m */; };
+		C3AE6C0225CF2ADA00B7AB0A /* YazIFIdentification.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6BFA25CF2AD900B7AB0A /* YazIFIdentification.m */; };
+		C3AE6C6925CF2B9D00B7AB0A /* LibraryEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AE6C6725CF2B9C00B7AB0A /* LibraryEntry.m */; };
+		C3AE6C9C25CF408100B7AB0A /* libbabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A9BA790A06558F001B5B9B /* libbabel.a */; };
 		C3B3773E1ECB99C0006432BE /* osstzprs.c in Sources */ = {isa = PBXBuildFile; fileRef = C3B3773D1ECB99BF006432BE /* osstzprs.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3B377401ECB99D6006432BE /* ostzposix.c in Sources */ = {isa = PBXBuildFile; fileRef = C3B3773F1ECB99D6006432BE /* ostzposix.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3B3775C1ECBA060006432BE /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3B3775B1ECBA060006432BE /* md5.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -2565,13 +2578,30 @@
 		C35ED513256DD37A00C14847 /* InputHistory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InputHistory.h; sourceTree = "<group>"; };
 		C35ED514256DD37A00C14847 /* InputHistory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InputHistory.m; sourceTree = "<group>"; };
 		C38101291EDA297E00B87B68 /* GlkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlkController.m; sourceTree = "<group>"; };
-		C38C221325CC66FC004C4D68 /* YazminBabel */ = {isa = PBXFileReference; lastKnownFileType = folder; path = YazminBabel; sourceTree = "<group>"; };
 		C38C226025CC7EB3004C4D68 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		C399292E25C99F2C0069E73A /* Spatterlight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Spatterlight.entitlements; sourceTree = "<group>"; };
 		C39DE25F1ECB76A100CE5B70 /* glk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = glk.c; path = terps/level9/Glk/glk.c; sourceTree = SOURCE_ROOT; };
 		C39DE2611ECB76C400CE5B70 /* bitmap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bitmap.c; path = terps/level9/bitmap.c; sourceTree = SOURCE_ROOT; };
 		C39DE2631ECB799500CE5B70 /* heglk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = heglk.c; path = heglk/heglk.c; sourceTree = "<group>"; };
 		C3A2C66421C0D3F6003C4A15 /* SDL */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SDL; path = headers/SDL; sourceTree = SOURCE_ROOT; };
+		C3AE6BEB25CF2AD900B7AB0A /* IFColophon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFColophon.h; sourceTree = "<group>"; };
+		C3AE6BEC25CF2AD900B7AB0A /* IFDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDB.m; sourceTree = "<group>"; };
+		C3AE6BED25CF2AD900B7AB0A /* YazIFAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YazIFAnnotation.h; sourceTree = "<group>"; };
+		C3AE6BEE25CF2AD900B7AB0A /* IFYazmin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFYazmin.h; sourceTree = "<group>"; };
+		C3AE6BEF25CF2AD900B7AB0A /* YazIFStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YazIFStory.h; sourceTree = "<group>"; };
+		C3AE6BF025CF2AD900B7AB0A /* YazIFictionMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YazIFictionMetadata.h; sourceTree = "<group>"; };
+		C3AE6BF125CF2AD900B7AB0A /* YazIFBibliographic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YazIFBibliographic.h; sourceTree = "<group>"; };
+		C3AE6BF225CF2AD900B7AB0A /* YazIFIdentification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YazIFIdentification.h; sourceTree = "<group>"; };
+		C3AE6BF325CF2AD900B7AB0A /* IFYazmin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFYazmin.m; sourceTree = "<group>"; };
+		C3AE6BF425CF2AD900B7AB0A /* YazIFAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YazIFAnnotation.m; sourceTree = "<group>"; };
+		C3AE6BF525CF2AD900B7AB0A /* IFDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDB.h; sourceTree = "<group>"; };
+		C3AE6BF625CF2AD900B7AB0A /* IFColophon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFColophon.m; sourceTree = "<group>"; };
+		C3AE6BF725CF2AD900B7AB0A /* YazIFStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YazIFStory.m; sourceTree = "<group>"; };
+		C3AE6BF825CF2AD900B7AB0A /* YazIFBibliographic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YazIFBibliographic.m; sourceTree = "<group>"; };
+		C3AE6BF925CF2AD900B7AB0A /* YazIFictionMetadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YazIFictionMetadata.m; sourceTree = "<group>"; };
+		C3AE6BFA25CF2AD900B7AB0A /* YazIFIdentification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YazIFIdentification.m; sourceTree = "<group>"; };
+		C3AE6C6725CF2B9C00B7AB0A /* LibraryEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryEntry.m; sourceTree = "<group>"; };
+		C3AE6C6825CF2B9C00B7AB0A /* LibraryEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryEntry.h; sourceTree = "<group>"; };
 		C3B3773D1ECB99BF006432BE /* osstzprs.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = osstzprs.c; path = tads2/osstzprs.c; sourceTree = "<group>"; };
 		C3B3773F1ECB99D6006432BE /* ostzposix.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = ostzposix.c; path = tads2/ostzposix.c; sourceTree = "<group>"; };
 		C3B3775B1ECBA060006432BE /* md5.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = md5.cpp; sourceTree = "<group>"; };
@@ -2845,6 +2875,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3AE6C9C25CF408100B7AB0A /* libbabel.a in Frameworks */,
 				C309887C25CB26BF00750F72 /* CoreData.framework in Frameworks */,
 				C311DEF725C472E500484639 /* Quartz.framework in Frameworks */,
 			);
@@ -4937,7 +4968,7 @@
 		C311DEF825C472E500484639 /* SpatterlightQuickLook */ = {
 			isa = PBXGroup;
 			children = (
-				C38C221325CC66FC004C4D68 /* YazminBabel */,
+				C3AE6BEA25CF2AD900B7AB0A /* YazminBabel */,
 				C311DEF925C472E500484639 /* PreviewViewController.h */,
 				C311DEFA25C472E500484639 /* PreviewViewController.m */,
 				C311DEFC25C472E500484639 /* PreviewViewController.xib */,
@@ -4966,11 +4997,36 @@
 			path = headers;
 			sourceTree = "<group>";
 		};
+		C3AE6BEA25CF2AD900B7AB0A /* YazminBabel */ = {
+			isa = PBXGroup;
+			children = (
+				C3AE6BEB25CF2AD900B7AB0A /* IFColophon.h */,
+				C3AE6BEC25CF2AD900B7AB0A /* IFDB.m */,
+				C3AE6BED25CF2AD900B7AB0A /* YazIFAnnotation.h */,
+				C3AE6BEE25CF2AD900B7AB0A /* IFYazmin.h */,
+				C3AE6BEF25CF2AD900B7AB0A /* YazIFStory.h */,
+				C3AE6BF025CF2AD900B7AB0A /* YazIFictionMetadata.h */,
+				C3AE6BF125CF2AD900B7AB0A /* YazIFBibliographic.h */,
+				C3AE6BF225CF2AD900B7AB0A /* YazIFIdentification.h */,
+				C3AE6BF325CF2AD900B7AB0A /* IFYazmin.m */,
+				C3AE6BF425CF2AD900B7AB0A /* YazIFAnnotation.m */,
+				C3AE6BF525CF2AD900B7AB0A /* IFDB.h */,
+				C3AE6BF625CF2AD900B7AB0A /* IFColophon.m */,
+				C3AE6BF725CF2AD900B7AB0A /* YazIFStory.m */,
+				C3AE6BF825CF2AD900B7AB0A /* YazIFBibliographic.m */,
+				C3AE6BF925CF2AD900B7AB0A /* YazIFictionMetadata.m */,
+				C3AE6BFA25CF2AD900B7AB0A /* YazIFIdentification.m */,
+				C3AE6C6825CF2B9C00B7AB0A /* LibraryEntry.h */,
+				C3AE6C6725CF2B9C00B7AB0A /* LibraryEntry.m */,
+			);
+			path = YazminBabel;
+			sourceTree = "<group>";
+		};
 		C3C1809625C70F3A0040AE79 /* Blorb */ = {
 			isa = PBXGroup;
 			children = (
-				C3C180AE25C70FD80040AE79 /* iff.c */,
 				C3C180AD25C70FD80040AE79 /* iff.h */,
+				C3C180AE25C70FD80040AE79 /* iff.c */,
 				C3C1807C25C70F2F0040AE79 /* Blorb.h */,
 				C3C1807B25C70F2F0040AE79 /* Blorb.m */,
 				C3C1807A25C70F2F0040AE79 /* BlorbResource.h */,
@@ -6391,10 +6447,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3AE6BFD25CF2ADA00B7AB0A /* YazIFAnnotation.m in Sources */,
+				C3AE6BCF25CF2A9300B7AB0A /* iff.c in Sources */,
+				C3AE6C6925CF2B9D00B7AB0A /* LibraryEntry.m in Sources */,
+				C3AE6BD025CF2A9300B7AB0A /* BlorbResource.m in Sources */,
+				C3AE6BB525CF2A8300B7AB0A /* Blorb.m in Sources */,
+				C3AE6BFE25CF2ADA00B7AB0A /* IFColophon.m in Sources */,
+				C3AE6C0025CF2ADA00B7AB0A /* YazIFBibliographic.m in Sources */,
 				C309884825CB1AD300750F72 /* Game.m in Sources */,
+				C3AE6BFC25CF2ADA00B7AB0A /* IFYazmin.m in Sources */,
 				C309882E25CB1ACD00750F72 /* Metadata.m in Sources */,
+				C3AE6BFB25CF2ADA00B7AB0A /* IFDB.m in Sources */,
+				C3AE6BFF25CF2ADA00B7AB0A /* YazIFStory.m in Sources */,
 				C309886225CB1ADF00750F72 /* Image.m in Sources */,
 				C311DEFB25C472E500484639 /* PreviewViewController.m in Sources */,
+				C3AE6C0225CF2ADA00B7AB0A /* YazIFIdentification.m in Sources */,
+				C3AE6C0125CF2ADA00B7AB0A /* YazIFictionMetadata.m in Sources */,
 				C309881425CB1AB500750F72 /* Spatterlight.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,7 +6,7 @@
 //  Copyright 2007 David Schweinsberg. All rights reserved.
 //
 
-#import "IFBibliographic.h"
+#import "YazIFBibliographic.h"
 
 @interface IFBibliographic ()
 

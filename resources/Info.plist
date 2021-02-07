@@ -35,10 +35,18 @@
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>IconGame.icns</string>
+			<key>CFBundleTypeIconSystemGenerated</key>
+			<integer>0</integer>
 			<key>CFBundleTypeName</key>
-			<string>Interactive Fiction</string>
+			<string>DAT Story File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.dat</string>
+			</array>
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>NSPersistentStoreTypeKey</key>
@@ -110,7 +118,6 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>l9</string>
-				<string>sna</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>IconGame.icns</string>
@@ -156,6 +163,8 @@
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>IconGame.icns</string>
+			<key>CFBundleTypeIconSystemGenerated</key>
+			<integer>0</integer>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>application/x-glulx</string>
@@ -164,6 +173,8 @@
 			<string>Glulx Story File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.glulx</string>
@@ -804,6 +815,56 @@
 				<key>public.mime-type</key>
 				<array>
 					<string>application/x-t3vm-image</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.content</string>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>DAT Story</string>
+			<key>UTTypeIconFile</key>
+			<string>IconGame</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBadgeName</key>
+				<string>IconGame</string>
+			</dict>
+			<key>UTTypeIdentifier</key>
+			<string>public.dat</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>dat</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.content</string>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>SNA Story</string>
+			<key>UTTypeIconFile</key>
+			<string>IconGame</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBadgeName</key>
+				<string>IconGame</string>
+			</dict>
+			<key>UTTypeIdentifier</key>
+			<string>public.sna</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>sna</string>
 				</array>
 			</dict>
 		</dict>

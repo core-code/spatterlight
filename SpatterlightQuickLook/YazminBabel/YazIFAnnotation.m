@@ -6,7 +6,7 @@
 //  Copyright © 2019 David Schweinsberg. All rights reserved.
 //
 
-#import "IFAnnotation.h"
+#import "YazIFAnnotation.h"
 #import "IFYazmin.h"
 
 @implementation IFAnnotation

@@ -6,12 +6,12 @@
 //  Copyright 2007 David Schweinsberg. All rights reserved.
 //
 
-#import "IFStory.h"
-#import "IFAnnotation.h"
-#import "IFBibliographic.h"
+#import "YazIFStory.h"
+#import "YazIFAnnotation.h"
+#import "YazIFBibliographic.h"
 #import "IFColophon.h"
 #import "IFDB.h"
-#import "IFIdentification.h"
+#import "YazIFIdentification.h"
 #import "IFYazmin.h"
 
 @implementation IFStory

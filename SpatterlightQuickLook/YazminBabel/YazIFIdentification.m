@@ -6,7 +6,7 @@
 //  Copyright 2007 David Schweinsberg. All rights reserved.
 //
 
-#import "IFIdentification.h"
+#import "YazIFIdentification.h"
 
 @implementation IFIdentification
 

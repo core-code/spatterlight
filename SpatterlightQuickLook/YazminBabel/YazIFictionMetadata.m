@@ -6,9 +6,9 @@
 //  Copyright 2007 David Schweinsberg. All rights reserved.
 //
 
-#import "IFictionMetadata.h"
-#import "IFIdentification.h"
-#import "IFStory.h"
+#import "YazIFictionMetadata.h"
+#import "YazIFIdentification.h"
+#import "YazIFStory.h"
 
 @implementation IFictionMetadata
 
