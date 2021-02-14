@@ -420,31 +420,32 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
 
 - (NSString *)ifidFromFile:(NSString *)path {
 
-    char *format = babel_init((char*)path.UTF8String);
-    if (!format || !babel_get_authoritative())
+    void *context = get_babel_ctx();
+    char *format = babel_init_ctx((char*)path.UTF8String, context);
+    if (!format || !babel_get_authoritative_ctx(context))
     {
         NSAlert *anAlert = [[NSAlert alloc] init];
         anAlert.messageText = NSLocalizedString(@"Unknown file format.", nil);
         anAlert.informativeText = NSLocalizedString(@"Babel can not identify the file format.", nil);
         [anAlert runModal];
-        babel_release();
+        babel_release_ctx(context);
         return nil;
     }
 
     char buf[TREATY_MINIMUM_EXTENT];
 
-    int rv = babel_treaty(GET_STORY_FILE_IFID_SEL, buf, sizeof buf);
+    int rv = babel_treaty_ctx(GET_STORY_FILE_IFID_SEL, buf, sizeof buf, context);
     if (rv <= 0)
     {
         NSAlert *anAlert = [[NSAlert alloc] init];
         anAlert.messageText = NSLocalizedString(@"Fatal error.", nil);
         anAlert.informativeText = NSLocalizedString(@"Can not compute IFID from the file.", nil);
         [anAlert runModal];
-        babel_release();
+        babel_release_ctx(context);
         return nil;
     }
 
-    babel_release();
+    babel_release_ctx(context);
     return @(buf);
 }
 
@@ -1345,14 +1346,15 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
                     // If that fails, we try Babel
                 } else {
                     NSString *path = (NSString *)[games valueForKey:ifid];
-                    const char *format = babel_init((char *)path.UTF8String);
+                    void *context = get_babel_ctx();
+                    const char *format = babel_init_ctx((char *)path.UTF8String, context);
                     if (format) {
                         if ([Blorb isBlorbURL:[NSURL fileURLWithPath:path]]) {
                             Blorb *blorb = [[Blorb alloc] initWithData:[NSData dataWithContentsOfFile:path]];
                             imgdata = [blorb coverImageData];
                         }
                     }
-                    babel_release();
+                    babel_release_ctx(context);
                 }
 
                 if (imgdata)
@@ -1746,8 +1748,9 @@ static inline uint16_t word(NSData *mem, uint32_t addr)
         return nil;
     }
 
-    format = babel_init((char*)path.UTF8String);
-    if (!format || !babel_get_authoritative())
+    void *ctx = get_babel_ctx();
+    format = babel_init_ctx((char*)path.UTF8String, ctx);
+    if (!format || !babel_get_authoritative_ctx(ctx))
     {
         if (report) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1757,14 +1760,14 @@ static inline uint16_t word(NSData *mem, uint32_t addr)
                 [alert runModal];
             });
         }
-        babel_release();
+        babel_release_ctx(ctx);
         return nil;
     }
 
     s = strchr(format, ' ');
     if (s) format = s+1;
 
-    rv = babel_treaty(GET_STORY_FILE_IFID_SEL, buf, sizeof buf);
+    rv = babel_treaty_ctx(GET_STORY_FILE_IFID_SEL, buf, sizeof buf, ctx);
     if (rv <= 0)
     {
         if (report) {
@@ -1775,7 +1778,7 @@ static inline uint16_t word(NSData *mem, uint32_t addr)
                 [alert runModal];
             });
         }
-        babel_release();
+        babel_release_ctx(ctx);
         return nil;
     }
 
@@ -1799,7 +1802,7 @@ static inline uint16_t word(NSData *mem, uint32_t addr)
                 [alert runModal];
             });
         }
-        babel_release();
+        babel_release_ctx(ctx);
         return nil;
     }
 
@@ -1880,7 +1883,7 @@ static inline uint16_t word(NSData *mem, uint32_t addr)
         }
     }
 
-    babel_release();
+    babel_release_ctx(ctx);
 
     game = (Game *) [NSEntityDescription
                            insertNewObjectForEntityForName:@"Game"
@@ -2717,10 +2720,12 @@ ofDividerAtIndex:0];
         return nil;
     }
 
-    format = babel_init(rapeme);
+    void *ctx = get_babel_ctx();
+
+    format = babel_init_ctx(rapeme, ctx);
     if (!strcmp(format, "agt")) {
         char buf[TREATY_MINIMUM_EXTENT];
-        int rv = babel_treaty(GET_STORY_FILE_IFID_SEL, buf, sizeof buf);
+        int rv = babel_treaty_ctx(GET_STORY_FILE_IFID_SEL, buf, sizeof buf, ctx);
         if (rv == 1) {
             dirpath =
                 [_homepath.path stringByAppendingPathComponent:@"Converted"];
@@ -2736,7 +2741,7 @@ ofDividerAtIndex:0];
                 [dirpath stringByAppendingPathComponent:
                              [@(buf) stringByAppendingPathExtension:@"agx"]];
 
-            babel_release();
+            babel_release_ctx(ctx);
 
             NSURL *url = [NSURL fileURLWithPath:cvtpath];
 
@@ -2756,7 +2761,7 @@ ofDividerAtIndex:0];
     } else {
         NSLog(@"libctl: babel did not like the converted file");
     }
-    babel_release();
+    babel_release_ctx(ctx);
     return nil;
 }
 

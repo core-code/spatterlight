@@ -43,6 +43,8 @@
 				<string>public.dat</string>
 				<string>public.sna</string>
 				<string>public.level9</string>
+				<string>public.ddollardollar</string>
+				<string>public.ifiction</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<true/>

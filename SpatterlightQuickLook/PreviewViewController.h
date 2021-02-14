@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class NSPersistentContainer;
+@class NSPersistentContainer, UKSyntaxColor, MyTextView;
 
 API_AVAILABLE(macos(10.12))
 @interface PreviewViewController : NSViewController {
@@ -16,6 +16,15 @@ API_AVAILABLE(macos(10.12))
 }
 
 @property NSSize originalImageSize;
+@property CGFloat preferredWidth;
+@property BOOL showingIcon;
+@property BOOL dontResize;
+@property BOOL addedFileInfo;
+
+
+@property NSString *ifid;
+
+@property UKSyntaxColor *syntaxColorer;
 
 //@property (readonly) CoreDataManager *coreDataManager;
 @property (readonly) NSPersistentContainer *persistentContainer;
@@ -29,8 +38,10 @@ API_AVAILABLE(macos(10.12))
 //@property (weak) IBOutlet NSTextField *ifidField;
 //@property (weak) IBOutlet NSTextField *titleField;
 
-@property (unsafe_unretained) IBOutlet NSTextView *textview;
+@property (unsafe_unretained) IBOutlet MyTextView *textview;
 
 @property (weak) IBOutlet NSImageView *imageView;
+@property (weak) IBOutlet NSLayoutConstraint *scrollviewtTopConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *scrollviewBottomConstraint;
 
 @end
