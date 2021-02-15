@@ -10,7 +10,6 @@
  ========================================================================== */
 
 #import "UKSyntaxColor.h"
-#import "NSArray+Color.h"
 #import "NSScanner+SkipUpToCharset.h"
 
 
@@ -94,29 +93,24 @@
     // Loop over all available components:
     NSDictionary*				vCurrComponent = nil;
     NSDictionary*				vStyles = [self defaultTextAttributes];
-    NSUserDefaults*				vPrefs = [NSUserDefaults standardUserDefaults];
+//    NSUserDefaults*				vPrefs = [NSUserDefaults standardUserDefaults];
 
     while( (vCurrComponent = [vComponentsEnny nextObject]) )
     {
         NSString*   vComponentType = [vCurrComponent objectForKey: @"Type"];
         NSString*   vComponentName = [vCurrComponent objectForKey: @"Name"];
-        NSString*   vColorKeyName = [@"SyntaxColoring:Color:" stringByAppendingString: vComponentName];
-        NSArray * colorArray =  [vCurrComponent objectForKey: @"Color"];
+//        NSString*   vColorKeyName = [@"SyntaxColoring:Color:" stringByAppendingString: vComponentName];
+//        NSArray * colorArray =  [vCurrComponent objectForKey: @"Color"];
+        NSString * colorName =  [vCurrComponent objectForKey: @"Color"];
         NSColor*    vColor;
-        if (colorArray && colorArray.count) {
-            vColor = [colorArray colorValue];
-            if (_darkMode) {
-                NSArray * darkArray =  [vCurrComponent objectForKey: @"DarkModeColor"];
-                if (darkArray && darkArray.count) {
-                    vColor = [darkArray colorValue];
-                }
+        if (colorName && colorName.length) {
+            if (@available(macOS 10.13, *)) {
+                vColor = [NSColor colorNamed:colorName];
             }
         }
 
-        //[[vPrefs arrayForKey: vColorKeyName] colorValue];
-
         if( !vColor )
-            vColor =  [NSColor controlTextColor];
+            vColor =  [NSColor textColor];
 
         if( [vComponentType isEqualToString: @"BlockComment"] )
         {

@@ -6,17 +6,7 @@
 	<array>
 		<dict>
 			<key>Color</key>
-			<array>
-				<real>0.15</real>
-				<real>0.15</real>
-				<real>0.15</real>
-			</array>
-			<key>DarkModeColor</key>
-			<array>
-				<real>0.875</real>
-				<real>0.874</real>
-				<real>0.878</real>
-			</array>
+			<string>textColor</string>
 			<key>End</key>
 			<string>&lt;</string>
 			<key>Start</key>
@@ -28,11 +18,7 @@
 		</dict>
 		<dict>
 			<key>Color</key>
-			<array>
-				<real>0.5</real>
-				<real>0.5</real>
-				<real>0.5</real>
-			</array>
+			<string>stringColor</string>
 			<key>End</key>
 			<string>&quot;</string>
 			<key>EscapeChar</key>
@@ -45,22 +31,10 @@
 			<string>String</string>
 		</dict>
 		<dict>
-			<key>DarkModeColor</key>
-			<array>
-				<integer>1</integer>
-				<real>0.791</real>
-				<integer>1</integer>
-			</array>
 			<key>Color</key>
-			<array>
-				<real>0.63</real>
-				<real>0.27</real>
-				<real>0.63</real>
-			</array>
+			<string>tagColor</string>
 			<key>End</key>
 			<string>&gt;</string>
-			<key>IgnoredComponent</key>
-			<string>Strings</string>
 			<key>Name</key>
 			<string>Tags</string>
 			<key>Start</key>
@@ -69,42 +43,8 @@
 			<string>Tag</string>
 		</dict>
 		<dict>
-			<key>DarkModeColor</key>
-			<array>
-				<real>0.7</real>
-				<real>0.7</real>
-				<integer>1</integer>
-			</array>
 			<key>Color</key>
-			<array>
-				<real>0.3</real>
-				<real>0.3</real>
-				<real>0.73</real>
-			</array>
-			<key>End</key>
-			<string>&quot;</string>
-			<key>EscapeChar</key>
-			<string></string>
-			<key>Name</key>
-			<string>Strings</string>
-			<key>Start</key>
-			<string>&quot;</string>
-			<key>Type</key>
-			<string>String</string>
-		</dict>
-		<dict>
-			<key>DarkModeColor</key>
-			<array>
-				<real>0.842</real>
-				<real>0.791</real>
-				<real>0.525</real>
-			</array>
-			<key>Color</key>
-			<array>
-				<real>0.154</real>
-				<real>0.162</real>
-				<real>0.8120000000000001</real>
-			</array>
+			<string>symbolColor</string>
 			<key>Keywords</key>
 			<array>
 				<string>&amp;apos;</string>
@@ -122,18 +62,8 @@
 			<string>Keywords</string>
 		</dict>
 		<dict>
-			<key>DarkModeColor</key>
-			<array>
-				<real>0.629</real>
-				<real>0.479</real>
-				<real>0.729</real>
-			</array>
 			<key>Color</key>
-			<array>
-				<real>0.629</real>
-				<real>0.479</real>
-				<real>0.729</real>
-			</array>
+			<string>storyColor</string>
 			<key>Keywords</key>
 			<array>
 				<string>&lt;story&gt;</string>
@@ -145,18 +75,8 @@
 			<string>Keywords</string>
 		</dict>
 		<dict>
-			<key>DarkModeColor</key>
-			<array>
-				<real>0.448</real>
-				<real>0.497</real>
-				<real>0.545</real>
-			</array>
 			<key>Color</key>
-			<array>
-				<real>0.438</real>
-				<real>0.487</real>
-				<real>0.535</real>
-			</array>
+			<string>customControlColor</string>
 			<key>End</key>
 			<string>--&gt;</string>
 			<key>Name</key>
@@ -166,13 +86,6 @@
 			<key>Type</key>
 			<string>BlockComment</string>
 		</dict>
-	</array>
-	<key>FileNameSuffixes</key>
-	<array>
-		<string>htm</string>
-		<string>html</string>
-		<string>phtm</string>
-		<string>phtml</string>
 	</array>
 </dict>
 </plist>

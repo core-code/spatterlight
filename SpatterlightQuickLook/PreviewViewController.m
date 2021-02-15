@@ -8,7 +8,6 @@
 #import <QuickLookThumbnailing/QuickLookThumbnailing.h>
 
 #import <Quartz/Quartz.h>
-#import <Cocoa/Cocoa.h>
 #import <CoreData/CoreData.h>
 
 #import "Game.h"
@@ -25,42 +24,10 @@
 
 #import "NSDate+relative.h"
 
-#import "UKSyntaxColor.h"
-
 #import "Blorb.h"
 
 /* the treaty of babel headers */
 #include "babel_handler.h"
-
-@interface MyTextView : NSTextView
-
-@property BOOL darkMode;
-@end
-
-@implementation MyTextView
-
-- (void)viewDidChangeEffectiveAppearance {
-
-    NSString *name = self.effectiveAppearance.name;
-    UKSyntaxColor *syntaxColorer = ((PreviewViewController *)self.delegate).syntaxColorer;
-    if ([name containsString:@"Dark"]) {
-        if (syntaxColorer && !_darkMode) { // Changed to dark mode
-            syntaxColorer.darkMode = YES;
-            [syntaxColorer recolorCompleteFile:nil];
-            [self.textStorage setAttributedString:syntaxColorer.coloredString];
-        }
-        _darkMode = YES;
-    } else {
-        if (syntaxColorer && _darkMode) { // Changed to light mode
-            syntaxColorer.darkMode = NO;
-            [syntaxColorer recolorCompleteFile:nil];
-            [self.textStorage setAttributedString:syntaxColorer.coloredString];
-        }
-        _darkMode = NO;
-    }
-}
-
-@end
 
 @interface ConstraintLessView : NSView
 
@@ -110,7 +77,6 @@
     [super loadView];
     NSLog(@"loadView");
     NSLog(@"self.view.frame %@", NSStringFromRect(self.view.frame));
-    _textview.darkMode = [_textview.effectiveAppearance.name containsString:@"Dark"];
 
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     _preferredWidth = 582;
@@ -166,204 +132,6 @@
     handler(nil);
 }
 
-- (void)showXML:(NSURL *)url handler:(void (^)(NSError *))handler {
-    NSLog(@"showXML");
-    NSError *error = nil;
-    _textview.textColor  = [NSColor controlTextColor];
-    NSXMLDocument *xml =
-    [[NSXMLDocument alloc] initWithContentsOfURL:url options: NSXMLDocumentTidyXML error:&error];
-
-    if (error)
-        NSLog(@"Error: %@", error);
-
-    NSString *contents = [xml XMLStringWithOptions:NSXMLNodePrettyPrint];
-    if (!contents || !contents.length) {
-        contents = @"<No iFiction data found in file>";
-    }
-    NSURL *directory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.net.ccxvii.spatterlight"];
-
-    NSURL *plisturl = [NSURL fileURLWithPath:[directory.path stringByAppendingPathComponent:@"XML.plist"]];
-
-    _syntaxColorer = [[UKSyntaxColor alloc] initWithString:contents];
-
-    if (@available(macOS 10.13, *)) {
-        _syntaxColorer.syntaxDefinitionDictionary = [NSDictionary dictionaryWithContentsOfURL:plisturl error:&error];
-    }
-
-    if (error)
-        NSLog(@"Error: %@", error);
-
-    NSMutableDictionary *defaultText = [NSMutableDictionary new];
-
-    NSMutableParagraphStyle *style;
-
-    if (@available(macOS 10.15, *)) {
-        defaultText[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont systemFontSize] weight:NSFontWeightRegular];
-        style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-        style.firstLineHeadIndent = 0;
-        style.headIndent = 60;
-        defaultText[NSParagraphStyleAttributeName] = style;
-    }
-
-    _syntaxColorer.defaultTextAttributes = defaultText;
-
-    _syntaxColorer.darkMode = _textview.darkMode;
-    [_syntaxColorer recolorCompleteFile:nil];
-
-    NSView *superview = _imageView.superview;
-
-
-    __block NSString *blockcontents = contents;
-    __unsafe_unretained PreviewViewController *weakSelf = self;
-
-    __block NSScrollView *scrollView = weakSelf.textview.enclosingScrollView;
-
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-
-        //        self.preferredContentSize = NSMakeSize(self.view.frame.size.width, 846);
-
-        NSRect frame = NSZeroRect;
-
-        frame.size = superview.frame.size;
-        scrollView.frame = frame;
-        scrollView.contentView.frame = frame;
-        weakSelf.textview.frame = NSMakeRect(0, 0, scrollView.frame.size.width, MAXFLOAT);
-        [weakSelf.imageView removeFromSuperview];
-        [weakSelf.textview.textStorage setAttributedString:weakSelf.syntaxColorer.coloredString];
-        [scrollView removeFromSuperview];
-        [superview addSubview:scrollView];
-        weakSelf.textview.drawsBackground = YES;
-
-
-
-        //    [superview addSubview:scrollView];
-    });
-
-
-    double delayInSeconds = 0.2;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        //
-
-        //    while (superview.superview != self.view) {
-        //        NSView *supersuper = superview.superview;
-        //        [superview removeFromSuperview];
-        //        superview = supersuper;
-        //    }
-
-
-        //    superview.frame = frame;
-
-
-        //    superview.frame = self.view.bounds;
-
-
-        //    [self.view setFrameSize:NSMakeSize(820, 846)];
-
-
-
-        //    NSLog(@"Setting scrollview frame to %@", NSStringFromRect(scrollView.frame));
-
-
-        //    ConstraintLessView *constraintLessView = (ConstraintLessView *)self.view;
-        //
-        //    [constraintLessView removeAllConstraints];
-        //    [constraintLessView addSizableMasks];
-        //
-        ////    superview.frame = NSMakeRect(0,0, 820, 846);
-        ////    scrollView.frame = superview.frame;
-        //
-
-        NSRect frame = NSZeroRect;
-
-        frame.size = superview.frame.size;
-        scrollView.frame = frame;
-        scrollView.contentView.frame = frame;
-        self.textview.frame = NSMakeRect(0, 0, scrollView.frame.size.width, MAXFLOAT);
-        scrollView.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
-
-        //        [weakSelf.textview.textStorage setAttributedString:weakSelf.syntaxColorer.coloredString];
-
-
-
-        handler(nil);
-
-        //    if (scrollView.frame.origin.x < 0)
-        //        scrollView.frame = NSMakeRect(0,0, scrollView.superview.frame.size.width, scrollView.superview.frame.size.height);
-        //    NSLog(@"Setting scrollview frame to %@", NSStringFromRect(scrollView.frame));
-    });
-
-
-    //    [self.view.superview addConstraint:[NSLayoutConstraint constraintWithItem:scrollView
-    //                                                         attribute:NSLayoutAttributeLeft
-    //                                                         relatedBy:NSLayoutRelationEqual
-    //                                                            toItem:self.view.superview
-    //                                                         attribute:NSLayoutAttributeLeft
-    //                                                        multiplier:1.0
-    //                                                          constant:0]];
-    //
-    //    [self.view.superview addConstraint:[NSLayoutConstraint constraintWithItem:scrollView
-    //                                                         attribute:NSLayoutAttributeRight
-    //                                                         relatedBy:NSLayoutRelationEqual
-    //                                                            toItem:self.view.superview
-    //                                                         attribute:NSLayoutAttributeRight
-    //                                                        multiplier:1.0
-    //                                                          constant:0]];
-    //
-    //    [self.view.superview addConstraint:[NSLayoutConstraint constraintWithItem:scrollView
-    //                                                         attribute:NSLayoutAttributeTop
-    //                                                         relatedBy:NSLayoutRelationEqual
-    //                                                            toItem:self.view.superview
-    //                                                         attribute:NSLayoutAttributeTop
-    //                                                        multiplier:1.0
-    //                                                          constant:0]];
-
-    //    scrollView.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
-    //    superview.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
-    //    self.view.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
-
-    //    [self turnOffWrapping];
-    //    _textview.string = contents;
-    //    double delayInSeconds = 0.2;
-    //    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    //    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    //        self.preferredContentSize = NSZeroSize;
-    //    });
-    //    self.preferredContentSize = NSZeroSize;
-    //    [self.view.window setContentSize:NSMakeSize(820, 846)];
-    //    NSRect frame = self.view.window.frame;
-    //    frame.size = NSMakeSize(820, 846);
-    //    [self.view.window setFrame:frame display:YES];
-    //    NSView *newSuper = scrollView.superview;
-    //    newSuper.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
-}
-
-//-(void) turnOffWrapping
-//{
-//    const float            LargeNumberForText = 1.0e7;
-//    NSTextContainer*    textContainer = [_textview textContainer];
-//    NSRect                frame;
-//    NSScrollView*        scrollView = [_textview enclosingScrollView];
-//
-//    // Make sure we can see right edge of line:
-//    [scrollView setHasHorizontalScroller:YES];
-//
-//    // Make text container so wide it won't wrap:
-//    [textContainer setContainerSize: NSMakeSize(LargeNumberForText, LargeNumberForText)];
-//    [textContainer setWidthTracksTextView:NO];
-//    [textContainer setHeightTracksTextView:NO];
-//
-//    // Make sure text view is wide enough:
-//    frame.origin = NSMakePoint(0.0, 0.0);
-//    frame.size = [scrollView contentSize];
-//
-//    [_textview setMaxSize:NSMakeSize(LargeNumberForText, LargeNumberForText)];
-//    [_textview setHorizontallyResizable:YES];
-//    [_textview setVerticallyResizable:YES];
-//    [_textview setAutoresizingMask:NSViewNotSizable];
-//}
-
 - (void)preparePreviewOfFileAtURL:(NSURL *)url completionHandler:(void (^)(NSError * _Nullable))handler {
     NSLog(@"preparePreviewOfFileAtURL");
     NSLog(@"self.view.frame %@", NSStringFromRect(self.view.frame));
@@ -378,12 +146,6 @@
     
     // Call the completion handler so Quick Look knows that the preview is fully loaded.
     // Quick Look will display a loading spinner while the completion handler is not called.
-
-    if ([url.path.pathExtension.lowercaseString isEqualToString:@"ifiction"]) {
-        [self showXML:url handler:handler];
-        handler(nil);
-        return;
-    }
 
     NSManagedObjectContext *context = self.persistentContainer.newBackgroundContext;
     if (!context) {
@@ -579,7 +341,8 @@
 }
 
 - (void)sizeImageHorizontally {
-
+    _scrollviewImageviewVerticalConstraint.active = NO;
+    _imageviewTrailingConstraint.active = NO;
     NSSize viewSize = self.view.frame.size;
 
     [self sizeImageToFitWidth:round(2 * viewSize.width / 3 - 40) height:256];
@@ -595,9 +358,29 @@
 
 - (void)sizeImageVertically {
     NSLog(@"sizeImageVertically");
-    NSSize viewSize = self.view.frame.size;
 
-    [_imageView removeFromSuperview];
+    _scrollviewImageviewHorizontalConstraint.active = NO;
+
+    _scrollviewImageviewVerticalConstraint.active = YES;
+    _scrollviewImageviewVerticalConstraint.priority = 1000;
+    _scrollviewImageviewVerticalConstraint.constant = 20;
+
+    _imageviewTrailingConstraint.active = YES;
+    _imageviewTrailingConstraint.constant = 20;
+    _imageviewTrailingConstraint.priority = 750;
+
+    _imageviewBottomConstraint.active = NO;
+
+    _scrollviewLeadingConstraint.active = YES;
+    _scrollviewLeadingConstraint.priority = 1000;
+    _scrollviewLeadingConstraint.constant = 20;
+    _scrollviewTopConstraint.active = NO;
+    _scrollviewBottomConstraint.constant = 10;
+
+
+    NSSize viewSize = _imageView.superview.frame.size;
+
+    //    [_imageView removeFromSuperview];
     //We want the image to be at  amost two thirds of the view height
     [self sizeImageToFitWidth:viewSize.width - 40 height:round(viewSize.height / 2)];
     // 256 is the default height of Finder file previews minus margins
@@ -609,7 +392,9 @@
     frame.origin.x = 20;
     _imageView.frame = frame;
     _imageView.imageAlignment =  NSImageAlignTopLeft;
-    [self.view addSubview:_imageView];
+    NSLog(@"sizeImageVertically: image view frame : %@", NSStringFromRect(_imageView.frame));
+
+    //    [self.view addSubview:_imageView];
 }
 
 
@@ -652,6 +437,7 @@
 }
 
 - (void)sizeTextHorizontally {
+    _scrollviewLeadingConstraint.active = NO;
     NSScrollView *scrollView = _textview.enclosingScrollView;
     NSRect frame = scrollView.frame;
 
@@ -671,6 +457,11 @@
     }
 
     scrollView.frame = frame;
+    _scrollviewBottomConstraint.constant = frame.origin.y;
+    _scrollviewTopConstraint.constant = frame.origin.y;
+    frame = _textview.frame;
+    frame.size.width = scrollView.frame.size.width;
+    _textview.frame = frame;
 
     //    NSLog(@"New scrollview frame: %@", NSStringFromRect(frame));
     //    NSLog(@"Superview frame: %@", NSStringFromRect(self.view.frame));
@@ -681,12 +472,32 @@
 - (void)sizeTextVertically {
     NSLog(@"sizeTextVertically");
 
+    _scrollviewImageviewHorizontalConstraint.active = NO;
+
+    _scrollviewImageviewVerticalConstraint.active = YES;
+    _scrollviewImageviewVerticalConstraint.priority = 1000;
+    _scrollviewImageviewVerticalConstraint.constant = 20;
+
+    _imageviewTrailingConstraint.active = YES;
+    _imageviewTrailingConstraint.constant = 20;
+    _imageviewTrailingConstraint.priority = 750;
+
+    _imageviewBottomConstraint.active = NO;
+
+    _scrollviewLeadingConstraint.active = YES;
+    _scrollviewLeadingConstraint.priority = 1000;
+    _scrollviewLeadingConstraint.constant = 20;
+    _scrollviewTopConstraint.active = NO;
+    _scrollviewBottomConstraint.constant = 10;
+
     NSScrollView *scrollView = _textview.enclosingScrollView;
     NSRect frame = scrollView.frame;
 
-    NSSize viewSize = self.view.frame.size;
+    NSSize viewSize = scrollView.superview.frame.size;
 
     frame.size.height = viewSize.height - _imageView.frame.size.height - 20;
+
+    frame.size.width = viewSize.width - 40;
 
     if (frame.size.height < viewSize.height / 2 - 20)
     {
@@ -699,6 +510,11 @@
     frame.origin = NSMakePoint(20, 0);
 
     scrollView.frame = frame;
+
+    frame = _textview.frame;
+    frame.size.width = scrollView.frame.size.width;
+    _textview.frame = frame;
+
     [scrollView.contentView scrollToPoint:NSZeroPoint];
 }
 
@@ -723,18 +539,22 @@
                 [self addInfoLine:resBlorbStr attributes:attrDict linebreak:YES];
             }
         }
+
+        BOOL noMeta = (metadict[@"headline"] == nil && metadict[@"author"] == nil && metadict[@"blurb"] == nil);
+
         [self addStarRating:metadict];
         attrDict[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont systemFontSize]];
         [self addInfoLine:metadict[@"headline"] attributes:attrDict linebreak:YES];
         [self addInfoLine:metadict[@"author"] attributes:attrDict linebreak:YES];
         [self addInfoLine:metadict[@"blurb"] attributes:attrDict linebreak:YES];
         NSDate * lastPlayed = metadict[@"lastPlayed"];
-        if (lastPlayed) {
-            NSDateFormatter *formatter = [NSDateFormatter new];
-            formatter.dateFormat = @"dd MMM yyyy HH.mm";
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"dd MMM yyyy HH.mm";
+        // It looks better with the last played line last if we show file info,
+        // so that modification date follows last played date and the two dates are grouped
+        if (lastPlayed && !noMeta) {
             [self addInfoLine:[NSString stringWithFormat:@"Last played %@", [formatter stringFromDate:lastPlayed]] attributes:attrDict linebreak:YES];
         }
-        BOOL noMeta = (metadict[@"headline"] == nil && metadict[@"author"] == nil && metadict[@"blurb"] == nil);
 
         if (!noMeta) {
             attrDict[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
@@ -743,6 +563,10 @@
         }
         if  (metadict[@"ifid"])
             [self addInfoLine:[@"IFID: " stringByAppendingString:metadict[@"ifid"]] attributes:attrDict linebreak:YES];
+
+        // See comment above
+        if (lastPlayed && noMeta)
+            [self addInfoLine:[NSString stringWithFormat:@"Last played %@", [formatter stringFromDate:lastPlayed]] attributes:attrDict linebreak:YES];
         if (noMeta)
             [self addFileInfo:url];
     }

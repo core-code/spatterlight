@@ -21,8 +21,6 @@
 	BOOL							syntaxColoringBusy;		// Set while recolorRange is busy, so we don't recursively call recolorRange.
 }
 
-@property BOOL darkMode;
-
 @property NSMutableAttributedString *coloredString;
 
 //// Override any of the following in one of your subclasses to customize this object further:

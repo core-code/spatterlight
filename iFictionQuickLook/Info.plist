@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SpatterlightQuickLook</string>
+	<string>iFictionQuickLook</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,22 +28,7 @@
 		<dict>
 			<key>QLSupportedContentTypes</key>
 			<array>
-				<string>public.zcode</string>
-				<string>public.blorb</string>
-				<string>public.blorb.zcode</string>
-				<string>public.blorb.glulx</string>
-				<string>public.glulx</string>
-				<string>public.hugo</string>
-				<string>public.tads2</string>
-				<string>public.tads3</string>
-				<string>public.adrift</string>
-				<string>public.alan</string>
-				<string>public.agt</string>
-				<string>public.magscrolls</string>
-				<string>public.dat</string>
-				<string>public.sna</string>
-				<string>public.level9</string>
-				<string>public.ddollardollar</string>
+				<string>public.ifiction</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<true/>
@@ -51,7 +36,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.quicklook.preview</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>PreviewViewController</string>
+		<string>iFictionPreviewController</string>
 	</dict>
 </dict>
 </plist>

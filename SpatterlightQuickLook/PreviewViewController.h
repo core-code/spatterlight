@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class NSPersistentContainer, UKSyntaxColor, MyTextView;
+@class NSPersistentContainer, MyTextView;
 
 API_AVAILABLE(macos(10.12))
 @interface PreviewViewController : NSViewController {
@@ -24,9 +24,6 @@ API_AVAILABLE(macos(10.12))
 
 @property NSString *ifid;
 
-@property UKSyntaxColor *syntaxColorer;
-
-//@property (readonly) CoreDataManager *coreDataManager;
 @property (readonly) NSPersistentContainer *persistentContainer;
 
 //@property (weak) Game *game;
@@ -38,10 +35,21 @@ API_AVAILABLE(macos(10.12))
 //@property (weak) IBOutlet NSTextField *ifidField;
 //@property (weak) IBOutlet NSTextField *titleField;
 
-@property (unsafe_unretained) IBOutlet MyTextView *textview;
+@property (unsafe_unretained) IBOutlet NSTextView *textview;
 
 @property (weak) IBOutlet NSImageView *imageView;
-@property (weak) IBOutlet NSLayoutConstraint *scrollviewtTopConstraint;
+
+@property (weak) IBOutlet NSLayoutConstraint *scrollviewLeadingConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *scrollviewTopConstraint;
 @property (weak) IBOutlet NSLayoutConstraint *scrollviewBottomConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *scrollviewTrailingConstraint;
+
+@property (weak) IBOutlet NSLayoutConstraint *scrollviewImageviewHorizontalConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *scrollviewImageviewVerticalConstraint;
+
+@property (weak) IBOutlet NSLayoutConstraint *imageviewLeadingConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *imageviewTopConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *imageviewBottomConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *imageviewTrailingConstraint;
 
 @end
