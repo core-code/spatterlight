@@ -15,11 +15,6 @@
 
 // Syntax-colored text file viewer:
 @interface UKSyntaxColor : NSObject
-{
-    // Status display for things like syntax coloring or background syntax checks.
-	NSString*						sourceCode;				// Temp. storage for data from file until NIB has been read.
-	BOOL							syntaxColoringBusy;		// Set while recolorRange is busy, so we don't recursively call recolorRange.
-}
 
 @property NSMutableAttributedString *coloredString;
 

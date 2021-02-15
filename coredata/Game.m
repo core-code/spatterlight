@@ -33,7 +33,7 @@
 @dynamic override;
 @dynamic theme;
 
-- (NSURL *)urlForBookmark {
+- (nullable NSURL *)urlForBookmark {
     BOOL bookmarkIsStale = NO;
     NSError* theError = nil;
     if (!self.fileLocation) {

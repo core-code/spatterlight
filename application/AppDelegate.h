@@ -8,12 +8,7 @@
 
 @class Preferences;
 
-@interface AppDelegate : NSObject <NSWindowDelegate, NSWindowRestoration> {
-    HelpPanelController *_helpLicenseWindow;
-    NSPanel *filePanel;
-    NSDocumentController *theDocCont;
-    BOOL addToRecents;
-}
+@interface AppDelegate : NSObject <NSWindowDelegate, NSWindowRestoration> 
 
 @property Preferences *prefctl;
 @property LibController *libctl;

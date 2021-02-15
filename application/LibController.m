@@ -107,6 +107,41 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
 
 @end
 
+@interface LibController () <NSDraggingDestination, NSWindowDelegate, NSSplitViewDelegate> {
+
+    IBOutlet NSButton *infoButton;
+    IBOutlet NSButton *playButton;
+    IBOutlet NSPanel *importProgressPanel;
+    IBOutlet NSView *exportTypeView;
+    IBOutlet NSPopUpButton *exportTypeControl;
+
+    IBOutlet NSMenu *headerMenu;
+
+    BOOL gameTableDirty;
+
+    BOOL canEdit;
+    NSTimer *timer;
+
+    NSArray *searchStrings;
+    CGFloat lastSideviewWidth;
+    CGFloat lastSideviewPercentage;
+
+    Game *currentSideView;
+
+    /* for the importing */
+    NSInteger cursrc;
+    NSString *currentIfid;
+    NSMutableArray *ifidbuf;
+    NSMutableDictionary *metabuf;
+    NSInteger errorflag;
+
+    NSLocale *englishUSLocale;
+    NSDictionary *languageCodes;
+
+    NSManagedObjectContext *importContext;
+}
+@end
+
 @implementation LibController
 
 #pragma mark Window controller, menus and file dialogs.
@@ -284,10 +319,11 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
         NSSet *ifidsToKeep = [[NSSet alloc] init];
 
         for (GlkController *ctl in [_gameSessions allValues]) {
-            [gamesToKeep addObject:ctl.game];
-            [metadataToKeep addObject:ctl.game.metadata];
-            [imagesToKeep addObject:ctl.game.metadata.cover];
-            ifidsToKeep  = [ifidsToKeep setByAddingObjectsFromSet:ctl.game.metadata.ifids];
+            Game *game = ctl.game;
+            [gamesToKeep addObject:game];
+            [metadataToKeep addObject:game.metadata];
+            [imagesToKeep addObject:game.metadata.cover];
+            ifidsToKeep  = [ifidsToKeep setByAddingObjectsFromSet:game.metadata.ifids];
         }
 
         for (NSString *entity in entitiesToDelete) {
@@ -368,7 +404,7 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
         panel.prompt = NSLocalizedString(@"Open", nil);
 
         NSDictionary *values = [NSURL resourceValuesForKeys:@[NSURLPathKey]
-                                           fromBookmarkData:game.fileLocation];
+                                           fromBookmarkData:(NSData *)game.fileLocation];
 
         NSString *path = [values objectForKey:NSURLPathKey];
 
@@ -472,7 +508,7 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
     NSString *filename;
     for (Game *game in fetchedObjects) {
         values = [NSURL resourceValuesForKeys:@[NSURLPathKey]
-                             fromBookmarkData:game.fileLocation];
+                             fromBookmarkData:(NSData *)game.fileLocation];
         filename = [values objectForKey:NSURLPathKey];
         if (!filename)
             filename = game.path;
@@ -2479,7 +2515,7 @@ canCollapseSubview:(NSView *)subview
     return result;
 }
 
--(IBAction)toggleSidebar:(id)sender;
+-(IBAction)toggleSidebar:(id)sender
 {
     if ([_splitView isSubviewCollapsed:_leftView]) {
         [self uncollapseLeftView];

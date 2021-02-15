@@ -8,6 +8,12 @@
 
 #import "CoreDataManager.h"
 
+@interface CoreDataManager () {
+    NSString *modelName;
+    NSManagedObjectContext *privateManagedObjectContext;
+}
+@end
+
 @implementation CoreDataManager
 
 - (instancetype)initWithModelName:(NSString *)aModelName {

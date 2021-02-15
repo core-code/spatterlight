@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) Theme *override;
 @property (nullable, nonatomic, retain) Theme *theme;
 
-@property (readonly, copy) NSURL *urlForBookmark;
+@property (readonly, copy, nullable) NSURL *urlForBookmark;
 - (void) bookmarkForPath: (NSString *)path;
 
 @end
