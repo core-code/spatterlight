@@ -528,13 +528,7 @@
 		96FE87DB09F3A1D100D41D78 /* libtads3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96FE876509F3A12B00D41D78 /* libtads3.a */; };
 		C300D48423A11786000B2165 /* IFDBDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C300D48323A11786000B2165 /* IFDBDownloader.m */; };
 		C301D30D25D35E9300DC4A2B /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C301D30C25D35E9300DC4A2B /* Media.xcassets */; };
-		C301D30E25D35E9300DC4A2B /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C301D30C25D35E9300DC4A2B /* Media.xcassets */; };
 		C3074B8825A1F461003E80C6 /* VersionFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3074B8725A1F461003E80C6 /* VersionFormatter.m */; };
-		C309881425CB1AB500750F72 /* Spatterlight.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6DCDF488244CD97100EB5D3B /* Spatterlight.xcdatamodeld */; };
-		C309882E25CB1ACD00750F72 /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DC1FAEE252A5A5900540C6E /* Metadata.m */; };
-		C309884825CB1AD300750F72 /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DC520A923BAD54B0004923A /* Game.m */; };
-		C309886225CB1ADF00750F72 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6213F23A26078002DEF3B /* Image.m */; };
-		C309887C25CB26BF00750F72 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D79B0DD223262CA008C9CB7 /* CoreData.framework */; };
 		C30F436C25A53DD000B8D74B /* spatterlight-autosave.m in Sources */ = {isa = PBXBuildFile; fileRef = C30F436925A53DD000B8D74B /* spatterlight-autosave.m */; };
 		C30F8E921ED7153B005E6863 /* libglkmain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 961CCEB709F2396500528FF9 /* libglkmain.a */; };
 		C30F8E931ED7153E005E6863 /* libglkimp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 961CCE7B09F237E700528FF9 /* libglkimp.dylib */; };
@@ -542,23 +536,7 @@
 		C31186DB25BD500800739D7B /* GlkSoundChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = C31186D925BD500700739D7B /* GlkSoundChannel.m */; };
 		C311875325BD8F1E00739D7B /* AudioResourceHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C311875225BD8F1E00739D7B /* AudioResourceHandler.m */; };
 		C311DE2A25C4383100484639 /* twine.c in Sources */ = {isa = PBXBuildFile; fileRef = C311DE2925C4383100484639 /* twine.c */; };
-		C311DEF725C472E500484639 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C311DEF625C472E500484639 /* Quartz.framework */; };
-		C311DEFB25C472E500484639 /* PreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C311DEFA25C472E500484639 /* PreviewViewController.m */; };
-		C311DEFE25C472E500484639 /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C311DEFC25C472E500484639 /* PreviewViewController.xib */; };
-		C311DF0325C472E500484639 /* SpatterlightQuickLook.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C311DEF525C472E500484639 /* SpatterlightQuickLook.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C32036E51ED7738700FF60DF /* libglkimp.dylib in Copy Interpreter Files */ = {isa = PBXBuildFile; fileRef = 961CCE7B09F237E700528FF9 /* libglkimp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C322714B25CC214A0083BD5B /* QuickLookThumbnailing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C311DF3C25C473B700484639 /* QuickLookThumbnailing.framework */; };
-		C322714C25CC214A0083BD5B /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C311DEF625C472E500484639 /* Quartz.framework */; };
-		C322715025CC214A0083BD5B /* ThumbnailProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C322714F25CC214A0083BD5B /* ThumbnailProvider.m */; };
-		C322715525CC214A0083BD5B /* SpatterlightThumbnailer.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C322714A25CC214A0083BD5B /* SpatterlightThumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		C322717225CC22260083BD5B /* Spatterlight.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6DCDF488244CD97100EB5D3B /* Spatterlight.xcdatamodeld */; };
-		C322718C25CC224F0083BD5B /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DC520A923BAD54B0004923A /* Game.m */; };
-		C32271A625CC22530083BD5B /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DC1FAEE252A5A5900540C6E /* Metadata.m */; };
-		C32271C025CC22590083BD5B /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6213F23A26078002DEF3B /* Image.m */; };
-		C32271DA25CC22A20083BD5B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D79B0DD223262CA008C9CB7 /* CoreData.framework */; };
-		C322720D25CC23980083BD5B /* iff.c in Sources */ = {isa = PBXBuildFile; fileRef = C3C180AE25C70FD80040AE79 /* iff.c */; };
-		C322722725CC239C0083BD5B /* Blorb.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807B25C70F2F0040AE79 /* Blorb.m */; };
-		C322724125CC23A00083BD5B /* BlorbResource.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807D25C70F2F0040AE79 /* BlorbResource.m */; };
 		C33B4504257E84500017EA26 /* ZMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C33B4502257E84500017EA26 /* ZMenu.m */; };
 		C343E4861ECC5E81000F15B6 /* osportable.cc in Sources */ = {isa = PBXBuildFile; fileRef = C343E4851ECC5E81000F15B6 /* osportable.cc */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C343E4881ECC6744000F15B6 /* memicmp.c in Sources */ = {isa = PBXBuildFile; fileRef = C343E4871ECC6744000F15B6 /* memicmp.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -590,10 +568,6 @@
 		C381012A1EDA297E00B87B68 /* GlkController.m in Sources */ = {isa = PBXBuildFile; fileRef = C38101291EDA297E00B87B68 /* GlkController.m */; };
 		C39DE2601ECB76A100CE5B70 /* glk.c in Sources */ = {isa = PBXBuildFile; fileRef = C39DE25F1ECB76A100CE5B70 /* glk.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C39DE2621ECB76C400CE5B70 /* bitmap.c in Sources */ = {isa = PBXBuildFile; fileRef = C39DE2611ECB76C400CE5B70 /* bitmap.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C3AE6BB525CF2A8300B7AB0A /* Blorb.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807B25C70F2F0040AE79 /* Blorb.m */; };
-		C3AE6BCF25CF2A9300B7AB0A /* iff.c in Sources */ = {isa = PBXBuildFile; fileRef = C3C180AE25C70FD80040AE79 /* iff.c */; };
-		C3AE6BD025CF2A9300B7AB0A /* BlorbResource.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807D25C70F2F0040AE79 /* BlorbResource.m */; };
-		C3AE6C9C25CF408100B7AB0A /* libbabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A9BA790A06558F001B5B9B /* libbabel.a */; };
 		C3B3773E1ECB99C0006432BE /* osstzprs.c in Sources */ = {isa = PBXBuildFile; fileRef = C3B3773D1ECB99BF006432BE /* osstzprs.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3B377401ECB99D6006432BE /* ostzposix.c in Sources */ = {isa = PBXBuildFile; fileRef = C3B3773F1ECB99D6006432BE /* ostzposix.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3B3775C1ECBA060006432BE /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3B3775B1ECBA060006432BE /* md5.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -637,8 +611,6 @@
 		C3D6AD711ECF373000ADB69C /* tadsr in Copy Interpreter Files */ = {isa = PBXBuildFile; fileRef = 96FE867109F38BF600D41D78 /* tadsr */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C3D6AD721ECF381A00ADB69C /* vmuni_cs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C343E49E1ECC67AC000F15B6 /* vmuni_cs.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3D8177B256CBA21005DBC1F /* InputTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D81779256CBA20005DBC1F /* InputTextField.m */; };
-		C3E2EAB525D08EEC0012B7FB /* NSScanner+SkipUpToCharset.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E2EAAF25D08EEC0012B7FB /* NSScanner+SkipUpToCharset.m */; };
-		C3E2EAB625D08EEC0012B7FB /* UKSyntaxColor.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E2EAB125D08EEC0012B7FB /* UKSyntaxColor.m */; };
 		C3EF065D1ECE5FF2008EED04 /* vmvec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 965036DC09F29EE60083E64E /* vmvec.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3EF065F1ECE60D1008EED04 /* cgdate.c in Sources */ = {isa = PBXBuildFile; fileRef = C3EF065E1ECE60D0008EED04 /* cgdate.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3F1078D259256AC00C9EC82 /* BureaucracyForm.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F1078C259256AC00C9EC82 /* BureaucracyForm.m */; };
@@ -974,20 +946,6 @@
 			remoteGlobalIDString = 96FE875F09F3A11900D41D78;
 			remoteInfo = tads2;
 		};
-		C311DF0125C472E500484639 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C311DEF425C472E500484639;
-			remoteInfo = SpatterlightQuickLook;
-		};
-		C322715325CC214A0083BD5B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C322714925CC214A0083BD5B;
-			remoteInfo = SpatterlightThumbnailer;
-		};
 		C35978CB25DA14A6004B1448 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
@@ -1067,9 +1025,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				C311DF0325C472E500484639 /* SpatterlightQuickLook.appex in Embed App Extensions */,
 				C35978CD25DA14A6004B1448 /* iFictionQuickLook.appex in Embed App Extensions */,
-				C322715525CC214A0083BD5B /* SpatterlightThumbnailer.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2536,20 +2492,9 @@
 		C311875125BD8F1E00739D7B /* AudioResourceHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioResourceHandler.h; sourceTree = "<group>"; };
 		C311875225BD8F1E00739D7B /* AudioResourceHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioResourceHandler.m; sourceTree = "<group>"; };
 		C311DE2925C4383100484639 /* twine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twine.c; sourceTree = "<group>"; };
-		C311DEF525C472E500484639 /* SpatterlightQuickLook.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpatterlightQuickLook.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C311DEF625C472E500484639 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
-		C311DEF925C472E500484639 /* PreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreviewViewController.h; sourceTree = "<group>"; };
-		C311DEFA25C472E500484639 /* PreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreviewViewController.m; sourceTree = "<group>"; };
-		C311DEFD25C472E500484639 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PreviewViewController.xib; sourceTree = "<group>"; };
-		C311DEFF25C472E500484639 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C311DF0025C472E500484639 /* SpatterlightQuickLook.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpatterlightQuickLook.entitlements; sourceTree = "<group>"; };
 		C311DF3C25C473B700484639 /* QuickLookThumbnailing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLookThumbnailing.framework; path = System/Library/Frameworks/QuickLookThumbnailing.framework; sourceTree = SDKROOT; };
 		C311E07925C4C1E200484639 /* SpatterlightDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpatterlightDebug.entitlements; sourceTree = "<group>"; };
-		C322714A25CC214A0083BD5B /* SpatterlightThumbnailer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpatterlightThumbnailer.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		C322714E25CC214A0083BD5B /* ThumbnailProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThumbnailProvider.h; sourceTree = "<group>"; };
-		C322714F25CC214A0083BD5B /* ThumbnailProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThumbnailProvider.m; sourceTree = "<group>"; };
-		C322715125CC214A0083BD5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C322715225CC214A0083BD5B /* SpatterlightThumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpatterlightThumbnailer.entitlements; sourceTree = "<group>"; };
 		C33B4502257E84500017EA26 /* ZMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZMenu.m; sourceTree = "<group>"; };
 		C33B4503257E84500017EA26 /* ZMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZMenu.h; sourceTree = "<group>"; };
 		C343E4851ECC5E81000F15B6 /* osportable.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = osportable.cc; sourceTree = "<group>"; };
@@ -2847,26 +2792,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C311DEF225C472E500484639 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C3AE6C9C25CF408100B7AB0A /* libbabel.a in Frameworks */,
-				C309887C25CB26BF00750F72 /* CoreData.framework in Frameworks */,
-				C311DEF725C472E500484639 /* Quartz.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C322714725CC214A0083BD5B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C32271DA25CC22A20083BD5B /* CoreData.framework in Frameworks */,
-				C322714B25CC214A0083BD5B /* QuickLookThumbnailing.framework in Frameworks */,
-				C322714C25CC214A0083BD5B /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3554,8 +3479,6 @@
 				965031AC09F29EE10083E64E /* terps */,
 				96A9BA2A0A064C9C001B5B9B /* babel */,
 				961CCF2109F2940F00528FF9 /* resources */,
-				C311DEF825C472E500484639 /* SpatterlightQuickLook */,
-				C322714D25CC214A0083BD5B /* SpatterlightThumbnailer */,
 				C35978C225DA14A6004B1448 /* iFictionQuickLook */,
 				961CCF6509F295CA00528FF9 /* Frameworks */,
 				C3A2C66321C0D3AA003C4A15 /* headers */,
@@ -3589,8 +3512,6 @@
 				9650381009F2A4430083E64E /* unquill */,
 				6D8BCAD6225E4ACF00696057 /* fizmo */,
 				6DB774A22458B95E00EDC671 /* bocfel */,
-				C311DEF525C472E500484639 /* SpatterlightQuickLook.appex */,
-				C322714A25CC214A0083BD5B /* SpatterlightThumbnailer.appex */,
 				C35978C025DA14A6004B1448 /* iFictionQuickLook.appex */,
 			);
 			name = Products;
@@ -4942,29 +4863,6 @@
 			path = Sound;
 			sourceTree = "<group>";
 		};
-		C311DEF825C472E500484639 /* SpatterlightQuickLook */ = {
-			isa = PBXGroup;
-			children = (
-				C311DEF925C472E500484639 /* PreviewViewController.h */,
-				C311DEFA25C472E500484639 /* PreviewViewController.m */,
-				C311DEFC25C472E500484639 /* PreviewViewController.xib */,
-				C311DEFF25C472E500484639 /* Info.plist */,
-				C311DF0025C472E500484639 /* SpatterlightQuickLook.entitlements */,
-			);
-			path = SpatterlightQuickLook;
-			sourceTree = "<group>";
-		};
-		C322714D25CC214A0083BD5B /* SpatterlightThumbnailer */ = {
-			isa = PBXGroup;
-			children = (
-				C322714E25CC214A0083BD5B /* ThumbnailProvider.h */,
-				C322714F25CC214A0083BD5B /* ThumbnailProvider.m */,
-				C322715125CC214A0083BD5B /* Info.plist */,
-				C322715225CC214A0083BD5B /* SpatterlightThumbnailer.entitlements */,
-			);
-			path = SpatterlightThumbnailer;
-			sourceTree = "<group>";
-		};
 		C35978C225DA14A6004B1448 /* iFictionQuickLook */ = {
 			isa = PBXGroup;
 			children = (
@@ -5201,8 +5099,6 @@
 				9650379F09F2A2FA0083E64E /* PBXTargetDependency */,
 				966EFA4309F62D4C00FA7F19 /* PBXTargetDependency */,
 				C3D6AD701ECF372000ADB69C /* PBXTargetDependency */,
-				C311DF0225C472E500484639 /* PBXTargetDependency */,
-				C322715425CC214A0083BD5B /* PBXTargetDependency */,
 				C35978CC25DA14A6004B1448 /* PBXTargetDependency */,
 			);
 			name = Spatterlight;
@@ -5495,40 +5391,6 @@
 			productReference = 96FE876509F3A12B00D41D78 /* libtads3.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		C311DEF425C472E500484639 /* SpatterlightQuickLook */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C311DF0425C472E500484639 /* Build configuration list for PBXNativeTarget "SpatterlightQuickLook" */;
-			buildPhases = (
-				C311DEF125C472E500484639 /* Sources */,
-				C311DEF225C472E500484639 /* Frameworks */,
-				C311DEF325C472E500484639 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SpatterlightQuickLook;
-			productName = SpatterlightQuickLook;
-			productReference = C311DEF525C472E500484639 /* SpatterlightQuickLook.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
-		C322714925CC214A0083BD5B /* SpatterlightThumbnailer */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C322715625CC214A0083BD5B /* Build configuration list for PBXNativeTarget "SpatterlightThumbnailer" */;
-			buildPhases = (
-				C322714625CC214A0083BD5B /* Sources */,
-				C322714725CC214A0083BD5B /* Frameworks */,
-				C322714825CC214A0083BD5B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SpatterlightThumbnailer;
-			productName = SpatterlightThumbnailer;
-			productReference = C322714A25CC214A0083BD5B /* SpatterlightThumbnailer.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		C35978BF25DA14A6004B1448 /* iFictionQuickLook */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C35978D025DA14A6004B1448 /* Build configuration list for PBXNativeTarget "iFictionQuickLook" */;
@@ -5646,16 +5508,6 @@
 						DevelopmentTeam = 6U7YY3724Y;
 						ProvisioningStyle = Automatic;
 					};
-					C311DEF425C472E500484639 = {
-						CreatedOnToolsVersion = 12.3;
-						DevelopmentTeam = 6U7YY3724Y;
-						ProvisioningStyle = Automatic;
-					};
-					C322714925CC214A0083BD5B = {
-						CreatedOnToolsVersion = 12.3;
-						DevelopmentTeam = 6U7YY3724Y;
-						ProvisioningStyle = Automatic;
-					};
 					C35978BF25DA14A6004B1448 = {
 						CreatedOnToolsVersion = 12.4;
 						DevelopmentTeam = 6U7YY3724Y;
@@ -5702,8 +5554,6 @@
 				9611541F0A4F3F8B00BB7FF2 /* htmltadsr */,
 				965037F109F2A4430083E64E /* unquill */,
 				6D8BCAD5225E4ACF00696057 /* fizmo */,
-				C311DEF425C472E500484639 /* SpatterlightQuickLook */,
-				C322714925CC214A0083BD5B /* SpatterlightThumbnailer */,
 				C35978BF25DA14A6004B1448 /* iFictionQuickLook */,
 			);
 		};
@@ -5731,22 +5581,6 @@
 				6D73E55721873509009CD59A /* LibraryWindow.xib in Resources */,
 				6D85C898218BD6E10088D849 /* HelpPanelController.xib in Resources */,
 				6DCFFC2122BCD1730035FA99 /* Fonts License.rtf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C311DEF325C472E500484639 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C311DEFE25C472E500484639 /* PreviewViewController.xib in Resources */,
-				C301D30E25D35E9300DC4A2B /* Media.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C322714825CC214A0083BD5B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6440,38 +6274,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C311DEF125C472E500484639 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C3E2EAB525D08EEC0012B7FB /* NSScanner+SkipUpToCharset.m in Sources */,
-				C3E2EAB625D08EEC0012B7FB /* UKSyntaxColor.m in Sources */,
-				C3AE6BCF25CF2A9300B7AB0A /* iff.c in Sources */,
-				C3AE6BD025CF2A9300B7AB0A /* BlorbResource.m in Sources */,
-				C3AE6BB525CF2A8300B7AB0A /* Blorb.m in Sources */,
-				C309882E25CB1ACD00750F72 /* Metadata.m in Sources */,
-				C309884825CB1AD300750F72 /* Game.m in Sources */,
-				C309886225CB1ADF00750F72 /* Image.m in Sources */,
-				C311DEFB25C472E500484639 /* PreviewViewController.m in Sources */,
-				C309881425CB1AB500750F72 /* Spatterlight.xcdatamodeld in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C322714625CC214A0083BD5B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C322720D25CC23980083BD5B /* iff.c in Sources */,
-				C322722725CC239C0083BD5B /* Blorb.m in Sources */,
-				C322724125CC23A00083BD5B /* BlorbResource.m in Sources */,
-				C32271C025CC22590083BD5B /* Image.m in Sources */,
-				C32271A625CC22530083BD5B /* Metadata.m in Sources */,
-				C322718C25CC224F0083BD5B /* Game.m in Sources */,
-				C322715025CC214A0083BD5B /* ThumbnailProvider.m in Sources */,
-				C322717225CC22260083BD5B /* Spatterlight.xcdatamodeld in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C35978BC25DA14A6004B1448 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6720,16 +6522,6 @@
 			target = 96FE875F09F3A11900D41D78 /* tads2 */;
 			targetProxy = 96FE87D809F3A1BC00D41D78 /* PBXContainerItemProxy */;
 		};
-		C311DF0225C472E500484639 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C311DEF425C472E500484639 /* SpatterlightQuickLook */;
-			targetProxy = C311DF0125C472E500484639 /* PBXContainerItemProxy */;
-		};
-		C322715425CC214A0083BD5B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C322714925CC214A0083BD5B /* SpatterlightThumbnailer */;
-			targetProxy = C322715325CC214A0083BD5B /* PBXContainerItemProxy */;
-		};
 		C35978CC25DA14A6004B1448 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C35978BF25DA14A6004B1448 /* iFictionQuickLook */;
@@ -6748,14 +6540,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C311DEFC25C472E500484639 /* PreviewViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C311DEFD25C472E500484639 /* Base */,
-			);
-			name = PreviewViewController.xib;
-			sourceTree = "<group>";
-		};
 		C35978C625DA14A6004B1448 /* iFictionPreviewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -8157,172 +7941,6 @@
 			};
 			name = Release;
 		};
-		C311DF0525C472E500484639 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = SpatterlightQuickLook/SpatterlightQuickLook.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 6U7YY3724Y;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = SpatterlightQuickLook/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.ccxvii.spatterlight.SpatterlightQuickLook;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		C311DF0625C472E500484639 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = SpatterlightQuickLook/SpatterlightQuickLook.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 6U7YY3724Y;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = SpatterlightQuickLook/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.ccxvii.spatterlight.SpatterlightQuickLook;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		C322715725CC214A0083BD5B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = SpatterlightThumbnailer/SpatterlightThumbnailer.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 6U7YY3724Y;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = SpatterlightThumbnailer/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.ccxvii.spatterlight.SpatterlightThumbnailer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		C322715825CC214A0083BD5B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = SpatterlightThumbnailer/SpatterlightThumbnailer.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 6U7YY3724Y;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = SpatterlightThumbnailer/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.ccxvii.spatterlight.SpatterlightThumbnailer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		C35978CE25DA14A6004B1448 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8357,6 +7975,7 @@
 				INFOPLIST_FILE = iFictionQuickLook/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MARKETING_VERSION = 0.7.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ccxvii.spatterlight.iFictionQuickLook;
@@ -8396,6 +8015,7 @@
 				INFOPLIST_FILE = iFictionQuickLook/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MARKETING_VERSION = 0.7.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ccxvii.spatterlight.iFictionQuickLook;
@@ -8620,24 +8240,6 @@
 			buildConfigurations = (
 				96FE876A09F3A18700D41D78 /* Debug */,
 				96FE876B09F3A18700D41D78 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C311DF0425C472E500484639 /* Build configuration list for PBXNativeTarget "SpatterlightQuickLook" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C311DF0525C472E500484639 /* Debug */,
-				C311DF0625C472E500484639 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C322715625CC214A0083BD5B /* Build configuration list for PBXNativeTarget "SpatterlightThumbnailer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C322715725CC214A0083BD5B /* Debug */,
-				C322715825CC214A0083BD5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
