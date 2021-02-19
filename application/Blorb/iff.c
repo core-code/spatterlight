@@ -12,18 +12,18 @@
 #include <stdlib.h>
 
 unsigned int IFFID(char c1, char c2, char c3, char c4) {
-  return (c1 << 24) | (c2 << 16) | (c3 << 8) | c4;
+  return (unsigned int)((c1 << 24) | (c2 << 16) | (c3 << 8) | c4);
 }
 
 unsigned int unpackLong(const void *data) {
-  return (((const unsigned char *)data)[0] << 24) |
+  return (unsigned int)((((const unsigned char *)data)[0] << 24) |
          (((const unsigned char *)data)[1] << 16) |
          (((const unsigned char *)data)[2] << 8) |
-         (((const unsigned char *)data)[3]);
+         (((const unsigned char *)data)[3]));
 }
 
 unsigned int unpackShort(const void *data) {
-  return (((const unsigned char *)data)[0] << 8) |
+  return (unsigned int)(((const unsigned char *)data)[0] << 8) |
          (((const unsigned char *)data)[1]);
 }
 
