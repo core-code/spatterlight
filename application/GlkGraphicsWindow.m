@@ -82,10 +82,51 @@
         NSRectFill(rect);
     }
 
+//    if(!image)
+//    {
+//        return;
+//    }
+
+//    self.layer.sublayers = nil;
+//
+//    CALayer* newLayer = [[CALayer alloc]init];
+//
+//    self.layer.backgroundColor = [color CGColor];
+//
+//    NSGraphicsContext *gcontext = NSGraphicsContext.currentContext;
+//    [gcontext saveGraphicsState];
+
+//    [NSGraphicsContext saveGraphicsState];
+
+//    for (CALayer *layer in [self.layer.sublayers copy]) {
+//        [layer removeFromSuperlayer];
+//    }
+//
+//    @autoreleasepool {
+//
+//    NSData *imageData = image.TIFFRepresentation;
+//    CGImageSourceRef imageSource = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+//    CGImageRef imageRef =  CGImageSourceCreateImageAtIndex(imageSource, 0, NULL);
+//
+//    CALayer *imageLayer = [CALayer layer];
+//    imageLayer.contents = (__bridge id) imageRef;
+//    [imageLayer setFrame:bounds];
+//    [self.layer addSublayer:imageLayer];
+//
+//    CFRelease(imageSource);
+//    CFRelease(imageRef);
+//
+//    }
+
+
+
     [image drawAtPoint:bounds.origin
               fromRect:NSMakeRect(0, 0, bounds.size.width, bounds.size.height)
              operation:NSCompositeSourceOver
               fraction:1.0];
+
+//    [NSGraphicsContext restoreGraphicsState];
+
 }
 
 - (void)setFrame:(NSRect)frame {
