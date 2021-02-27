@@ -13,6 +13,8 @@
 #import "InputTextField.h"
 #import "InputHistory.h"
 #import "ZMenu.h"
+#import "NonScalingScrollView.h"
+
 #import "main.h"
 
 #include "glkimp.h"
@@ -978,7 +980,7 @@
  */
 
 @interface GlkTextBufferWindow () <NSSecureCoding, NSTextViewDelegate, NSTextStorageDelegate> {
-    NSScrollView *scrollview;
+    NonScalingScrollView *scrollview;
     NSLayoutManager *layoutmanager;
     MarginContainer *container;
     NSTextStorage *textstorage;
@@ -1052,7 +1054,7 @@
         history = [[InputHistory alloc] init];
 
         self.moveRanges = [[NSMutableArray alloc] init];
-        scrollview = [[NSScrollView alloc] initWithFrame:NSZeroRect];
+        scrollview = [[NonScalingScrollView alloc] initWithFrame:NSZeroRect];
 
         [self restoreScrollBarStyle];
 
