@@ -8,6 +8,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="iFictionPreviewController">
             <connections>
+                <outlet property="scrollview" destination="RZQ-Oh-7iU" id="tmp-rm-QeS"/>
+                <outlet property="superview" destination="Jk7-2A-kgW" id="Qzv-bA-XTp"/>
                 <outlet property="textview" destination="J8G-sc-ViL" id="8Wv-N7-hpO"/>
                 <outlet property="view" destination="c22-O7-iKe" id="NRM-P4-wb6"/>
             </connections>
@@ -18,39 +20,40 @@
             <rect key="frame" x="0.0" y="0.0" width="820" height="846"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" verticalCompressionResistancePriority="650" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZQ-Oh-7iU">
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jk7-2A-kgW">
                     <rect key="frame" x="0.0" y="0.0" width="820" height="846"/>
-                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pW4-fX-suv">
-                        <rect key="frame" x="0.0" y="0.0" width="820" height="846"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J8G-sc-ViL">
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <scrollView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" verticalCompressionResistancePriority="650" fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZQ-Oh-7iU">
+                            <rect key="frame" x="0.0" y="0.0" width="820" height="846"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="pW4-fX-suv">
                                 <rect key="frame" x="0.0" y="0.0" width="820" height="846"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="820" height="846"/>
-                                <size key="maxSize" width="820" height="10000000"/>
-                                <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            </textView>
-                        </subviews>
-                    </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="VcH-ax-uzE">
-                        <rect key="frame" x="-100" y="-100" width="240" height="16"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Wcw-jK-31Q">
-                        <rect key="frame" x="804" y="0.0" width="16" height="846"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    </scroller>
-                </scrollView>
+                                <subviews>
+                                    <textView editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="J8G-sc-ViL">
+                                        <rect key="frame" x="0.0" y="0.0" width="820" height="846"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <size key="minSize" width="820" height="846"/>
+                                        <size key="maxSize" width="820" height="10000000"/>
+                                        <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    </textView>
+                                </subviews>
+                            </clipView>
+                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="VcH-ax-uzE">
+                                <rect key="frame" x="-100" y="-100" width="240" height="16"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                            <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Wcw-jK-31Q">
+                                <rect key="frame" x="804" y="0.0" width="16" height="846"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            </scroller>
+                        </scrollView>
+                    </subviews>
+                </customView>
             </subviews>
-            <constraints>
-                <constraint firstAttribute="trailing" secondItem="RZQ-Oh-7iU" secondAttribute="trailing" id="3Xh-XK-K62"/>
-                <constraint firstAttribute="bottom" secondItem="RZQ-Oh-7iU" secondAttribute="bottom" id="JNd-FT-v8a"/>
-                <constraint firstItem="RZQ-Oh-7iU" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="WSG-DW-B3A"/>
-                <constraint firstItem="RZQ-Oh-7iU" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="Xbf-rm-BsX"/>
-            </constraints>
             <point key="canvasLocation" x="-65" y="135"/>
         </customView>
     </objects>

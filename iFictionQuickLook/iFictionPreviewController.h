@@ -14,5 +14,7 @@
 @property UKSyntaxColor *syntaxColorer;
 
 @property (unsafe_unretained) IBOutlet NSTextView *textview;
+@property (weak) IBOutlet NSScrollView *scrollview;
+@property (weak) IBOutlet NSView *superview;
 
 @end

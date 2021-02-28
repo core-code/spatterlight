@@ -24,8 +24,15 @@
     // Do any additional setup after loading the view.
     NSLog(@"Initial view frame: %@", NSStringFromRect(self.view.frame));
     NSLog(@"Initial window frame: %@", NSStringFromRect(self.view.window.frame));
+    
 
-    //    self.preferredContentSize = NSMakeSize(820, 846);
+    self.preferredContentSize = NSMakeSize(820, 846);
+    _superview.frame = self.view.bounds;
+    _scrollview.frame = self.view.bounds;
+    _superview.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    _scrollview.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+
+
 }
 
 /*
@@ -99,8 +106,7 @@
 }
 
 - (void)printFinalLayout{
-    NSScrollView *scrollview = _textview.enclosingScrollView;
-    NSLog(@"Final layout: window frame: %@ view frame: %@ scroll view frame %@ content view frame:%@ text view frame:%@", NSStringFromRect(self.view.window.frame), NSStringFromRect(self.view.frame), NSStringFromRect(scrollview.frame), NSStringFromRect(scrollview.contentView.frame),  NSStringFromRect(_textview.frame));
+    NSLog(@"Final layout: window frame: %@ view frame: %@ scroll view frame %@ content view frame:%@ text view frame:%@", NSStringFromRect(self.view.window.frame), NSStringFromRect(self.view.frame), NSStringFromRect(_scrollview.frame), NSStringFromRect(_scrollview.contentView.frame),  NSStringFromRect(_textview.frame));
 }
 
 @end
