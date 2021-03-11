@@ -51,6 +51,7 @@
 @property(readonly) CGFloat storedMagnification;
 
 @property(readonly) NSRect windowPreFullscreenFrame;
+@property(readonly) NSRect windowPreFullscreenBounds;
 
 @property BOOL ignoreResizes;
 @property BOOL startingInFullscreen;
