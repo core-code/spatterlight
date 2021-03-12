@@ -18,10 +18,9 @@
 #define MAXWIN 64
 #define MAXSND 32
 
-@interface GlkHelperView : NSView {
-}
+@interface GlkHelperView : NSView
 
-@property (weak) IBOutlet GlkController *glkctrl;
+@property (weak) GlkController *glkctrl;
 
 @end
 
