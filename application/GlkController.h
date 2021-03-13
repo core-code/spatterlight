@@ -140,6 +140,10 @@
 - (void)handleSoundNotification:(NSInteger)notify withSound:(NSInteger)sound;
 - (void)handleVolumeNotification:(NSInteger)notify;
 
+- (void)myZoomIn:(CGFloat)scaleFactor;
+- (void)myZoomOut:(CGFloat)scaleFactor;
+- (void)myZoomToActualSize;
+
 - (IBAction)speakMostRecent:(id)sender;
 - (IBAction)speakPrevious:(id)sender;
 - (IBAction)speakNext:(id)sender;
