@@ -8,70 +8,6 @@
 
 #import "HelpPanelController.h"
 
-#import "ScalingScrollView.h"
-
-#ifdef DEBUG
-#define NSLog(FORMAT, ...)                                                     \
-fprintf(stderr, "%s\n",                                                    \
-[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
-#else
-#define NSLog(...)
-#endif
-
-@interface HelpTextView () <NSTextFinderClient> {
-    NSTextFinder *_textFinder; // define your own text finder
-}
-@end
-
-@implementation HelpTextView
-
-// Text finder command validation (could also be done in method
-// validateUserInterfaceItem: if you prefer)
-
-- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
-    BOOL isValidItem = NO;
-
-    if (menuItem.action == @selector(performTextFinderAction:)) {
-        isValidItem = [self.textFinder validateAction:menuItem.tag];
-    }
-    // validate other menu items if needed
-    // ...
-    // and don't forget to call the superclass
-    else {
-        isValidItem = [super validateMenuItem:menuItem];
-    }
-
-    return isValidItem;
-}
-
-// Text Finder
-
-- (NSTextFinder *)textFinder {
-    // Create the text finder on demand
-    if (_textFinder == nil) {
-        _textFinder = [[NSTextFinder alloc] init];
-        _textFinder.client = self;
-        _textFinder.findBarContainer = self.enclosingScrollView;
-        _textFinder.incrementalSearchingEnabled = YES;
-        _textFinder.incrementalSearchingShouldDimContentView = NO;
-    }
-
-    return _textFinder;
-}
-
-- (void)resetTextFinder {
-    if (_textFinder != nil) {
-        [_textFinder noteClientStringWillChange];
-    }
-}
-
-// This is where the commands are actually sent to the text finder
-- (void)performTextFinderAction:(id<NSValidatedUserInterfaceItem>)sender {
-    [self.textFinder performAction:sender.tag];
-}
-
-@end
-
 @implementation HelpPanelController
 
 - (IBAction)copyButton:(id)sender {
@@ -91,7 +27,6 @@ fprintf(stderr, "%s\n",                                                    \
     // Do nothing if we are already showing the text
     if ((![helpWindow isVisible]) ||
         (![text.string isEqualToString:_textView.string])) {
-        [_textView resetTextFinder];
 
         CGRect screenframe = self.window.screen.visibleFrame;
 
@@ -211,62 +146,5 @@ fprintf(stderr, "%s\n",                                                    \
     return newFrame;
 };
 
-- (id)accessibilityFocusedUIElement {
-    return _textView;
-}
-
-- (NSSearchField *)findSearchFieldIn:
-    (NSView *)theView // search the subviews for a view of class NSSearchField
-{
-    __block __weak NSSearchField * (^weak_findSearchField)(NSView *);
-    NSSearchField * (^findSearchField)(NSView *);
-    weak_findSearchField = findSearchField = ^(NSView *view) {
-        if ([view isKindOfClass:[NSSearchField class]])
-            return (NSSearchField *)view;
-        __block NSSearchField *foundView = nil;
-        [view.subviews enumerateObjectsUsingBlock:^(
-                           NSView *subview, NSUInteger idx, BOOL *stop) {
-            foundView = weak_findSearchField(subview);
-            if (foundView)
-                *stop = YES;
-        }];
-        return foundView;
-    };
-
-    return findSearchField(theView);
-}
-
-#pragma mark -
-#pragma mark Windows restoration
-
-+ (NSArray *)restorableStateKeyPaths {
-    return @[ @"textView.string" ];
-}
-
-- (void)window:(NSWindow *)window willEncodeRestorableState:(NSCoder *)state {
-    NSSearchField *searchField = [self findSearchFieldIn:window.contentView];
-    if (searchField) {
-        [state encodeObject:searchField.stringValue forKey:@"searchString"];
-    }
-    [state encodeObject:window.title forKey:@"title"];
-}
-
-- (void)window:(NSWindow *)window didDecodeRestorableState:(NSCoder *)state {
-    [window setTitle:[state decodeObjectOfClass:[NSString class] forKey:@"title"]];
-    NSString *searchString = [state decodeObjectOfClass:[NSString class] forKey:@"searchString"];
-    NSLog(@"Decoded search string %@", searchString);
-    if (searchString) {
-        NSTextFinder *newFinder = _textView.textFinder;
-        [newFinder performAction:NSTextFinderActionShowFindInterface];
-        NSSearchField *searchField =
-            [self findSearchFieldIn:window.contentView];
-        if (searchField) {
-            searchField.stringValue = searchString;
-            [newFinder cancelFindIndicator];
-            [window makeFirstResponder:_textView];
-            [searchField sendAction:searchField.action to:searchField.target];
-        }
-    }
-}
 
 @end

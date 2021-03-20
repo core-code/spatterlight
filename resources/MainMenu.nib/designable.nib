@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -26,11 +26,7 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129">
-                                <connections>
-                                    <action selector="showPrefs:" target="248" id="358"/>
-                                </connections>
-                            </menuItem>
+                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -70,93 +66,6 @@
                 <menuItem title="File" id="250">
                     <menu key="submenu" title="File" id="251">
                         <items>
-                            <menuItem title="Open Game…" keyEquivalent="o" id="252">
-                                <connections>
-                                    <action selector="openDocument:" target="-1" id="254"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Add to Library…" keyEquivalent="o" id="398">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                <connections>
-                                    <action selector="addGamesToLibrary:" target="-1" id="399"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Open Recent" id="420">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="429">
-                                    <items>
-                                        <menuItem title="Clear Menu" id="430">
-                                            <connections>
-                                                <action selector="clearRecentDocuments:" target="-1" id="435"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="389">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
-                            <menuItem title="Import Metadata…" id="400">
-                                <connections>
-                                    <action selector="importMetadata:" target="-1" id="403"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Export Metadata…" id="401">
-                                <connections>
-                                    <action selector="exportMetadata:" target="-1" id="404"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Delete Library…" id="402">
-                                <connections>
-                                    <action selector="deleteLibrary:" target="-1" id="405"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Prune Library…" alternate="YES" id="407">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                <connections>
-                                    <action selector="pruneLibrary:" target="-1" id="880"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="406">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
-                            <menuItem title="Clear Scrollback" keyEquivalent="k" id="387">
-                                <connections>
-                                    <action selector="clearScrollback:" target="-1" id="388"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Save Scrollback…" keyEquivalent="s" id="275">
-                                <connections>
-                                    <action selector="saveAsRTF:" target="-1" id="278"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" title="Save History..." id="390">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
-                            <menuItem title="Reveal in Finder" keyEquivalent="r" id="391">
-                                <connections>
-                                    <action selector="revealGameInFinder:" target="-1" id="394"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Show Info" keyEquivalent="i" id="392">
-                                <connections>
-                                    <action selector="showGameInfo:" target="-1" id="393"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Play Game" keyEquivalent="p" id="395">
-                                <connections>
-                                    <action selector="play:" target="-1" id="881"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Reset Game" keyEquivalent="r" id="872">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                <connections>
-                                    <action selector="reset:" target="-1" id="874"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="397">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
                             <menuItem title="Close Window" keyEquivalent="w" id="253">
                                 <connections>
                                     <action selector="performClose:" target="-1" id="255"/>
@@ -310,12 +219,6 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="689"/>
-                            <menuItem title="Show Sidebar" keyEquivalent="s" id="876">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                <connections>
-                                    <action selector="toggleSidebar:" target="-1" id="878"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Enter Full Screen" keyEquivalent="f" id="687">
                                 <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                 <connections>
@@ -341,11 +244,6 @@ CA
                             <menuItem isSeparatorItem="YES" id="92">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Interactive Fiction" keyEquivalent="1" id="353">
-                                <connections>
-                                    <action selector="showLibrary:" target="248" id="382"/>
-                                </connections>
-                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="352">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -368,34 +266,9 @@ CA
                             <menuItem isSeparatorItem="YES" id="355">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="GNU Public License" id="342">
-                                <connections>
-                                    <action selector="showHelpFile:" target="-1" id="343"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Glulxe License" id="440">
-                                <connections>
-                                    <action selector="showHelpFile:" target="-1" id="447"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Hugo License" id="344">
                                 <connections>
                                     <action selector="showHelpFile:" target="-1" id="446"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Alan License" id="442">
-                                <connections>
-                                    <action selector="showHelpFile:" target="-1" id="444"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="SDL License" id="346">
-                                <connections>
-                                    <action selector="showHelpFile:" target="-1" id="445"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Fonts License" id="882" userLabel="Menu Item - Fonts License">
-                                <connections>
-                                    <action selector="showHelpFile:" target="-1" id="883"/>
                                 </connections>
                             </menuItem>
                         </items>
