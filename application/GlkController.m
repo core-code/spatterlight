@@ -85,8 +85,6 @@ fprintf(stderr, "%s\n",                                                    \
         return nil;
     }
 
-    // We don't worry about glkdelegate or the dispatch hooks. (Because this will only be used through updateFromLibrary). Similarly, none of the windows need stylesets yet, and none of the file streams are really open.
-
     _autosaveTag = (glui32)[decoder decodeInt32ForKey:@"autosaveTag"];
 
     return self;
@@ -685,6 +683,14 @@ fprintf(stderr, "%s\n",                                                    \
 }
 
 - (void)restoreWindowWhenDead {
+
+    if (restoredController.showingCoverImage) {
+        dead = NO;
+        [self runTerpNormal];
+        return;
+    }
+
+
     dead = YES;
 
     [self.window setFrame:restoredController.storedWindowFrame display:NO];
@@ -1362,6 +1368,9 @@ fprintf(stderr, "%s\n",                                                    \
     [encoder encodeBool:_previewDummy forKey:@"previewDummy"];
     [encoder encodeInteger:_turns forKey:@"turns"];
     [encoder encodeObject:_theme.name forKey:@"oldThemeName"];
+
+    _showingCoverImage = (_coverController.imageView != nil);
+    [encoder encodeBool:_showingCoverImage forKey:@"showingCoverImage"];
 
     [encoder encodeBool:_commandScriptRunning forKey:@"commandScriptRunning"];
     if (_commandScriptRunning)
@@ -2136,7 +2145,6 @@ fprintf(stderr, "%s\n",                                                    \
 
 //        [self contentDidResize:newframe];
         _contentView.frame = newframe;
-        [self contentDidResize:newframe];
     }
 }
 
