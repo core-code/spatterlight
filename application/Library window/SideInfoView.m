@@ -209,22 +209,7 @@ fprintf(stderr, "%s\n",                                                    \
 
     [self addSubview:textField];
 
-    [self addConstraint:xPosConstraint];
-    [self addConstraint:yPosConstraint];
-    [self addConstraint:widthConstraint];
-    [self addConstraint:rightMarginConstraint];
-
-    if (space != 23) {
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:textField
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1.0
-                                                                         constant: contentRect.size.height + 1];
-
-    [self addConstraint:heightConstraint];
-    }
+    [self addConstraints:@[ xPosConstraint, yPosConstraint ,widthConstraint, rightMarginConstraint ]];
 
     totalHeight += NSHeight(textField.bounds) + space;
 
@@ -359,6 +344,7 @@ fprintf(stderr, "%s\n",                                                    \
         [self addConstraint:yPosConstraint];
         [self addConstraint:widthConstraint];
         [self addConstraint:heightConstraint];
+
         rightMarginConstraint.priority = 999;
         [self addConstraint:rightMarginConstraint];
 
@@ -749,6 +735,16 @@ fprintf(stderr, "%s\n",                                                    \
     } else {
         [_downloadButton removeFromSuperview];
     }
+}
+
+- (void)updateTitle {
+
+    Metadata *somedata = _game.metadata;
+
+    if (somedata.blurb == nil && somedata.author == nil && somedata.headline == nil && somedata.cover == nil) {
+        return;
+    }
+    [titleField sizeToFit];
 }
 
 #pragma mark Download button
