@@ -596,6 +596,7 @@
 		C38BE433263AEAA60091B17A /* ParagraphPopOver.xib in Resources */ = {isa = PBXBuildFile; fileRef = C38BE432263AEAA60091B17A /* ParagraphPopOver.xib */; };
 		C39DE2601ECB76A100CE5B70 /* glk.c in Sources */ = {isa = PBXBuildFile; fileRef = C39DE25F1ECB76A100CE5B70 /* glk.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C39DE2621ECB76C400CE5B70 /* bitmap.c in Sources */ = {isa = PBXBuildFile; fileRef = C39DE2611ECB76C400CE5B70 /* bitmap.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C3A8F5C92677250300E94E44 /* CALayer+image.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8F5C82677250300E94E44 /* CALayer+image.m */; };
 		C3AD63D42617648D008614C5 /* MyAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AD63D32617648D008614C5 /* MyAttachmentCell.m */; };
 		C3AD640926176589008614C5 /* MarginContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AD640826176589008614C5 /* MarginContainer.m */; };
 		C3AD642526176737008614C5 /* BufferTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AD642426176737008614C5 /* BufferTextView.m */; };
@@ -2601,6 +2602,8 @@
 		C39DE2611ECB76C400CE5B70 /* bitmap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bitmap.c; path = terps/level9/bitmap.c; sourceTree = SOURCE_ROOT; };
 		C39DE2631ECB799500CE5B70 /* heglk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = heglk.c; path = heglk/heglk.c; sourceTree = "<group>"; };
 		C3A2C66421C0D3F6003C4A15 /* SDL */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SDL; path = headers/SDL; sourceTree = SOURCE_ROOT; };
+		C3A8F5C72677250300E94E44 /* CALayer+image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CALayer+image.h"; sourceTree = "<group>"; };
+		C3A8F5C82677250300E94E44 /* CALayer+image.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CALayer+image.m"; sourceTree = "<group>"; };
 		C3AD63D22617648D008614C5 /* MyAttachmentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyAttachmentCell.h; sourceTree = "<group>"; };
 		C3AD63D32617648D008614C5 /* MyAttachmentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyAttachmentCell.m; sourceTree = "<group>"; };
 		C3AD640726176589008614C5 /* MarginContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarginContainer.h; sourceTree = "<group>"; };
@@ -2958,6 +2961,8 @@
 				C3075512265C2D2E00931D5B /* NSData+Categories.m */,
 				C3B7280E2667934100E9B08D /* NSImage+Categories.h */,
 				C3B7280F2667934100E9B08D /* NSImage+Categories.m */,
+				C3A8F5C72677250300E94E44 /* CALayer+image.h */,
+				C3A8F5C82677250300E94E44 /* CALayer+image.m */,
 				C3191A9F266CDD1200528F6E /* NSView+snapshot.h */,
 				C3191AA0266CDD1200528F6E /* NSView+snapshot.m */,
 				C3191AA2266D3A1F00528F6E /* NSBitmapImageRep+retro.h */,
@@ -6187,6 +6192,7 @@
 				6DCDF48A244CD97100EB5D3B /* Spatterlight.xcdatamodeld in Sources */,
 				6DB8C1E924599DF9002CDCCB /* ZColor.m in Sources */,
 				6D212738246BDC4E00D775A8 /* NSColor+integer.m in Sources */,
+				C3A8F5C92677250300E94E44 /* CALayer+image.m in Sources */,
 				6DC1FAEF252A5A5900540C6E /* Metadata.m in Sources */,
 				6DC1FAF5252A5C8A00540C6E /* Theme.m in Sources */,
 			);

@@ -10,15 +10,17 @@
 @implementation NSView (snapshot)
 
 - (NSBitmapImageRep *)snapshotRep {
-    NSBitmapImageRep *bitmap = [self bitmapImageRepForCachingDisplayInRect:self.bounds];
-    [self cacheDisplayInRect:self.bounds toBitmapImageRep:bitmap];
+    NSBitmapImageRep *bitmap = [self bitmapImageRepForCachingDisplayInRect:[self visibleRect]];
+    [self cacheDisplayInRect:[self visibleRect] toBitmapImageRep:bitmap];
     return bitmap;
 }
 
 - (NSImage *)snapshot {
     NSBitmapImageRep *bitmap = [self snapshotRep];
-    NSImage *image = [[NSImage alloc] initWithSize:self.bounds.size];
-    [image addRepresentation:bitmap];
+    if (!bitmap) {
+        return nil;
+    }
+    NSImage *image = [[NSImage alloc] initWithCGImage:bitmap.CGImage size:self.bounds.size];
     return image;
 }
 
