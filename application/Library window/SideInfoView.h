@@ -22,6 +22,5 @@
 - (void)updateSideViewWithGame:(Game *)somegame;
 - (void)updateSideViewWithString:(NSString *)string;
 - (void)deselectImage;
-- (void)updateTitle;
 
 @end
