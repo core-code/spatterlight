@@ -2250,7 +2250,7 @@ objectValueForTableColumn: (NSTableColumn*)column
     if (NSWidth(_leftView.frame) < ACTUAL_LEFT_VIEW_MIN_WIDTH)
         return;
     
-    SideInfoView *infoView = [[SideInfoView alloc] initWithFrame:_leftScrollView.frame];
+    SideInfoView *infoView = [[SideInfoView alloc] initWithFrame:_leftScrollView.bounds];
     
     _leftScrollView.documentView = infoView;
 //    _sideIfid.delegate = infoView;
