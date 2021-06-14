@@ -1344,6 +1344,7 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
                         if ([Blorb isBlorbURL:[NSURL fileURLWithPath:path]]) {
                             Blorb *blorb = [[Blorb alloc] initWithData:[NSData dataWithContentsOfFile:path]];
                             imgdata = [blorb coverImageData];
+                            game.metadata.coverArtURL = path;
                         }
                     }
                     babel_release_ctx(context);
@@ -1351,7 +1352,7 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
 
                 if (imgdata) {
                     IFDBDownloader *downloader = [[IFDBDownloader alloc] initWithContext:private];
-                    [downloader insertImage:imgdata inMetadata:meta];
+                    [downloader insertImageData:imgdata inMetadata:meta];
                 }
 
             } else NSLog (@"Error! Could not create Game entity for game with ifid %@ and path %@", ifid, [games valueForKey:ifid]);
