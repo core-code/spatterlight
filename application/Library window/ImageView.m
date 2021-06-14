@@ -71,37 +71,39 @@
     if (!anImage && game.metadata.cover.data)
         anImage = [[NSImage alloc] initWithData:(NSData *)game.metadata.cover.data];
     if (anImage)
-        self = [super initWithFrame:NSMakeRect(0, 0, anImage.size.width, anImage.size.height)];
+        self = [self initWithFrame:NSMakeRect(0, 0, anImage.size.width, anImage.size.height)];
     else
-        self = [super initWithFrame:NSZeroRect];
+        self = [self initWithFrame:NSZeroRect];
     if (self) {
         _image = anImage;
         _game = game;
 
-        self.enabled = YES;
-        nonURLTypes = [NSSet setWithObjects:NSPasteboardTypeTIFF, NSPasteboardTypePNG, nil];
-        _acceptableTypes = [NSSet setWithObject:NSURLPboardType];
-        _acceptableTypes = [_acceptableTypes setByAddingObjectsFromSet:nonURLTypes];
-
-        [self registerForDraggedTypes:_acceptableTypes.allObjects];
-
-        _numberForSelfSourcedDrag = NSNotFound;
-
-        self.accessibilityLabel = game.metadata.coverArtDescription;
-        if (!self.accessibilityLabel.length)
-            self.accessibilityLabel = [NSString stringWithFormat:@"cover image for %@", game.metadata.title];
         if (_image)
             [self processImage:_image];
-        [self updateLayer];
-
     }
     return self;
 }
 
+// This is called when loaded from InfoPanel.nib
+- (instancetype)initWithFrame:(NSRect)frameRect {
+    self = [super initWithFrame:frameRect];
+    if (self) {
+        self.enabled = YES;
+        nonURLTypes = [NSSet setWithObjects:NSPasteboardTypeTIFF, NSPasteboardTypePNG, nil];
+        _acceptableTypes = [NSSet setWithObject:NSURLPboardType];
+        _acceptableTypes = [_acceptableTypes setByAddingObjectsFromSet:nonURLTypes];
+        [self registerForDraggedTypes:_acceptableTypes.allObjects];
+        _numberForSelfSourcedDrag = NSNotFound;
+    }
+    return self;
+}
+
+
 - (void)processImage:(NSImage *)image {
+    _image = image;
     CALayer *layer = [CALayer layer];
 
-    NSImageRep *rep = [[_image representations] objectAtIndex:0];
+    NSImageRep *rep = [[image representations] objectAtIndex:0];
     NSSize sizeInPixels = NSMakeSize(rep.pixelsWide, rep.pixelsHigh);
 
     layer.magnificationFilter = sizeInPixels.width < 350 ? kCAFilterNearest : kCAFilterTrilinear;
@@ -114,6 +116,10 @@
     layer.contents = image;
 
     self.layer = layer;
+
+    self.accessibilityLabel = _game.metadata.coverArtDescription;
+    if (!self.accessibilityLabel.length)
+        self.accessibilityLabel = [NSString stringWithFormat:@"cover image for %@", _game.metadata.title];
 }
 
 - (BOOL)acceptsFirstResponder {
@@ -134,16 +140,29 @@
 
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
-
-    if (menuItem.action == @selector(cut:) || menuItem.action == @selector(copy:) || menuItem.action == @selector(delete:) || menuItem.action == @selector(paste:)) {
-
-        return YES;
+    if (menuItem.action == @selector(paste:)) {
+        NSPasteboard *pasteBoard = [NSPasteboard  generalPasteboard];
+        if ([pasteBoard canReadObjectForClasses:@[[NSURL class]] options:@{ NSPasteboardURLReadingContentsConformToTypesKey:[NSImage imageTypes]}]) {
+            return YES;
+        } else {
+            NSMutableSet *types = [NSMutableSet setWithArray:pasteBoard.types];
+            [types intersectSet:_acceptableTypes];
+            if (types.count)
+                return YES;
+        }
+        return NO;
+    }
+    
+    if (menuItem.action == @selector(cut:) || menuItem.action == @selector(copy:) || menuItem.action == @selector(delete:)) {
+        return !_isPlaceholder;
     }
 
-    return NO;
+    return YES;
 }
 
 - (void)cut:(id)sender {
+    if (_isPlaceholder)
+        return;
     NSLog(@"cut:");
     [self copy:nil];
     //Delete the cover relation of the Metadata object
@@ -155,6 +174,8 @@
 }
 
 - (void)copy:(id)sender {
+    if (_isPlaceholder)
+        return;
     NSLog(@"copy:");
     NSPasteboard *pb = [NSPasteboard  generalPasteboard];
     [pb clearContents];
@@ -162,6 +183,8 @@
 }
 
 - (void)delete:(id)sender {
+    if (_isPlaceholder)
+        return;
     NSLog(@"delete:");
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = NSLocalizedString(@"Are you sure?", nil);
@@ -183,23 +206,31 @@
 }
 
 - (void)paste:(id)sender {
-    NSLog(@"paste:");
     NSPasteboard *pb = [NSPasteboard  generalPasteboard];
-
     NSArray *objects = [pb readObjectsForClasses:@[[NSURL class], [NSImage class]] options:nil];
 
     for (id item in objects) {
         if ([item isKindOfClass:[NSImage class]]) {
+            _game.metadata.coverArtURL = @"pasteboard";
             [self replaceCoverImage:(NSImage *)item];
             break;
         } else if ([item isKindOfClass:[NSURL class]]) {
             NSImage *image = [[NSImage alloc] initWithContentsOfURL:(NSURL *)item];
             if (image) {
+                _game.metadata.coverArtURL = ((NSURL *)item).path;
                 [self replaceCoverImage:image];
                 break;
             }
         }
     }
+}
+
+- (void)keyDown:(NSEvent *)event {
+    unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
+    if (!_isPlaceholder && (key == NSDeleteCharacter || key == NSBackspaceCharacter))
+        [self delete:nil];
+    else
+        [super keyDown:event];
 }
 
 - (BOOL)shouldAllowDrag:(id<NSDraggingInfo>)draggingInfo {
@@ -232,12 +263,10 @@
 - (void)draggingExited:(id<NSDraggingInfo>)sender {
     _isReceivingDrag = NO;
     [self updateLayer];
-    [self setNeedsDisplay:YES];
 }
 
 - (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
     BOOL allow = [self shouldAllowDrag:sender];
-    [self setNeedsDisplay:YES];
     return allow;
 }
 
@@ -256,11 +285,13 @@
         NSURL *url = urls.firstObject;
         image = [[NSImage alloc] initWithContentsOfURL:url];
         if (image) {
+            _game.metadata.coverArtURL = url.path;
             [self replaceCoverImage:image];
             return YES;
         } else {
             NSData *data = [NSData imageDataFromRetroURL:url];
             if (data) {
+                _game.metadata.coverArtURL = url.path;
                 [self processImageData:data];
                 return YES;
             }
@@ -268,6 +299,7 @@
     } else {
         image = [[NSImage alloc] initWithPasteboard:pasteBoard];
         if (image) {
+            _game.metadata.coverArtURL = @"pasteboard";
             [self replaceCoverImage:image];
             return YES;
         }
@@ -318,22 +350,19 @@
     _isSelected = YES;
     [self.window makeFirstResponder:self];
     [super mouseDown:event];
-   [self updateLayer];
+    [self updateLayer];
 }
 
 
 - (void)mouseDragged:(NSEvent*)event
 {
+    if (_isPlaceholder)
+        return;
     MyFilePromiseProvider *provider = [[MyFilePromiseProvider alloc] initWithFileType: NSPasteboardTypePNG delegate:self];
 
     NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:provider];
 
-    for (CALayer *sub in self.layer.sublayers)
-        [sub removeFromSuperlayer];
-    NSImage *snapshot = [self snapshot];
-    [self updateLayer];
-
-    [dragItem setDraggingFrame:self.bounds contents:snapshot];
+    [dragItem setDraggingFrame:self.bounds contents:self.image];
 
     NSDraggingSession *session = [self beginDraggingSessionWithItems:@[dragItem] event:event source:self];
     _numberForSelfSourcedDrag = session.draggingSequenceNumber;
@@ -356,12 +385,11 @@
     NSData *bitmapData = [self pngData];
 
 
-    NSError *error = nil;
+//    NSError *error = nil;
 
     if (![bitmapData writeToFile:url.path atomically:YES]) {
-        NSLog(@"Error: %@", error);
+        NSLog(@"Error: Could not write PNG data to url %@", url.path);
 //        completionHandler(error);
-
         // TODO handle the error
     }
 
@@ -371,31 +399,12 @@
 
 
 - (NSData *)pngData {
+    if (!self.image)
+        NSLog(@"No image?");
     NSBitmapImageRep *bitmaprep = [self.image bitmapImageRepresentation];
 
     NSDictionary *props = @{ NSImageInterlaced: @(NO) };
     return [NSBitmapImageRep representationOfImageRepsInArray:@[bitmaprep] usingType:NSBitmapImageFileTypePNG properties:props];
 }
-
-- (void)pasteboard:(nullable NSPasteboard *)pasteboard item:(nonnull NSPasteboardItem *)item provideDataForType:(nonnull NSPasteboardType)type {
-
-    NSLog(@"pasteboard %@ item %@ provideDataForType: %@", pasteboard, item, type);
-
-    if ( [type isEqual: NSPasteboardTypeTIFF]) {
-
-        //set data for TIFF type on the pasteboard as requested
-        [pasteboard setData:[[self image] TIFFRepresentation] forType:NSPasteboardTypeTIFF];
-
-    } else if ( [type isEqual: NSPasteboardTypePDF] ) {
-
-        //set data for PDF type on the pasteboard as requested
-        [pasteboard setData:[self dataWithPDFInsideRect:[self bounds]] forType:NSPasteboardTypePDF];
-    } else if ( [type isEqual:  NSPasteboardTypePNG] ) {
-
-        //set data for PDF type on the pasteboard as requested
-        [pasteboard setData:[self pngData] forType:NSPasteboardTypePNG];
-    }
-}
-
 
 @end
