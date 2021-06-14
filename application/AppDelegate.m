@@ -135,6 +135,10 @@ NSDictionary *gFormatMap;
     _prefctl.libcontroller = _libctl;
 }
 
+- (IBAction)pruneLibrary:(id)sender{
+    [_libctl pruneLibrary:sender];
+}
+
 #pragma mark -
 #pragma mark License window
 
