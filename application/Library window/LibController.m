@@ -292,10 +292,11 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
 }
 
 - (void)lateStartupChecks {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasConvertedLibrary"] == NO) {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"HasConvertedLibrary"] == NO) {
         [self convertLibraryToCoreData];
     }
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasAskedToDownload"] == NO) {
+    if ([defaults boolForKey:@"HasAskedToDownload"] == NO) {
         [self askToDownload];
     }
 }
@@ -493,6 +494,12 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
     [panel setAllowsMultipleSelection:YES];
     [panel setCanChooseDirectories:YES];
     panel.prompt = NSLocalizedString(@"Add", nil);
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    _lookForCoverImagesCheckBox.state = [defaults boolForKey:@"LookForImagesWhenImporting"];
+    _downloadGameInfoCheckBox.state = [defaults boolForKey:@"DownloadInfoWhenImporting"];
+    
+
     panel.accessoryView = _downloadCheckboxView;
     panel.allowedFileTypes = gGameFileTypes;
 
@@ -502,7 +509,14 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
                   completionHandler:^(NSInteger result) {
         if (result == NSModalResponseOK) {
             NSArray *urls = panel.URLs;
-            [weakSelf addInBackground:urls lookForImages:weakSelf.lookForCoverImagesCheckBox.state ? YES : NO downloadInfo:weakSelf.downloadGameInfoCheckBox.state ? YES : NO];
+            
+            BOOL lookForImages = weakSelf.lookForCoverImagesCheckBox.state ? YES : NO;
+            BOOL downloadInfo = weakSelf.downloadGameInfoCheckBox.state ? YES : NO;
+
+            [defaults setBool:lookForImages forKey:@"LookForImagesWhenImporting"];
+            [defaults setBool:downloadInfo forKey:@"DownloadInfoWhenImporting"];
+
+            [weakSelf addInBackground:urls lookForImages:lookForImages downloadInfo:downloadInfo];
         }
     }];
 }
