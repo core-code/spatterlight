@@ -1430,7 +1430,7 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
 
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = NSLocalizedString(@"Do you want to download game info from IFDB?", nil);
-        alert.informativeText = @"You can always do this later by selecting games and choosing Download Info from the contextual menu.";
+        alert.informativeText = NSLocalizedString(@"You can always do this later by selecting games and choosing Download Info from the contextual menu.", nil);
         [alert addButtonWithTitle:NSLocalizedString(@"Okay", nil)];
         [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
 
