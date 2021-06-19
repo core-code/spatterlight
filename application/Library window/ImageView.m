@@ -396,15 +396,62 @@
 {
     if (_isPlaceholder)
         return;
-    MyFilePromiseProvider *provider = [[MyFilePromiseProvider alloc] initWithFileType: NSPasteboardTypePNG delegate:self];
+    if (@available(macOS 10.14, *)) {
 
-    NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:provider];
+        MyFilePromiseProvider *provider = [[MyFilePromiseProvider alloc] initWithFileType: NSPasteboardTypePNG delegate:self];
 
-    [dragItem setDraggingFrame:self.bounds contents:self.image];
+        NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:provider];
 
-    NSDraggingSession *session = [self beginDraggingSessionWithItems:@[dragItem] event:event source:self];
-    _numberForSelfSourcedDrag = session.draggingSequenceNumber;
+        [dragItem setDraggingFrame:self.bounds contents:self.image];
+        NSDraggingSession *session = [self beginDraggingSessionWithItems:@[dragItem] event:event source:self];
+        _numberForSelfSourcedDrag = session.draggingSequenceNumber;
+
+    } else {
+
+        NSPoint dragPosition;
+        NSRect imageLocation;
+
+        dragPosition = [self convertPoint:[event locationInWindow] fromView:nil];
+        dragPosition.x -= 16;
+        dragPosition.y -= 16;
+        imageLocation.origin = dragPosition;
+        imageLocation.size = NSMakeSize(32,32);
+
+        [self dragPromisedFilesOfTypes:@[NSPasteboardTypePNG] fromRect:imageLocation source:self slideBack:YES event:event];
+    }
+
 }
+
+// For pre-10.14
+- (void)pasteboard:(NSPasteboard *)sender item:(NSPasteboardItem *)item provideDataForType:(NSString *)type
+{
+    NSLog(@"pasteboard: item: provideDataForType:");
+    //sender has accepted the drag and now we need to send the data for the type we promised
+    if ( [type isEqual:NSPasteboardTypePNG]) {
+
+        //set data for PNG type on the pasteboard as requested
+        [sender setData:[self pngData] forType:NSPasteboardTypePNG];
+
+    }
+
+}
+
+- (NSArray *)namesOfPromisedFilesDroppedAtDestination:(NSURL *)url
+{
+    NSLog(@"namesOfPromisedFilesDroppedAtDestination");
+    NSString *fileName = [_game.path.lastPathComponent.stringByDeletingPathExtension stringByAppendingPathExtension:@"png"];
+    if (!fileName.length)
+        fileName = @"image.png";
+
+    NSData *bitmapData = [self pngData];
+
+    if (! [bitmapData writeToFile:[url.path stringByAppendingPathComponent:fileName]  atomically:YES]) {
+        NSLog(@"Error: Could not write PNG data to url:%@", url.path);
+    }
+
+    return [NSArray arrayWithObjects:fileName, nil];
+}
+
 
 
 - (NSString *)filePromiseProvider:(NSFilePromiseProvider *)filePromiseProvider
@@ -426,7 +473,7 @@
     NSError *error = nil;
 
     if (![bitmapData writeToURL:url options:NSDataWritingAtomic error:&error]) {
-        NSLog(@"Error: Could not write PNG data to url %@", url.path);
+        NSLog(@"Error: Could not write PNG data to url %@: %@", url.path, error);
         completionHandler(error);
     }
 
