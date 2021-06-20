@@ -275,12 +275,17 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
 
     languageCodes = mutablelanguageCodes;
 
+    // Add metadata and games from plists to Core Data store if we have just created a new one
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasConvertedLibrary"] == NO) {
+        [self convertLibraryToCoreData];
+    }
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(noteManagedObjectContextDidChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:_managedObjectContext];
 
-    // Add metadata and games from plists to Core Data store if we have just created a new one
+
     _gameTableModel = [[self fetchObjects:@"Game" predicate:nil inContext:_managedObjectContext] mutableCopy];
 
     [self rebuildThemesSubmenu];
@@ -291,12 +296,9 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
     }
 }
 
-- (void)lateStartupChecks {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"HasConvertedLibrary"] == NO) {
-        [self convertLibraryToCoreData];
-    }
-    if ([defaults boolForKey:@"HasAskedToDownload"] == NO) {
+
+- (void)windowDidBecomeKey:(NSNotification *)notification {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasAskedToDownload"] == NO) {
         [self askToDownload];
     }
 }
@@ -1399,12 +1401,16 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
             [weakSelf endImporting];
             weakSelf.addButton.enabled = YES;
             weakSelf.currentlyAddingGames = NO;
+            [weakSelf askToDownload];
         });
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasConvertedLibrary"];
     }];
 }
 
 - (void)askToDownload {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasAskedToDownload"])
+        return;
+
     NSError *error = nil;
     NSArray *fetchedObjects;
 
@@ -1428,19 +1434,22 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
         if (fetchedObjects.count == 0)
             return;
 
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasAskedToDownload"];
+
         NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = NSLocalizedString(@"Do you want to download game info from IFDB?", nil);
-        alert.informativeText = NSLocalizedString(@"You can always do this later by selecting games and choosing Download Info from the contextual menu.", nil);
+        alert.messageText = NSLocalizedString(@"Do you want to download game info from IFDB in the background?", nil);
+        alert.informativeText = NSLocalizedString(@"This will only be done once. You can do this later by selecting games in the library and choosing Download Info from the contextual menu.", nil);
         [alert addButtonWithTitle:NSLocalizedString(@"Okay", nil)];
         [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
 
-        NSInteger choice = [alert runModal];
 
-        if (choice == NSAlertFirstButtonReturn) {
-            [self downloadGames:fetchedObjects];
-        }
+        [alert beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+
+            if (result == NSAlertFirstButtonReturn) {
+                [self downloadGames:fetchedObjects];
+            }
+        }];
     }
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasAskedToDownload"];
 }
 
 - (Metadata *)importMetadataFromXML:(NSData *)mdbuf inContext:(NSManagedObjectContext *)context {
