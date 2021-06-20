@@ -40,8 +40,8 @@ typedef enum kBZArrowsPrefsType : int32_t {
 } kBZArrowsPrefsType;
 
 typedef enum kImageReplacementPrefsType : int32_t {
-    kNeverReplace,
     kAlwaysReplace,
+    kNeverReplace,
     kAskIfReplace,
 } kImageReplacementPrefsType;
 

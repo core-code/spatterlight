@@ -1630,10 +1630,7 @@ textShouldEndEditing:(NSText *)fieldEditor {
     [self changeMenuAttribute:@"errorHandling" fromPopUp:sender];
 }
 - (IBAction)changeImageReplacePopup:(NSPopUpButton *)sender {
-    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"ImageReplacement"] == sender.selectedTag)
-        return;
-
-    [[NSUserDefaults standardUserDefaults]  setInteger:sender.selectedTag forKey:@"ImageReplacement"];
+        [[NSUserDefaults standardUserDefaults] setInteger:sender.selectedTag forKey:@"ImageReplacement"];
 }
 
 - (IBAction)changeShowCoverImage:(id)sender {

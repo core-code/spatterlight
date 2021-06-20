@@ -143,7 +143,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="55Y-5M-4dK">
                                                 <rect key="frame" x="0.0" y="0.0" width="434" height="209"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <autoresizingMask key="autoresizingMask"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" autosaveName="ThemesTable" rowSizeStyle="automatic" viewBased="YES" id="676">
                                                         <rect key="frame" x="0.0" y="0.0" width="434" height="209"/>
@@ -1419,13 +1419,13 @@
                                         <popUpButton toolTip="Whether to replace any existing cover images when downloading new metadata." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c9J-1h-Raa" userLabel="Image replacement popup">
                                             <rect key="frame" x="273" y="45" width="176" height="25"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <popUpButtonCell key="cell" type="push" title="Don't replace images" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="bmY-pg-Bhf" id="Kc8-cm-DiO">
+                                            <popUpButtonCell key="cell" type="push" title="Don't replace images" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="bmY-pg-Bhf" id="Kc8-cm-DiO">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="menu"/>
                                                 <menu key="menu" id="Cte-jk-UVF">
                                                     <items>
-                                                        <menuItem title="Don't replace images" state="on" id="bmY-pg-Bhf" userLabel="Don't replace"/>
-                                                        <menuItem title="Always replace images" tag="1" id="LfT-Jm-YdF" userLabel="Always replace"/>
+                                                        <menuItem title="Don't replace images" tag="1" id="bmY-pg-Bhf" userLabel="Don't replace"/>
+                                                        <menuItem title="Always replace images" state="on" id="LfT-Jm-YdF" userLabel="Always replace"/>
                                                         <menuItem title="Ask about images" tag="2" id="cbV-Ai-FlI" userLabel="Ask"/>
                                                     </items>
                                                 </menu>
