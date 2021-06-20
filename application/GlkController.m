@@ -247,7 +247,13 @@ fprintf(stderr, "%s\n",                                                    \
 
     NSURL *url = [game urlForBookmark];
     _gamefile = url.path;
-    [_imageHandler cacheImagesFromBlorb:url];
+
+    GlkController * __unsafe_unretained weakSelf = self;
+
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [weakSelf.imageHandler cacheImagesFromBlorb:url];
+//        [weakSelf.soundHandler cacheSoundsFromBlorb:url];
+    });
 
     _terpname = terpname_;
 
@@ -2904,7 +2910,7 @@ fprintf(stderr, "%s\n",                                                    \
              * Load images; load and play sounds
              */
 
-#pragma mark Load images; load and play sounds
+#pragma mark    
 
         case FINDIMAGE:
             ans->cmd = OKAY;
@@ -2935,11 +2941,13 @@ fprintf(stderr, "%s\n",                                                    \
             break;
 
         case FINDSOUND:
+            NSLog(@"FINDSOUND");
             ans->cmd = OKAY;
             ans->a1 = [_soundHandler handleFindSoundNumber:req->a1];
             break;
 
         case LOADSOUND:
+            NSLog(@"LOADSOUND");
             buf[req->len] = 0;
             [_soundHandler handleLoadSoundNumber:req->a1
                                             from:[NSString stringWithCString:buf encoding:NSUTF8StringEncoding]
@@ -2955,6 +2963,7 @@ fprintf(stderr, "%s\n",                                                    \
             break;
 
         case PLAYSOUND:
+            NSLog(@"LOADSOUND");
             [_soundHandler handlePlaySoundOnChannel:req->a1 repeats:req->a2 notify:req->a3];
             break;
 

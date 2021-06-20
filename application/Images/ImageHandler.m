@@ -193,11 +193,14 @@
         return;
     Blorb *blorb = [[Blorb alloc] initWithData:[NSData dataWithContentsOfFile:file.path]];
     NSArray *resources = [blorb resourcesForUsage:PictureResource];
+    ImageFile *imagefile = [[ImageFile alloc] initWithPath:file.path];
+    _files[file.path] = imagefile;
     for (BlorbResource *res in resources) {
         NSInteger resno = res.number;
         NSData *data = [blorb dataForResource:res];
         ImageResource *imgres = [[ImageResource alloc] initWithFilename:file.path offset:res.start length:data.length];
         imgres.data = data;
+        imgres.imageFile = imagefile;
         imgres.a11yDescription = res.descriptiontext;
         _resources[@(resno)] = imgres;
 //        if (res.descriptiontext)

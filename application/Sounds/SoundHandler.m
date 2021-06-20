@@ -14,6 +14,9 @@
 #import "GlkController.h"
 #import "GlkEvent.h"
 
+#import "Blorb.h"
+#import "BlorbResource.h"
+
 #define SDL_CHANNELS 64
 #define MAX_SOUND_RESOURCES 500
 
@@ -67,7 +70,7 @@
 @end
 
 
-@implementation SoundResource : NSObject
+@implementation SoundResourceObj : NSObject
 
 + (BOOL) supportsSecureCoding {
     return YES;
@@ -204,7 +207,7 @@
     _files = [decoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"files"];
     _resources = [decoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"resources"];
     if (_resources)
-        for (SoundResource *res in _resources.allValues) {
+        for (SoundResourceObj *res in _resources.allValues) {
             res.soundFile = _files[res.filename];
         }
     _restored_music_channel_id = (NSUInteger)[decoder decodeIntForKey:@"music_channel"];
@@ -242,7 +245,7 @@
 }
 
 - (BOOL)soundIsLoaded:(NSInteger)soundId {
-    SoundResource *resource = _resources[@(soundId)];
+    SoundResourceObj *resource = _resources[@(soundId)];
     if (resource)
         return (resource.data != nil);
     return NO;
@@ -280,10 +283,10 @@
 
 - (void)setSoundID:(NSInteger)snd filename:(nullable NSString *)filename length:(NSUInteger)length offset:(NSUInteger)offset {
 
-    SoundResource *res = _resources[@(snd)];
+    SoundResourceObj *res = _resources[@(snd)];
 
     if (res == nil) {
-        res = [[SoundResource alloc] initWithFilename:filename offset:offset length:length];
+        res = [[SoundResourceObj alloc] initWithFilename:filename offset:offset length:length];
         _resources[@(snd)] = res;
     } else if (res.data) {
         return;
@@ -390,10 +393,10 @@
     [_glkctl queueEvent:gev];
 }
 
--(NSInteger)load_sound_resource:(NSInteger)snd length:(NSUInteger *)len data:(char **)buf {
-
+- (kBlorbSoundFormatType)load_sound_resource:(NSInteger)snd length:(NSUInteger *)len data:(char **)buf {
+    NSLog(@"load_sound_resource");
     kBlorbSoundFormatType type = NONE;
-    SoundResource *resource = _resources[@(snd)];
+    SoundResourceObj *resource = _resources[@(snd)];
 
     if (resource)
     {
@@ -406,9 +409,33 @@
         *len = resource.length;
         *buf = (char *)resource.data.bytes;
         type = resource.type;
+    } else {
+        NSLog(@"no resource found");
     }
 
     return type;
+}
+
+- (void)cacheSoundsFromBlorb:(NSURL *)file {
+    if (![Blorb isBlorbURL:file])
+        return;
+    Blorb *blorb = [[Blorb alloc] initWithData:[NSData dataWithContentsOfFile:file.path]];
+    NSArray *resources = [blorb resourcesForUsage:SoundResource];
+    SoundFile *soundfile = [[SoundFile alloc] initWithPath:file.path];
+    _files[file.path] = soundfile;
+    for (BlorbResource *res in resources) {
+        NSInteger resno = res.number;
+        NSData *data = [blorb dataForResource:res];
+        SoundResourceObj *sndres = [[SoundResourceObj alloc] initWithFilename:file.path offset:res.start length:data.length];
+//        sndres.data = data;
+        sndres.soundFile = soundfile;
+        _resources[@(resno)] = sndres;
+        if (!sndres)
+            NSLog(@"Error!");
+//        sndres.type = [sndres detect_sound_format];
+        [sndres load];
+        NSLog(@"Cached sound %ld with path: %@ offset: %lu length: %ld type: %ld", resno, file.path, (unsigned long)sndres.offset, data.length, sndres.type);
+    }
 }
 
 @end

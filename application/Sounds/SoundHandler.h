@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end;
 
 
-@interface SoundResource : NSObject
+@interface SoundResourceObj : NSObject
 
 - (instancetype)initWithFilename:(NSString *)filename offset:(NSUInteger)offset length:(NSUInteger)length;
 
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SoundHandler : NSObject
 
-@property NSMutableDictionary <NSNumber *, SoundResource *> *resources;
+@property NSMutableDictionary <NSNumber *, SoundResourceObj *> *resources;
 @property NSMutableDictionary <NSNumber *, GlkSoundChannel *> *sdlchannels;
 @property NSMutableDictionary <NSNumber *, GlkSoundChannel *> *glkchannels;
 @property NSMutableDictionary <NSString *, SoundFile *> *files;
@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak) GlkController *glkctl;
 
-- (NSInteger)load_sound_resource:(NSInteger)snd length:(NSUInteger *)len data:(char * _Nonnull * _Nonnull)buf;
+- (kBlorbSoundFormatType)load_sound_resource:(NSInteger)snd length:(NSUInteger *)len data:(char * _Nonnull * _Nonnull)buf;
 
 - (void)restartAll;
 - (void)stopAllAndCleanUp;
@@ -89,6 +89,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleVolumeNotification:(NSInteger)notify;
 - (void)handleSoundNotification:(NSInteger)notify withSound:(NSInteger)sound;
+
+- (void)cacheSoundsFromBlorb:(NSURL *)file;
 
 @end
 

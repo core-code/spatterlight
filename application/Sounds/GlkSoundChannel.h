@@ -1,4 +1,4 @@
-@class SoundResource, SoundHandler;
+@class SoundResourceObj, SoundHandler;
 
 @interface GlkSoundChannel : NSObject
 

@@ -38,7 +38,7 @@ enum { CHANNEL_IDLE, CHANNEL_SOUND, CHANNEL_MUSIC };
     CGFloat volume_delta;
     NSTimer *timer;
     NSMutableDictionary <NSNumber *, GlkSoundChannel *> *sdlchannels;
-    NSMutableDictionary <NSNumber *, SoundResource *> *resources;
+    NSMutableDictionary <NSNumber *, SoundResourceObj *> *resources;
 }
 @end
 
@@ -92,7 +92,7 @@ static void *static_handler;
 - (void)play:(NSInteger)snd repeats:(NSInteger)areps notify:(NSInteger)anot
 {
     size_t len = 0;
-    NSInteger type;
+    kBlorbSoundFormatType type;
     NSUInteger result = 0;
     NSUInteger temppaused;
     char *buf = nil;
