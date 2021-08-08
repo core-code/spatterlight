@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class GlkSoundChannel, GlkController;
+@class GlkSoundChannel, GlkController, SoundHandler;
 
 typedef enum kBlorbSoundFormatType : NSInteger {
     NONE,
@@ -50,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSUInteger offset;
 @property NSUInteger length;
 @property kBlorbSoundFormatType type;
+@property (weak) SoundHandler *handler;
 
 @end
 
@@ -60,9 +61,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSMutableDictionary <NSNumber *, GlkSoundChannel *> *sdlchannels;
 @property NSMutableDictionary <NSNumber *, GlkSoundChannel *> *glkchannels;
 @property NSMutableDictionary <NSString *, SoundFile *> *files;
+@property NSCache *filecache;
 @property (nullable) GlkSoundChannel *music_channel;
 @property NSUInteger restored_music_channel_id;
 @property NSInteger lastsoundresno;
+
+@property NSOperationQueue *soundQueue;
 
 @property (weak) GlkController *glkctl;
 

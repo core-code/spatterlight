@@ -284,6 +284,7 @@
 
     if (res == nil) {
         res = [[SoundResource alloc] initWithFilename:filename offset:offset length:length];
+        res.handler = self;
         _resources[@(snd)] = res;
     } else if (res.data) {
         return;
@@ -409,6 +410,20 @@
     }
 
     return type;
+}
+
+@synthesize soundQueue = _soundQueue;
+
+- (NSOperationQueue *)soundQueue {
+    if (_soundQueue == nil) {
+        _soundQueue = [NSOperationQueue new];
+        _soundQueue.qualityOfService = NSQualityOfServiceUserInitiated;
+    }
+    return _soundQueue;
+}
+
+- (void)setSoundQueue:(NSOperationQueue *)soundQueue {
+    _soundQueue = soundQueue;
 }
 
 @end
