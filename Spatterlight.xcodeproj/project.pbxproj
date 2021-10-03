@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55773FC827003F6300F0B9E7 /* iFictionQuickLook.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C35978C025DA14A6004B1448 /* iFictionQuickLook.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		55773FCB27003F6300F0B9E7 /* SpatterlightQuickLook.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C311DEF525C472E500484639 /* SpatterlightQuickLook.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		55773FCE27003F6300F0B9E7 /* SpatterlightThumbnailer.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C322714A25CC214A0083BD5B /* SpatterlightThumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6D212738246BDC4E00D775A8 /* NSColor+integer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D212737246BDC4E00D775A8 /* NSColor+integer.m */; };
 		6D2C869C225E5291004A5A75 /* filesys.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D2C8688225E5291004A5A75 /* filesys.c */; };
 		6D2C869D225E5291004A5A75 /* filesys_c.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D2C868A225E5291004A5A75 /* filesys_c.c */; };
@@ -1079,33 +1076,12 @@
 			remoteGlobalIDString = 96FE875F09F3A11900D41D78;
 			remoteInfo = tads2;
 		};
-		C311DF0125C472E500484639 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C311DEF425C472E500484639;
-			remoteInfo = SpatterlightQuickLook;
-		};
-		C322715325CC214A0083BD5B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C322714925CC214A0083BD5B;
-			remoteInfo = SpatterlightThumbnailer;
-		};
 		C344B2C826E4D9B4004B0A8F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C344B2B326E4D9AC004B0A8F /* SFBAudioEngine.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 3210AB9017B9C05A00743639;
 			remoteInfo = SFBAudioEngine;
-		};
-		C35978CB25DA14A6004B1448 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C35978BF25DA14A6004B1448;
-			remoteInfo = iFictionQuickLook;
 		};
 		C35D51F426F21D18002E2F59 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1180,19 +1156,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		55773FD127003F6300F0B9E7 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				55773FCB27003F6300F0B9E7 /* SpatterlightQuickLook.appex in Embed App Extensions */,
-				55773FC827003F6300F0B9E7 /* iFictionQuickLook.appex in Embed App Extensions */,
-				55773FCE27003F6300F0B9E7 /* SpatterlightThumbnailer.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6DB774A02458B95E00EDC671 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
