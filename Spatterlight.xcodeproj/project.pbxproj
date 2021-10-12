@@ -3,13 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55773FC827003F6300F0B9E7 /* iFictionQuickLook.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C35978C025DA14A6004B1448 /* iFictionQuickLook.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		55773FCB27003F6300F0B9E7 /* SpatterlightQuickLook.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C311DEF525C472E500484639 /* SpatterlightQuickLook.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		55773FCE27003F6300F0B9E7 /* SpatterlightThumbnailer.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C322714A25CC214A0083BD5B /* SpatterlightThumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6D212738246BDC4E00D775A8 /* NSColor+integer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D212737246BDC4E00D775A8 /* NSColor+integer.m */; };
 		6D2C869C225E5291004A5A75 /* filesys.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D2C8688225E5291004A5A75 /* filesys.c */; };
 		6D2C869D225E5291004A5A75 /* filesys_c.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D2C868A225E5291004A5A75 /* filesys_c.c */; };
@@ -46,7 +43,7 @@
 		6D395C191EAD095E0070886C /* vm.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D5494371EAC1BC4003DA5C4 /* vm.c */; };
 		6D5494441EAC1BC4003DA5C4 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 6D5494291EAC1BC4003DA5C4 /* LICENSE */; };
 		6D54944C1EAC1BC4003DA5C4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6D5494321EAC1BC4003DA5C4 /* README.md */; };
-		6D5C1BD222BC2456009E03F2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D79B0DD223262CA008C9CB7 /* CoreData.framework */; };
+		6D5C1BD222BC2456009E03F2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D79B0DD223262CA008C9CB7 /* CoreData.framework */; platformFilter = maccatalyst; };
 		6D70DA80218B3F210022E13B /* Alan License.rtf in Copy Documentation Files */ = {isa = PBXBuildFile; fileRef = 6D70DA7C218B3EFC0022E13B /* Alan License.rtf */; };
 		6D73052122BFA9EB00DFC73C /* NSDate+relative.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D73051E22BFA9EB00DFC73C /* NSDate+relative.m */; };
 		6D73E55721873509009CD59A /* LibraryWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D73E55621873509009CD59A /* LibraryWindow.xib */; };
@@ -550,6 +547,8 @@
 		C311DF0325C472E500484639 /* SpatterlightQuickLook.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C311DEF525C472E500484639 /* SpatterlightQuickLook.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C3191A9E266CDAF300528F6E /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3191A9D266CDAF300528F6E /* ImageView.m */; };
 		C3191AA4266D3A1F00528F6E /* NSBitmapImageRep+retro.m in Sources */ = {isa = PBXBuildFile; fileRef = C3191AA3266D3A1F00528F6E /* NSBitmapImageRep+retro.m */; };
+		C31AF2F427165168007B7120 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D79B0DD223262CA008C9CB7 /* CoreData.framework */; };
+		C31AF2FA271652A0007B7120 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C31AF2F9271652A0007B7120 /* CoreSpotlight.framework */; };
 		C32036E51ED7738700FF60DF /* libglkimp.dylib in Copy Interpreter Files */ = {isa = PBXBuildFile; fileRef = 961CCE7B09F237E700528FF9 /* libglkimp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C321419426CEA6D600B49504 /* czech.z5 in Resources */ = {isa = PBXBuildFile; fileRef = C321419326CEA6D600B49504 /* czech.z5 */; };
 		C321419626CEA75A00B49504 /* praxix.z5 in Resources */ = {isa = PBXBuildFile; fileRef = C321419526CEA75A00B49504 /* praxix.z5 */; };
@@ -599,6 +598,8 @@
 		C35ED515256DD37A00C14847 /* InputHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = C35ED514256DD37A00C14847 /* InputHistory.m */; };
 		C363030C26ECF4CF0028FBC8 /* Ogg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C363030B26ECF4CF0028FBC8 /* Ogg.framework */; };
 		C363030D26ECF4CF0028FBC8 /* Ogg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C363030B26ECF4CF0028FBC8 /* Ogg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C36B3892271F710200756D94 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C36B3891271F710200756D94 /* InfoView.m */; };
+		C36B3895271F712700756D94 /* NonInterpolatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C36B3893271F712600756D94 /* NonInterpolatedImage.m */; };
 		C37238A926B6FB65002A4053 /* Spatterlight.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6DCDF488244CD97100EB5D3B /* Spatterlight.xcdatamodeld */; };
 		C374D1C326EE4E75006F430E /* SoundHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C374D1C226EE4E75006F430E /* SoundHandler.m */; };
 		C37E675D26E9844D0005873E /* MIDIChannel.mm in Sources */ = {isa = PBXBuildFile; fileRef = C37E675C26E9844D0005873E /* MIDIChannel.mm */; };
@@ -631,9 +632,6 @@
 		C3AD647326176982008614C5 /* FlowBreak.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AD647226176982008614C5 /* FlowBreak.m */; };
 		C3AD648F261769DB008614C5 /* MarginImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AD648E261769DB008614C5 /* MarginImage.m */; };
 		C3AD64DE26176DC5008614C5 /* GridTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3AD64DD26176DC5008614C5 /* GridTextView.m */; };
-		C3AE6BB525CF2A8300B7AB0A /* Blorb.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807B25C70F2F0040AE79 /* Blorb.m */; };
-		C3AE6BCF25CF2A9300B7AB0A /* iff.c in Sources */ = {isa = PBXBuildFile; fileRef = C3C180AE25C70FD80040AE79 /* iff.c */; };
-		C3AE6BD025CF2A9300B7AB0A /* BlorbResource.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807D25C70F2F0040AE79 /* BlorbResource.m */; };
 		C3AE6C9C25CF408100B7AB0A /* libbabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A9BA790A06558F001B5B9B /* libbabel.a */; };
 		C3B3773E1ECB99C0006432BE /* osstzprs.c in Sources */ = {isa = PBXBuildFile; fileRef = C3B3773D1ECB99BF006432BE /* osstzprs.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3B377401ECB99D6006432BE /* ostzposix.c in Sources */ = {isa = PBXBuildFile; fileRef = C3B3773F1ECB99D6006432BE /* ostzposix.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -674,9 +672,6 @@
 		C3B728102667934100E9B08D /* NSImage+Categories.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B7280F2667934100E9B08D /* NSImage+Categories.m */; };
 		C3B9EB4B25FA29F4002A406E /* AttributeDictionaryTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B9EB4A25FA29F4002A406E /* AttributeDictionaryTransformer.m */; };
 		C3B9EB6825FA3AEF002A406E /* ColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B9EB6725FA3AEF002A406E /* ColorTransformer.m */; };
-		C3C1807E25C70F300040AE79 /* Blorb.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807B25C70F2F0040AE79 /* Blorb.m */; };
-		C3C1807F25C70F300040AE79 /* BlorbResource.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C1807D25C70F2F0040AE79 /* BlorbResource.m */; };
-		C3C180AF25C70FD80040AE79 /* iff.c in Sources */ = {isa = PBXBuildFile; fileRef = C3C180AE25C70FD80040AE79 /* iff.c */; };
 		C3C180C825C717F30040AE79 /* IFCoverDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C180C725C717F30040AE79 /* IFCoverDescription.m */; };
 		C3C183D225F160C90050A2EF /* libbabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A9BA790A06558F001B5B9B /* libbabel.a */; };
 		C3C2053C268D304500DB7AE0 /* NotificationBezel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C20537268D304400DB7AE0 /* NotificationBezel.m */; };
@@ -730,6 +725,7 @@
 		C3EF065D1ECE5FF2008EED04 /* vmvec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 965036DC09F29EE60083E64E /* vmvec.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C3EF065F1ECE60D1008EED04 /* cgdate.c in Sources */ = {isa = PBXBuildFile; fileRef = C3EF065E1ECE60D0008EED04 /* cgdate.c */; };
 		C3F1078D259256AC00C9EC82 /* BureaucracyForm.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F1078C259256AC00C9EC82 /* BureaucracyForm.m */; };
+		C3F53C45271B509900538393 /* MyCoreDataCoreSpotlightDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F53C42271B509800538393 /* MyCoreDataCoreSpotlightDelegate.m */; };
 		C3F53C5E271BB8BE00538393 /* BlorbFramework.docc in Sources */ = {isa = PBXBuildFile; fileRef = C3F53C5D271BB8BE00538393 /* BlorbFramework.docc */; };
 		C3F53C5F271BB8BE00538393 /* BlorbFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = C3F53C5C271BB8BE00538393 /* BlorbFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C3F53C64271BB93300538393 /* iff.c in Sources */ = {isa = PBXBuildFile; fileRef = C3C180AE25C70FD80040AE79 /* iff.c */; };
@@ -1079,20 +1075,6 @@
 			remoteGlobalIDString = 96FE875F09F3A11900D41D78;
 			remoteInfo = tads2;
 		};
-		C311DF0125C472E500484639 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C311DEF425C472E500484639;
-			remoteInfo = SpatterlightQuickLook;
-		};
-		C322715325CC214A0083BD5B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C322714925CC214A0083BD5B;
-			remoteInfo = SpatterlightThumbnailer;
-		};
 		C344B2C826E4D9B4004B0A8F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C344B2B326E4D9AC004B0A8F /* SFBAudioEngine.xcodeproj */;
@@ -1100,33 +1082,12 @@
 			remoteGlobalIDString = 3210AB9017B9C05A00743639;
 			remoteInfo = SFBAudioEngine;
 		};
-		C35978CB25DA14A6004B1448 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C35978BF25DA14A6004B1448;
-			remoteInfo = iFictionQuickLook;
-		};
 		C35D51F426F21D18002E2F59 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 961CCEC309F239C100528FF9;
 			remoteInfo = Spatterlight;
-		};
-		C3AE85B8271B09D400C96126 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C311DEF425C472E500484639;
-			remoteInfo = SpatterlightQuickLook;
-		};
-		C3AE85BA271B09D700C96126 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 961CCE6009F2375A00528FF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C322714925CC214A0083BD5B;
-			remoteInfo = SpatterlightThumbnailer;
 		};
 		C3B61C4F1ECCDB4600607CE7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1180,19 +1141,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		55773FD127003F6300F0B9E7 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				55773FCB27003F6300F0B9E7 /* SpatterlightQuickLook.appex in Embed App Extensions */,
-				55773FC827003F6300F0B9E7 /* iFictionQuickLook.appex in Embed App Extensions */,
-				55773FCE27003F6300F0B9E7 /* SpatterlightThumbnailer.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6DB774A02458B95E00EDC671 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2728,10 +2676,12 @@
 		C311DF3C25C473B700484639 /* QuickLookThumbnailing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLookThumbnailing.framework; path = System/Library/Frameworks/QuickLookThumbnailing.framework; sourceTree = SDKROOT; };
 		C313318626FD48CD00593EF6 /* osspatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = osspatter.h; sourceTree = "<group>"; };
 		C313318826FD493300593EF6 /* osfrobtads.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = osfrobtads.h; sourceTree = "<group>"; };
-		C3191A9C266CDAF300528F6E /* ImageView.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = ImageView.h; sourceTree = "<group>"; };
 		C3191A9D266CDAF300528F6E /* ImageView.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		C3191AA2266D3A1F00528F6E /* NSBitmapImageRep+retro.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = "NSBitmapImageRep+retro.h"; sourceTree = "<group>"; };
 		C3191AA3266D3A1F00528F6E /* NSBitmapImageRep+retro.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = "NSBitmapImageRep+retro.m"; sourceTree = "<group>"; };
+		C31AF2F5271651C4007B7120 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		C31AF2F7271651E3007B7120 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		C31AF2F9271652A0007B7120 /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
 		C321419326CEA6D600B49504 /* czech.z5 */ = {isa = PBXFileReference; lastKnownFileType = file; path = czech.z5; sourceTree = "<group>"; };
 		C321419526CEA75A00B49504 /* praxix.z5 */ = {isa = PBXFileReference; lastKnownFileType = file; path = praxix.z5; sourceTree = "<group>"; };
 		C321419726CEA7B100B49504 /* etude.z5 */ = {isa = PBXFileReference; lastKnownFileType = file; path = etude.z5; sourceTree = "<group>"; };
@@ -2797,6 +2747,11 @@
 		C35ED513256DD37A00C14847 /* InputHistory.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = InputHistory.h; sourceTree = "<group>"; };
 		C35ED514256DD37A00C14847 /* InputHistory.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = InputHistory.m; sourceTree = "<group>"; };
 		C363030B26ECF4CF0028FBC8 /* Ogg.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Ogg.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C36B3890271F710200756D94 /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
+		C36B3891271F710200756D94 /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
+		C36B3893271F712600756D94 /* NonInterpolatedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NonInterpolatedImage.m; sourceTree = "<group>"; };
+		C36B3894271F712700756D94 /* NonInterpolatedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonInterpolatedImage.h; sourceTree = "<group>"; };
+		C36B3896271F718300756D94 /* ImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
 		C374D1C226EE4E75006F430E /* SoundHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundHandler.m; sourceTree = "<group>"; };
 		C376239726ADE2A6003FA055 /* Spatterlight 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Spatterlight 10.xcdatamodel"; sourceTree = "<group>"; };
 		C37E675A26E9844D0005873E /* MIDIChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDIChannel.h; sourceTree = "<group>"; };
@@ -2895,9 +2850,9 @@
 		C3B377A61ECBA4D5006432BE /* vmconnom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vmconnom.cpp; sourceTree = "<group>"; };
 		C3B7280E2667934100E9B08D /* NSImage+Categories.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = "NSImage+Categories.h"; sourceTree = "<group>"; };
 		C3B7280F2667934100E9B08D /* NSImage+Categories.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = "NSImage+Categories.m"; sourceTree = "<group>"; };
-		C3B9EB4925FA29F4002A406E /* AttributeDictionaryTransformer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = AttributeDictionaryTransformer.h; sourceTree = "<group>"; };
+		C3B9EB4925FA29F4002A406E /* AttributeDictionaryTransformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AttributeDictionaryTransformer.h; sourceTree = "<group>"; };
 		C3B9EB4A25FA29F4002A406E /* AttributeDictionaryTransformer.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = AttributeDictionaryTransformer.m; sourceTree = "<group>"; };
-		C3B9EB6625FA3AEF002A406E /* ColorTransformer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = ColorTransformer.h; sourceTree = "<group>"; };
+		C3B9EB6625FA3AEF002A406E /* ColorTransformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorTransformer.h; sourceTree = "<group>"; };
 		C3B9EB6725FA3AEF002A406E /* ColorTransformer.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = ColorTransformer.m; sourceTree = "<group>"; };
 		C3BB6A7026FC93FE009BE6DE /* h_le_c11.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = h_le_c11.h; sourceTree = "<group>"; };
 		C3BD71E32630E3350061E55C /* Spatterlight 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Spatterlight 7.xcdatamodel"; sourceTree = "<group>"; };
@@ -2974,6 +2929,8 @@
 		C3EF065E1ECE60D0008EED04 /* cgdate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cgdate.c; sourceTree = "<group>"; };
 		C3F1078B259256AC00C9EC82 /* BureaucracyForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BureaucracyForm.h; sourceTree = "<group>"; };
 		C3F1078C259256AC00C9EC82 /* BureaucracyForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BureaucracyForm.m; sourceTree = "<group>"; };
+		C3F53C42271B509800538393 /* MyCoreDataCoreSpotlightDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCoreDataCoreSpotlightDelegate.m; sourceTree = "<group>"; };
+		C3F53C44271B509900538393 /* MyCoreDataCoreSpotlightDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCoreDataCoreSpotlightDelegate.h; sourceTree = "<group>"; };
 		C3F53C5A271BB8BE00538393 /* BlorbFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BlorbFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3F53C5C271BB8BE00538393 /* BlorbFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlorbFramework.h; sourceTree = "<group>"; };
 		C3F53C5D271BB8BE00538393 /* BlorbFramework.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = BlorbFramework.docc; sourceTree = "<group>"; };
@@ -3046,9 +3003,11 @@
 			files = (
 				C3F53C6D271BBAC200538393 /* BlorbFramework.framework in Frameworks */,
 				96A9BBDA0A066F41001B5B9B /* libbabel.a in Frameworks */,
+				C31AF2F427165168007B7120 /* CoreData.framework in Frameworks */,
 				6D76780022B17AB200C80DDE /* QuartzCore.framework in Frameworks */,
 				C37E676226E992440005873E /* AudioToolbox.framework in Frameworks */,
 				C363030C26ECF4CF0028FBC8 /* Ogg.framework in Frameworks */,
+				C31AF2FA271652A0007B7120 /* CoreSpotlight.framework in Frameworks */,
 				6D5C1BD222BC2456009E03F2 /* CoreData.framework in Frameworks */,
 				C344B2CC26E4DA87004B0A8F /* SFBAudioEngine.framework in Frameworks */,
 				C37E676426E992590005873E /* AudioUnit.framework in Frameworks */,
@@ -3226,6 +3185,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C3CEC2C826A6D66800120469 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3F53C57271BB8BE00538393 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3584,6 +3550,8 @@
 				6DC6213F23A26078002DEF3B /* Image.m */,
 				6DC6213B23A26078002DEF3B /* Ifid.h */,
 				6DC6213C23A26078002DEF3B /* Ifid.m */,
+				C3F53C44271B509900538393 /* MyCoreDataCoreSpotlightDelegate.h */,
+				C3F53C42271B509800538393 /* MyCoreDataCoreSpotlightDelegate.m */,
 			);
 			name = coredata;
 			path = ../coredata;
@@ -4108,6 +4076,9 @@
 		961CCF6509F295CA00528FF9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C31AF2F9271652A0007B7120 /* CoreSpotlight.framework */,
+				C31AF2F7271651E3007B7120 /* CoreFoundation.framework */,
+				C31AF2F5271651C4007B7120 /* CoreServices.framework */,
 				C363030B26ECF4CF0028FBC8 /* Ogg.framework */,
 				C37E676326E992590005873E /* AudioUnit.framework */,
 				C37E676126E992440005873E /* AudioToolbox.framework */,
@@ -5315,6 +5286,10 @@
 				C311DEF925C472E500484639 /* PreviewViewController.h */,
 				C311DEFA25C472E500484639 /* PreviewViewController.m */,
 				C311DEFC25C472E500484639 /* PreviewViewController.xib */,
+				C36B3890271F710200756D94 /* InfoView.h */,
+				C36B3891271F710200756D94 /* InfoView.m */,
+				C36B3894271F712700756D94 /* NonInterpolatedImage.h */,
+				C36B3893271F712600756D94 /* NonInterpolatedImage.m */,
 				C311DEFF25C472E500484639 /* Info.plist */,
 				C311DF0025C472E500484639 /* SpatterlightQuickLook.entitlements */,
 			);
@@ -5365,7 +5340,7 @@
 				C38784F226582AE200B4D886 /* ImageCompareViewController.h */,
 				C38784F326582AE200B4D886 /* ImageCompareViewController.m */,
 				C38784F426582AE200B4D886 /* ImageCompareViewController.xib */,
-				C3191A9C266CDAF300528F6E /* ImageView.h */,
+				C36B3896271F718300756D94 /* ImageView.h */,
 				C3191A9D266CDAF300528F6E /* ImageView.m */,
 				C32DBFA426714EFE00AB5704 /* MyFilePromiseProvider.h */,
 				C32DBFA526714EFE00AB5704 /* MyFilePromiseProvider.m */,
@@ -5435,19 +5410,6 @@
 				961CCEE809F239E700528FF9 /* GlkTextGridWindow.m */,
 			);
 			path = GlkTextGridWindow;
-			sourceTree = "<group>";
-		};
-		C3C1809625C70F3A0040AE79 /* Blorb */ = {
-			isa = PBXGroup;
-			children = (
-				C3C180AD25C70FD80040AE79 /* iff.h */,
-				C3C180AE25C70FD80040AE79 /* iff.c */,
-				C3C1807C25C70F2F0040AE79 /* Blorb.h */,
-				C3C1807B25C70F2F0040AE79 /* Blorb.m */,
-				C3C1807A25C70F2F0040AE79 /* BlorbResource.h */,
-				C3C1807D25C70F2F0040AE79 /* BlorbResource.m */,
-			);
-			path = Blorb;
 			sourceTree = "<group>";
 		};
 		C3C2053F268D306800DB7AE0 /* NotificationBezel */ = {
@@ -5786,8 +5748,10 @@
 			);
 			comments = "Don't forget to install FMODEx and change the installed name of the dylib with\nthe install_name_tool -id @executable_path/libfmodex.dylib\n";
 			dependencies = (
-				C3AE85BB271B09D700C96126 /* PBXTargetDependency */,
-				C3AE85B9271B09D400C96126 /* PBXTargetDependency */,
+				C3F53C7C271CABF000538393 /* PBXTargetDependency */,
+				C3F53C76271CAADF00538393 /* PBXTargetDependency */,
+				C3F53C7A271CAAE800538393 /* PBXTargetDependency */,
+				C3F53C78271CAAE400538393 /* PBXTargetDependency */,
 				96A9BA7B0A0655BE001B5B9B /* PBXTargetDependency */,
 				9650316609F2974A0083E64E /* PBXTargetDependency */,
 				9650316409F2974A0083E64E /* PBXTargetDependency */,
@@ -6280,6 +6244,8 @@
 					};
 					C322714925CC214A0083BD5B = {
 						CreatedOnToolsVersion = 12.3;
+						DevelopmentTeam = 6U7YY3724Y;
+						ProvisioningStyle = Automatic;
 					};
 					C3CEC2B526A6D0A200120469 = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -6288,6 +6254,9 @@
 					C3CEC2CA26A6D66800120469 = {
 						CreatedOnToolsVersion = 12.5.1;
 						TestTargetID = 961CCEC309F239C100528FF9;
+					};
+					C3F53C59271BB8BE00538393 = {
+						CreatedOnToolsVersion = 13.0;
 					};
 				};
 			};
@@ -6465,6 +6434,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C3F53C58271BB8BE00538393 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -6631,7 +6607,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3C1807E25C70F300040AE79 /* Blorb.m in Sources */,
 				C3CB504C2662606600A95BE2 /* CoverImageHandler.m in Sources */,
 				C3F9D88B2675FCF70076EAFB /* OSImageHashing.m in Sources */,
 				C3191AA4266D3A1F00528F6E /* NSBitmapImageRep+retro.m in Sources */,
@@ -6676,9 +6651,9 @@
 				6DCFFC2E22BE57790035FA99 /* SideInfoView.m in Sources */,
 				C3C180C825C717F30040AE79 /* IFCoverDescription.m in Sources */,
 				6D73052122BFA9EB00DFC73C /* NSDate+relative.m in Sources */,
+				C3F53C45271B509900538393 /* MyCoreDataCoreSpotlightDelegate.m in Sources */,
 				C32419CD262DFFA300366AAE /* BuiltInThemes.m in Sources */,
 				6D76353622C4F113000873F3 /* CoreDataManager.m in Sources */,
-				C3C1807F25C70F300040AE79 /* BlorbResource.m in Sources */,
 				6D7673E8239FFC6C00FB24C0 /* IFBibliographic.m in Sources */,
 				C3B9EB4B25FA29F4002A406E /* AttributeDictionaryTransformer.m in Sources */,
 				6D7673EA239FFC6C00FB24C0 /* IFDB.m in Sources */,
@@ -6688,7 +6663,6 @@
 				C3074B8825A1F461003E80C6 /* VersionFormatter.m in Sources */,
 				6D7673ED239FFC6C00FB24C0 /* IFIdentification.m in Sources */,
 				6D7673EE239FFC6C00FB24C0 /* IFStory.m in Sources */,
-				C3C180AF25C70FD80040AE79 /* iff.c in Sources */,
 				6DC6213D23A26078002DEF3B /* Ifid.m in Sources */,
 				6DC6214023A26078002DEF3B /* Image.m in Sources */,
 				C3C2053D268D304500DB7AE0 /* BezelWindow.m in Sources */,
@@ -7189,11 +7163,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C36B3892271F710200756D94 /* InfoView.m in Sources */,
 				C3E2EAB525D08EEC0012B7FB /* NSScanner+SkipUpToCharset.m in Sources */,
 				C3E2EAB625D08EEC0012B7FB /* UKSyntaxColor.m in Sources */,
-				C3AE6BCF25CF2A9300B7AB0A /* iff.c in Sources */,
-				C3AE6BD025CF2A9300B7AB0A /* BlorbResource.m in Sources */,
-				C3AE6BB525CF2A8300B7AB0A /* Blorb.m in Sources */,
 				C309882E25CB1ACD00750F72 /* Metadata.m in Sources */,
 				C309884825CB1AD300750F72 /* Game.m in Sources */,
 				C309886225CB1ADF00750F72 /* Image.m in Sources */,
@@ -7201,6 +7173,7 @@
 				C3CAC15C2699C72600FCB7BF /* NSData+Categories.m in Sources */,
 				C32A3D852719F30A0049C777 /* PreviewViewController.m in Sources */,
 				C32A3D862719F3240049C777 /* iFictionPreviewController.m in Sources */,
+				C36B3895271F712700756D94 /* NonInterpolatedImage.m in Sources */,
 				C309881425CB1AB500750F72 /* Spatterlight.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7209,10 +7182,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C322720D25CC23980083BD5B /* iff.c in Sources */,
-				C322722725CC239C0083BD5B /* Blorb.m in Sources */,
 				C3CAC15D2699C73200FCB7BF /* NSData+Categories.m in Sources */,
-				C322724125CC23A00083BD5B /* BlorbResource.m in Sources */,
 				C32271C025CC22590083BD5B /* Image.m in Sources */,
 				C32271A625CC22530083BD5B /* Metadata.m in Sources */,
 				C322718C25CC224F0083BD5B /* Game.m in Sources */,
@@ -7486,16 +7456,6 @@
 			isa = PBXTargetDependency;
 			target = 96FE875F09F3A11900D41D78 /* tads2 */;
 			targetProxy = 96FE87D809F3A1BC00D41D78 /* PBXContainerItemProxy */;
-		};
-		C3AE85B9271B09D400C96126 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C311DEF425C472E500484639 /* SpatterlightQuickLook */;
-			targetProxy = C3AE85B8271B09D400C96126 /* PBXContainerItemProxy */;
-		};
-		C3AE85BB271B09D700C96126 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C322714925CC214A0083BD5B /* SpatterlightThumbnailer */;
-			targetProxy = C3AE85BA271B09D700C96126 /* PBXContainerItemProxy */;
 		};
 		C3B61C501ECCDB4600607CE7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7888,7 +7848,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;

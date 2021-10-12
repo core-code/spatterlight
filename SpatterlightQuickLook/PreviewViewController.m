@@ -4,22 +4,23 @@
 //
 //  Created by Administrator on 2021-01-29.
 //
-#import <Cocoa/Cocoa.h>
-#import <CoreSpotlight/CoreSpotlight.h>
 
+#import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
 #import <CoreData/CoreData.h>
-
+#import <CoreSpotlight/CoreSpotlight.h>
 #import <BlorbFramework/BlorbFramework.h>
 
 #import "Game.h"
 #import "Metadata.h"
 #import "Image.h"
+#import "Ifid.h"
 
 #import "NSDate+relative.h"
 
 #import "iFictionPreviewController.h"
 #import "PreviewViewController.h"
+#import "InfoView.h"
 
 /* the treaty of babel headers */
 #include "babel_handler.h"
@@ -86,19 +87,172 @@
 /*
  * Implement this method and set QLSupportsSearchableItems to YES in the Info.plist of the extension if you support CoreSpotlight.
  */
-//- (void)preparePreviewOfSearchableItemWithIdentifier:(NSString *)identifier queryString:(NSString *)queryString completionHandler:(void (^)(NSError * _Nullable))handler {
-//    NSLog(@"preparePreviewOfSearchableItemWithIdentifier");
-//    NSLog(@"Identifier: %@", identifier );
-//    NSLog(@"queryString: %@", queryString );
-//
-//
-//    // Perform any setup necessary in order to prepare the view.
-//    
-//    // Call the completion handler so Quick Look knows that the preview is fully loaded.
-//    // Quick Look will display a loading spinner while the completion handler is not called.
-//
-//    handler(nil);
-//}
+- (void)preparePreviewOfSearchableItemWithIdentifier:(NSString *)identifier queryString:(NSString *)queryString completionHandler:(void (^)(NSError * _Nullable))handler {
+    NSLog(@"preparePreviewOfSearchableItemWithIdentifier: %@ queryString: %@", identifier, queryString );
+
+    // Perform any setup necessary in order to prepare the view.
+
+    // Call the completion handler so Quick Look knows that the preview is fully loaded.
+    // Quick Look will display a loading spinner while the completion handler is not called.
+
+    _ifid = nil;
+    _addedFileInfo = NO;
+    _showingIcon = NO;
+    _showingView = NO;
+    
+    // Add the supported content types to the QLSupportedContentTypes array in the Info.plist of the extension.
+
+    // Perform any setup necessary in order to prepare the view.
+
+    // Call the completion handler so Quick Look knows that the preview is fully loaded.
+    // Quick Look will display a loading spinner while the completion handler is not called.
+
+    NSManagedObjectContext *context = self.persistentContainer.newBackgroundContext;
+    if (!context) {
+        NSError *contexterror = [NSError errorWithDomain:NSCocoaErrorDomain code:6 userInfo:@{
+            NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Could not create new background context\n"]}];
+        NSLog(@"Could not create new context!");
+        handler(contexterror);
+        return;
+    }
+
+    __block NSURL *url = nil;
+
+    __block Game *game = nil;
+    __block Metadata *metadata = nil;
+    __block Image *image = nil;
+
+    __block bool giveUp = NO;
+
+    [context performBlockAndWait:^{
+
+        NSError *error;
+
+        NSURL *uri = [NSURL URLWithString:identifier];
+        if (!uri) {
+            error = [NSError errorWithDomain:NSCocoaErrorDomain code:7 userInfo:@{
+                NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Could not create URI from identifier string %@\n", identifier]}        ];
+            handler(error);
+            giveUp = YES;
+            return;
+        }
+
+        NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+
+
+        if (!objectID) {
+            error = [NSError errorWithDomain:NSCocoaErrorDomain code:1 userInfo:@{
+                NSLocalizedDescriptionKey: [NSString stringWithFormat:@"This game has been deleted from the Spatterlight database.\n"]}];
+            handler(error);
+            giveUp = YES;
+            return;
+        }
+
+        id object = [context objectWithID:objectID];
+
+        if (!object) {
+            error = [NSError errorWithDomain:NSCocoaErrorDomain code:2 userInfo:@{
+                NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Could not create object from identifier %@\n", identifier]}];
+            handler(error);
+            giveUp = YES;
+            return;
+        }
+
+        NSLog(@"Object is of kind %@", [object class]);
+
+        if ([object isKindOfClass:[Metadata class]]) {
+            metadata = (Metadata *)object;
+            game = metadata.games.anyObject;
+        } else if ([object isKindOfClass:[Game class]]) {
+            game = (Game *)object;
+            metadata = game.metadata;
+        } else if ([object isKindOfClass:[Image class]]) {
+            image = (Image *)object;
+            metadata = image.metadata.anyObject;
+            game = metadata.games.anyObject;
+            if (!metadata)
+                NSLog(@"Image has no metadata!");
+            if (!game)
+                NSLog(@"Image has no game!");
+            if (!image.data)
+                NSLog(@"Image has no data!");
+        } else {
+            error = [NSError errorWithDomain:NSCocoaErrorDomain code:3 userInfo:@{
+                NSLocalizedDescriptionKey: [NSString stringWithFormat:@"No support for class %@\n", [object class]]}];
+            handler(error);
+            giveUp = YES;
+            return;
+        }
+
+    }];
+
+    if (giveUp) {
+        CSSearchableIndex *index = [CSSearchableIndex defaultSearchableIndex];
+        [index deleteSearchableItemsWithIdentifiers:@[identifier]
+                                  completionHandler:^(NSError *blockerror){
+            if (blockerror) {
+                NSLog(@"Deleting searchable item failed: %@", blockerror);
+            } else {
+                NSLog(@"Successfully deleted searchable item");
+            }
+        }];
+        return;
+    }
+
+    if (image && !image.data) {
+        NSError *error = [NSError errorWithDomain:NSCocoaErrorDomain code:102 userInfo:@{
+            NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Image has no data!?!\n"]}];
+        handler(error);
+        return;
+    }
+
+     if (!metadata) {
+        NSError *error = [NSError errorWithDomain:NSCocoaErrorDomain code:101 userInfo:@{
+            NSLocalizedDescriptionKey: [NSString stringWithFormat:@"No metadata!?!\n"]}];
+        handler(error);
+        return;
+    }
+
+    [_imageView removeFromSuperview];
+
+    NSScrollView *scrollView = _textview.enclosingScrollView;
+    scrollView.hasVerticalScroller = YES;
+    scrollView.frame = NSMakeRect(0, 0, 390, 378);
+
+    InfoView *infoView = [[InfoView alloc] initWithFrame:scrollView.bounds];
+
+    if (game)
+        url = [game urlForBookmark];
+
+    if (!metadata.cover.data && metadata.blurb.length == 0 && metadata.author.length == 0 && metadata.headline.length == 0 && url) {
+        Blorb *blorb = [[Blorb alloc] initWithData:[NSData dataWithContentsOfURL:url]];
+        if (blorb)
+            infoView.imageData = [blorb coverImageData];
+        if (!infoView.imageData) {
+            _showingIcon = YES;
+            NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:url.path];
+            infoView.imageData = icon.TIFFRepresentation;
+        }
+    }
+
+    NSInteger rating = NSNotFound;
+    if (metadata.starRating.length) {
+        rating = metadata.starRating.integerValue;
+    } else if  (metadata.myRating.length) {
+        rating = metadata.myRating.integerValue;
+    }
+    infoView.starString = [PreviewViewController starString:rating];
+
+    scrollView.documentView = infoView;
+    if (image) {
+        infoView.imageData = (NSData *)image.data;
+        [infoView updateWithImage:image];
+    } else {
+        [infoView updateWithMetadata:metadata];
+    }
+
+    handler(nil);
+}
 
 - (void)preparePreviewOfFileAtURL:(NSURL *)url completionHandler:(void (^)(NSError * _Nullable))handler {
 
@@ -581,7 +735,7 @@
         // See comment above
         if (lastPlayed && noMeta)
             [self addInfoLine:[NSString stringWithFormat:@"Last played: %@", lastPlayedString] attributes:attrDict linebreak:YES];
-        if (noMeta)
+        if (noMeta && url)
             [self addFileInfo:url];
     }
 }
@@ -603,26 +757,35 @@
     } else if  (dict[@"starRating"]) {
         rating = ((NSNumber *)dict[@"starRating"]).integerValue;
     }
+    NSAttributedString *starString = [PreviewViewController starString:rating];
+    [_textview.textStorage appendAttributedString:starString];
+}
+
++ (nullable NSAttributedString *)starString:(NSInteger)rating {
+
+    NSMutableAttributedString *starString = [NSMutableAttributedString new];
 
     if (rating == NSNotFound)
-        return;
+        return starString;
 
     NSUInteger totalNumberOfStars = 5;
     NSFont *currentFont = [NSFont fontWithName:@"SF Pro" size:12];
     if (!currentFont)
         currentFont = [NSFont systemFontOfSize:20 weight:NSFontWeightRegular];
 
+    NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
+    para.alignment = NSCenterTextAlignment;
+
     if (@available(macOS 10.13, *)) {
         NSDictionary *activeStarFormat = @{
             NSFontAttributeName : currentFont,
-            NSForegroundColorAttributeName : [NSColor colorNamed:@"customControlColor"]
+            NSForegroundColorAttributeName : [NSColor colorNamed:@"customControlColor"],
         };
         NSDictionary *inactiveStarFormat = @{
             NSFontAttributeName : currentFont,
             NSForegroundColorAttributeName : [NSColor colorNamed:@"customControlColor"]
         };
 
-        NSMutableAttributedString *starString = [NSMutableAttributedString new];
         [starString appendAttributedString:[[NSAttributedString alloc]
                                             initWithString:@"\n\n" attributes:activeStarFormat]];
 
@@ -643,8 +806,8 @@
                                                     initWithString:NSLocalizedString(@"􀋂 ", nil) attributes:inactiveStarFormat]];
             }
         }
-        [_textview.textStorage appendAttributedString:starString];
     }
+    return starString;
 }
 
 - (NSString *) unitStringFromBytes:(CGFloat)bytes {
