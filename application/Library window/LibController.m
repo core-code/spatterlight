@@ -2590,6 +2590,18 @@ objectValueForTableColumn: (NSTableColumn*)column
     }
 }
 
+- (NSString *)tableView:(NSTableView *)tableView typeSelectStringForTableColumn:(NSTableColumn *)tableColumn
+                    row:(NSInteger)row
+{
+    if ([[tableColumn identifier] isEqualToString:@"title"])
+    {
+        NSUInteger tableColumnIndex=[[tableView tableColumns] indexOfObject:tableColumn];
+        return [[tableView preparedCellAtColumn:tableColumnIndex
+                                            row:row] stringValue];
+    }
+    return nil;
+}
+
 - (void)noteBackgroundManagedObjectContextDidChange:(NSNotification *)notification {
     NSManagedObjectContext *mainContext = _managedObjectContext;
     [mainContext performBlock:^{
