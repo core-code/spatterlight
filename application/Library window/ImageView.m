@@ -176,33 +176,6 @@
     }
 }
 
-- (void)positionLayer {
-    if (_ratio == 0)
-        return;
-    NSView *superview = [self superview];
-    NSSize windowSize = superview.frame.size;
-
-    NSRect imageFrame = NSMakeRect(0,0, windowSize.width, windowSize.width / _ratio);
-    if (imageFrame.size.height > windowSize.height) {
-        imageFrame = NSMakeRect(0,0, windowSize.height * _ratio, windowSize.height);
-        imageFrame.origin.x = (windowSize.width - imageFrame.size.width) / 2;
-    } else {
-        imageFrame.origin.y = (windowSize.height - imageFrame.size.height) / 2;
-        if (NSMaxY(imageFrame) > NSMaxY(superview.frame))
-            imageFrame.origin.y = NSMaxY(superview.frame) - imageFrame.size.height;
-    }
-
-    self.frame = imageFrame;
-
-    [CATransaction begin];
-    [CATransaction setValue:(id)kCFBooleanTrue
-                     forKey:kCATransactionDisableActions];
-    self.layer.frame = imageFrame;
-    imageFrame.origin = NSZeroPoint;
-    for (CALayer *layer in self.layer.sublayers)
-        layer.frame = imageFrame;
-    [CATransaction commit];
-}
 
 - (BOOL)wantsUpdateLayer {
     return YES;
