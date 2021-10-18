@@ -1878,6 +1878,11 @@ static void write_xml_text(FILE *fp, Metadata *info, NSString *key) {
         NSLog(@"Object: %@", [object class]);
     }
 
+    if (game && [_gameTableModel indexOfObject:game] == NSNotFound) {
+        _searchField.stringValue = @"";
+        [self searchForGames:nil];
+    }
+
     if (game) {
         [self selectAndPlayGame:game];
     } else if (meta) {
