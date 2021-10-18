@@ -3,6 +3,7 @@
  */
 
 #import <BlorbFramework/Blorb.h>
+#import <CoreSpotlight/CoreSpotlight.h>
 
 #import "LibController.h"
 #import "AppDelegate.h"
@@ -347,6 +348,13 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
         [self cancel:nil];
 
         BOOL forceQuit = _forceQuitCheckBox.state == NSOnState;
+
+        CSSearchableIndex *index = [CSSearchableIndex defaultSearchableIndex];
+        [index deleteSearchableItemsWithDomainIdentifiers:@[@"net.ccxvii.spatterlight"] completionHandler:^(NSError *blockerror){
+            if (blockerror) {
+                NSLog(@"Deleting all searchable items failed: %@", blockerror);
+            }
+        }];
 
         NSArray *entitiesToDelete = @[@"Metadata", @"Game", @"Ifid", @"Image"];
 
