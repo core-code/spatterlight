@@ -2600,7 +2600,7 @@ objectValueForTableColumn: (NSTableColumn*)column
 {
     if ([[tableColumn identifier] isEqualToString:@"title"])
     {
-        NSUInteger tableColumnIndex=[[tableView tableColumns] indexOfObject:tableColumn];
+        NSInteger tableColumnIndex = (NSInteger)[[tableView tableColumns] indexOfObject:tableColumn];
         return [[tableView preparedCellAtColumn:tableColumnIndex
                                             row:row] stringValue];
     }
