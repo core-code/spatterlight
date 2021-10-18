@@ -37,11 +37,6 @@
 
     NSLog(@"Object is kind of class %@", [object class]);
 
-    CSCustomAttributeKey *forgiveness = [[CSCustomAttributeKey alloc] initWithKeyName:@"forgiveness"];
-    CSCustomAttributeKey *group = [[CSCustomAttributeKey alloc] initWithKeyName:@"group"];
-    CSCustomAttributeKey *series = [[CSCustomAttributeKey alloc] initWithKeyName:@"series"];
-    CSCustomAttributeKey *date = [[CSCustomAttributeKey alloc] initWithKeyName:@"date"];
-
     if ([object isKindOfClass:[Image class]]) {
         Image *image = (Image *)object;
         if (!image.imageDescription.length)
@@ -52,7 +47,6 @@
             attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:@"public.image"];
         attributeSet.displayName = [NSString stringWithFormat:@"Cover image of %@", image.metadata.anyObject.title];
         attributeSet.contentDescription = image.imageDescription;
-        return attributeSet;
     } else if ([object isKindOfClass:[Metadata class]]) {
         Metadata *metadata = (Metadata *)object;
         if (!metadata.format.length)
@@ -62,7 +56,11 @@
         if (!metadata.title.length)
             return nil;
         attributeSet.displayName = metadata.title;
-        attributeSet.rating = @(metadata.starRating.integerValue);
+        NSInteger rating = metadata.starRating.integerValue;
+        if (!rating)
+            rating = metadata.myRating.integerValue;
+        if (rating)
+            attributeSet.rating = @(rating);
         attributeSet.contentDescription = metadata.blurb;
 
         attributeSet.artist = metadata.author;
@@ -71,34 +69,47 @@
         if (metadata.languageAsWord.length)
             attributeSet.languages = @[metadata.languageAsWord];
 
-        [attributeSet setValue:metadata.group forCustomKey:group];
-        [attributeSet setValue:metadata.forgiveness forCustomKey:forgiveness];
-        [attributeSet setValue:metadata.series forCustomKey:series];
-        [attributeSet setValue:metadata.firstpublished forCustomKey:date];
+        CSCustomAttributeKey *ifids = [[CSCustomAttributeKey alloc] initWithKeyName:@"net_ccxvii_spatterlight_ifid"
+                                                                         searchable:YES
+                                                                searchableByDefault:YES
+                                                                             unique:YES
+                                                                        multiValued:YES];
 
+        NSArray<NSString *> *ifidArray = nil;
         for (Ifid *ifidobject in metadata.ifids) {
-            [MyCoreDataCoreSpotlightDelegate addKeyword:ifidobject.ifidString toAttributeSet:attributeSet];
+            if (ifidArray == nil) {
+            ifidArray = @[ifidobject.ifidString];
+            } else {
+                ifidArray = [ifidArray arrayByAddingObject:ifidobject.ifidString];
+            }
         }
+        if (ifidArray)
+            [attributeSet setValue:ifidArray forCustomKey:ifids];
 
-        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.group toAttributeSet:attributeSet];
-        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.forgiveness toAttributeSet:attributeSet];
-        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.series toAttributeSet:attributeSet];
-        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.firstpublished toAttributeSet:attributeSet];
-        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.seriesnumber toAttributeSet:attributeSet];
-        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.languageAsWord toAttributeSet:attributeSet];
+        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.group
+            toCustomAttribute:@"group" inSet:attributeSet];
+        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.forgiveness toCustomAttribute:@"forgiveness" inSet:attributeSet];
+        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.series toCustomAttribute:@"series" inSet:attributeSet];
+        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.firstpublished toCustomAttribute:@"year" inSet:attributeSet];
+        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.seriesnumber toCustomAttribute:@"indexInSeries" inSet:attributeSet];
+        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.languageAsWord toCustomAttribute:@"language" inSet:attributeSet];
+        [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.headline toCustomAttribute:@"headline" inSet:attributeSet];
+    } else {
+        return nil;
     }
-
     return attributeSet;
 }
 
-+ (void)addKeyword:(NSString *)keyword toAttributeSet:(CSSearchableItemAttributeSet *)set {
-    if (!keyword.length)
++ (void)addKeyword:(id)keyword toCustomAttribute:(NSString *)name inSet:(CSSearchableItemAttributeSet *)attributeSet {
+    if (keyword == nil)
         return;
-    if (set.keywords == nil) {
-        set.keywords = @[keyword];
-    } else {
-        set.keywords = [set.keywords arrayByAddingObject:keyword];
-    }
+    CSCustomAttributeKey *customKey =
+    [[CSCustomAttributeKey alloc] initWithKeyName:[NSString stringWithFormat:@"net_ccxvii_spatterlight_%@", name]
+                                       searchable:YES
+                              searchableByDefault:YES
+                                           unique:YES
+                                      multiValued:NO];
+    [attributeSet setValue:keyword forCustomKey:customKey];
 }
 
 /* CSSearchableIndexDelegate conformance */
