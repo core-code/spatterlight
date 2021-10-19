@@ -33,9 +33,7 @@
 }
 
 - (nullable CSSearchableItemAttributeSet *)attributeSetForObject:(NSManagedObject*)object {
-    CSSearchableItemAttributeSet *attributeSet = [super attributeSetForObject:object];
-
-    NSLog(@"Object is kind of class %@", [object class]);
+    CSSearchableItemAttributeSet *attributeSet;
 
     if ([object isKindOfClass:[Image class]]) {
         Image *image = (Image *)object;
@@ -43,16 +41,14 @@
             return nil;
         if (!image.metadata.count || !image.metadata.anyObject.ifids.count)
             return nil;
-        if (!attributeSet)
-            attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:@"public.image"];
+        attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:@"public.image"];
         attributeSet.displayName = [NSString stringWithFormat:@"Cover image of %@", image.metadata.anyObject.title];
         attributeSet.contentDescription = image.imageDescription;
     } else if ([object isKindOfClass:[Metadata class]]) {
         Metadata *metadata = (Metadata *)object;
         if (!metadata.format.length)
             return nil;
-        if (!attributeSet)
-            attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:[MyCoreDataCoreSpotlightDelegate UTIFromFormat:metadata.format]];
+        attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:[MyCoreDataCoreSpotlightDelegate UTIFromFormat:metadata.format]];
         if (!metadata.title.length)
             return nil;
         attributeSet.displayName = metadata.title;
@@ -78,7 +74,7 @@
         NSArray<NSString *> *ifidArray = nil;
         for (Ifid *ifidobject in metadata.ifids) {
             if (ifidArray == nil) {
-            ifidArray = @[ifidobject.ifidString];
+                ifidArray = @[ifidobject.ifidString];
             } else {
                 ifidArray = [ifidArray arrayByAddingObject:ifidobject.ifidString];
             }
@@ -87,7 +83,8 @@
             [attributeSet setValue:ifidArray forCustomKey:ifids];
 
         [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.group
-            toCustomAttribute:@"group" inSet:attributeSet];
+            toCustomAttribute:@"group"
+            inSet:attributeSet];
         [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.forgiveness toCustomAttribute:@"forgiveness" inSet:attributeSet];
         [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.series toCustomAttribute:@"series" inSet:attributeSet];
         [MyCoreDataCoreSpotlightDelegate addKeyword:metadata.firstpublished toCustomAttribute:@"year" inSet:attributeSet];
@@ -110,20 +107,6 @@
                                            unique:YES
                                       multiValued:NO];
     [attributeSet setValue:keyword forCustomKey:customKey];
-}
-
-/* CSSearchableIndexDelegate conformance */
-- (void)searchableIndex:(CSSearchableIndex *)searchableIndex reindexAllSearchableItemsWithAcknowledgementHandler:(void (^)(void))acknowledgementHandler {
-    NSLog(@"reindexAllSearchableItemsWithAcknowledgementHandler %@", searchableIndex);
-
-    [super searchableIndex:searchableIndex reindexAllSearchableItemsWithAcknowledgementHandler:acknowledgementHandler];
-}
-
-- (void)searchableIndex:(CSSearchableIndex *)searchableIndex reindexSearchableItemsWithIdentifiers:(NSArray <NSString *> *)identifiers acknowledgementHandler:(void (^)(void))acknowledgementHandler {
-
-    NSLog(@"reindexSearchableItemsWithIdentifiers %@", searchableIndex);
-
-    [super searchableIndex:searchableIndex reindexSearchableItemsWithIdentifiers:identifiers acknowledgementHandler:acknowledgementHandler];
 }
 
 @end
