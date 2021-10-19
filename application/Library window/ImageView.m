@@ -685,15 +685,23 @@
 }
 
 -(void)processImageData:(NSData *)imageData sourceUrl:(NSString *)URLPath dontAsk:(BOOL)dontAsk {
-    if (!imageData)
+    if (!imageData || !URLPath.length)
         return;
+
+    Metadata *metadata = _game.metadata;
+
+    Image *oldImageObj = [ImageView findImageObjectWithURL:URLPath inContext:_game.managedObjectContext];
+    if (oldImageObj && [oldImageObj.data isEqualTo:imageData]) {
+        metadata.cover = oldImageObj;
+        metadata.coverArtURL = URLPath;
+        return;
+    }
 
     if ([URLPath isEqualToString:@"pasteboard"] ||
         [self compareByFileNames:URLPath data:imageData]) {
         dontAsk = YES;
     }
 
-    Metadata *metadata = _game.metadata;
     __block NSData *data = imageData;
     __block BOOL askFlag = dontAsk;
     [self.workQueue addOperationWithBlock:^{
@@ -733,6 +741,26 @@
             }
         });
     }];
+}
+
++ (nullable Image *)findImageObjectWithURL:(NSString *)path inContext:(NSManagedObjectContext *)context {
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = [NSEntityDescription entityForName:@"Image" inManagedObjectContext:context];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"originalURL = %@", path];
+
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil || error) {
+        NSLog(@"findImageObjectWithURL error: %@",error);
+        return nil;
+    }
+
+    if (!fetchedObjects.count) {
+        return nil;
+    }
+
+    return fetchedObjects.firstObject;
 }
 
 - (BOOL)compareByFileNames:(NSString *)path data:(NSData *)data {
