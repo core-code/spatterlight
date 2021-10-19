@@ -446,6 +446,7 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)rowIndex {
         NSLog(@"Pruning %ld image entities", imageEntriesToDelete.count);
         counter += imageEntriesToDelete.count;
         for (Image *img in imageEntriesToDelete) {
+            NSLog(@"Pruning image with original URL %@", img.originalURL);
             [_managedObjectContext deleteObject:img];
         }
 
