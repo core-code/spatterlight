@@ -419,7 +419,10 @@
 }
 
 - (void)keyDown:(NSEvent *)event {
-    unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
+    NSString *characters = [event charactersIgnoringModifiers];
+    unichar key = '\0';
+    if (characters.length)
+        key = [characters characterAtIndex:0];
     if (!_isPlaceholder && (key == NSDeleteCharacter || key == NSBackspaceCharacter))
         [self delete:nil];
     else
