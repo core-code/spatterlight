@@ -209,8 +209,6 @@ fprintf(stderr, "%s\n",                                                    \
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
     CGFloat superViewWidth = clipView.frame.size.width;
-    CGFloat superViewHeight = clipView.frame.size.height;
-
 
     if (superViewWidth < 24)
         return;
@@ -305,31 +303,7 @@ fprintf(stderr, "%s\n",                                                    \
     }
 
     if (_imageData) {
-        NSImage *theImage = [[NSImage alloc] initWithData:_imageData];
-
-        CGFloat ratio = theImage.size.width / theImage.size.height;
-
-        CGFloat maxHeight = superViewHeight * 0.67;
-
-        NSRect imageFrame = NSMakeRect(0,0, maxHeight * ratio, maxHeight);
-
-        if (imageFrame.size.width > superViewWidth - 40) {
-            imageFrame = NSMakeRect(0,0, superViewWidth - 40, (superViewWidth - 40) / ratio);
-        }
-
-        _imageView = [[NonInterpolatedImage alloc] initWithFrame:imageFrame];
-
-        _imageView.translatesAutoresizingMaskIntoConstraints = NO;
-
-        [self addSubview:_imageView];
-
-        xPosConstraint = [NSLayoutConstraint constraintWithItem:_imageView
-                                                      attribute:NSLayoutAttributeCenterX
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self
-                                                      attribute:NSLayoutAttributeCenterX
-                                                     multiplier:1.0
-                                                       constant:0];
+        [self addImage];
 
         yPosConstraint = [NSLayoutConstraint constraintWithItem:_imageView
                                                       attribute:NSLayoutAttributeTop
@@ -339,24 +313,7 @@ fprintf(stderr, "%s\n",                                                    \
                                                      multiplier:1.0
                                                        constant:10];
 
-        widthConstraint = [NSLayoutConstraint constraintWithItem:_imageView
-                                                       attribute:NSLayoutAttributeWidth
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:nil
-                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                      multiplier:1.0
-                                                        constant:imageFrame.size.width];
-
-        heightConstraint = [NSLayoutConstraint constraintWithItem:_imageView
-                                                        attribute:NSLayoutAttributeHeight
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:nil
-                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                       multiplier:1.0
-                                                         constant:imageFrame.size.height];
-
-
-        [self addConstraints:@[xPosConstraint, yPosConstraint, widthConstraint, heightConstraint]];
+        [self addConstraint:yPosConstraint];
 
         if (somedata.cover.data)
             [_imageView addImageFromManagedObject:somedata.cover];
@@ -500,10 +457,7 @@ fprintf(stderr, "%s\n",                                                    \
 
     totalHeight = 0;
 
-    NSLayoutConstraint *xPosConstraint;
     NSLayoutConstraint *yPosConstraint;
-    NSLayoutConstraint *widthConstraint;
-    NSLayoutConstraint *heightConstraint;
 
     NSFont *font;
     NSView *lastView;
@@ -511,8 +465,6 @@ fprintf(stderr, "%s\n",                                                    \
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
     CGFloat superViewWidth = clipView.frame.size.width;
-    CGFloat superViewHeight = clipView.frame.size.height;
-
 
     if (superViewWidth < 24)
         return;
@@ -541,37 +493,12 @@ fprintf(stderr, "%s\n",                                                    \
                                                         multiplier:1.0
                                                           constant:0]];
 
-
     if (!_imageData && image.data)
         _imageData = (NSData *)image.data;
 
     if (_imageData)
     {
-        NSImage *theImage = [[NSImage alloc] initWithData:_imageData];
-
-        CGFloat ratio = theImage.size.width / theImage.size.height;
-
-        CGFloat maxHeight = superViewHeight * 0.67;
-
-        NSRect imageFrame = NSMakeRect(0,0, maxHeight * ratio, maxHeight);
-
-        if (imageFrame.size.width > superViewWidth - 40) {
-            imageFrame = NSMakeRect(0,0, superViewWidth - 40, (superViewWidth - 40) / ratio);
-        }
-
-        _imageView = [[NonInterpolatedImage alloc] initWithFrame:imageFrame];
-
-        _imageView.translatesAutoresizingMaskIntoConstraints = NO;
-
-        [self addSubview:_imageView];
-
-        xPosConstraint = [NSLayoutConstraint constraintWithItem:_imageView
-                                                      attribute:NSLayoutAttributeCenterX
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self
-                                                      attribute:NSLayoutAttributeCenterX
-                                                     multiplier:1.0
-                                                       constant:0];
+        [self addImage];
 
         yPosConstraint = [NSLayoutConstraint constraintWithItem:_imageView
                                                       attribute:NSLayoutAttributeTop
@@ -582,35 +509,17 @@ fprintf(stderr, "%s\n",                                                    \
                                                        constant:20];
         yPosConstraint.priority = 500;
 
-        widthConstraint = [NSLayoutConstraint constraintWithItem:_imageView
-                                                       attribute:NSLayoutAttributeWidth
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:nil
-                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                      multiplier:1.0
-                                                        constant:maxHeight * ratio];
-
-        heightConstraint = [NSLayoutConstraint constraintWithItem:_imageView
-                                                        attribute:NSLayoutAttributeHeight
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:nil
-                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                       multiplier:1.0
-                                                         constant:maxHeight];
-
-
-        [self addConstraints:@[xPosConstraint, yPosConstraint, widthConstraint, heightConstraint]];
+        [self addConstraint:yPosConstraint];
 
         [_imageView addImageFromManagedObject:image];
 
         lastView = _imageView;
-        totalHeight += maxHeight;
+        totalHeight += NSHeight(_imageView.frame);
     } else {
         _imageView = nil;
         NSLog(@"No image data! Image:%@", image);
         return;
     }
-
 
     if (image.imageDescription)
     {
@@ -620,7 +529,6 @@ fprintf(stderr, "%s\n",                                                    \
     } else {
         NSLog(@"No description!");
     }
-
 
     NSLayoutConstraint *bottomPinConstraint =
     [NSLayoutConstraint constraintWithItem:self
@@ -652,7 +560,55 @@ fprintf(stderr, "%s\n",                                                    \
     } else {
         yPosConstraint.active = NO;
     }
+}
 
+- (void)addImage {
+    NSImage *theImage = [[NSImage alloc] initWithData:_imageData];
+
+    if (!theImage)
+        return;
+
+    CGFloat ratio = theImage.size.width / theImage.size.height;
+
+    CGFloat maxHeight = NSHeight(self.superview.frame) * 0.67;
+    CGFloat maxWidth = NSWidth(self.superview.frame) - 40;
+
+    NSRect imageFrame = NSMakeRect(0,0, maxHeight * ratio, maxHeight);
+
+    if (imageFrame.size.width > maxWidth) {
+        imageFrame = NSMakeRect(0,0, maxWidth, maxWidth / ratio);
+    }
+
+    _imageView = [[NonInterpolatedImage alloc] initWithFrame:imageFrame];
+    _imageView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self addSubview:_imageView];
+
+    NSLayoutConstraint *xPosConstraint = [NSLayoutConstraint constraintWithItem:_imageView
+                                                  attribute:NSLayoutAttributeCenterX
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:self
+                                                  attribute:NSLayoutAttributeCenterX
+                                                 multiplier:1.0
+                                                   constant:0];
+
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:_imageView
+                                                   attribute:NSLayoutAttributeWidth
+                                                   relatedBy:NSLayoutRelationEqual
+                                                      toItem:nil
+                                                   attribute:NSLayoutAttributeNotAnAttribute
+                                                  multiplier:1.0
+                                                    constant:NSWidth(_imageView.frame)];
+
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:_imageView
+                                                    attribute:NSLayoutAttributeHeight
+                                                    relatedBy:NSLayoutRelationEqual
+                                                       toItem:nil
+                                                    attribute:NSLayoutAttributeNotAnAttribute
+                                                   multiplier:1.0
+                                                     constant:NSHeight(_imageView.frame)];
+
+    [self addConstraints:@[xPosConstraint, widthConstraint, heightConstraint]];
 }
 
 @end
