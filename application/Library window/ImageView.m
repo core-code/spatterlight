@@ -490,44 +490,14 @@
 }
 
 - (IBAction)downloadImage:(id)sender {
-    CoreDataManager *coreDataManager = ((AppDelegate*)NSApplication.sharedApplication.delegate).coreDataManager;
-    NSManagedObjectContext *childContext = coreDataManager.privateChildManagedObjectContext;
-
-    NSManagedObjectID *objectID = _game.objectID;
-    [childContext performBlock:^{
-        Game *game = [childContext objectWithID:objectID];
-        if (!game)
-            return;
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(noteBackgroundManagedObjectContextDidChange:)
-                                                     name:NSManagedObjectContextObjectsDidChangeNotification
-                                                   object:childContext];
-        IFDBDownloader *downloader = [[IFDBDownloader alloc] initWithContext:childContext];
+    Game *game = _game;
+    [game.managedObjectContext performBlock:^{
+        IFDBDownloader *downloader = [[IFDBDownloader alloc] initWithContext:game.managedObjectContext];
         if ([downloader downloadMetadataFor:game reportFailure:YES imageOnly:YES]) {
             [downloader downloadImageFor:game.metadata];
-            if ([childContext hasChanges]) {
-                NSError *error = nil;
-                [childContext save:&error];
-                if (error)
-                    NSLog(@"ImageView downloadImage context save error: %@", error);
-            }
         }
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                     name:NSManagedObjectContextObjectsDidChangeNotification
-                                                   object:childContext];
     }];
 }
-
-- (void)noteBackgroundManagedObjectContextDidChange:(NSNotification *)notification {
-    Game *game = _game;
-    NSManagedObjectContext *mainContext = game.managedObjectContext;
-    [mainContext performBlock:^{
-        [mainContext mergeChangesFromContextDidSaveNotification:notification];
-        Image *image = game.metadata.cover;
-        [self processImageData:(NSData *)image.data sourceUrl:image.originalURL dontAsk:YES];
-    }];
-}
-
 
 - (IBAction)toggleFilter:(id)sender {
     _game.metadata.cover.interpolation = (_game.metadata.cover.interpolation == kTrilinear) ? kNearestNeighbor : kTrilinear;
