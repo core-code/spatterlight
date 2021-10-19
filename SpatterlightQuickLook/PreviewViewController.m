@@ -90,11 +90,6 @@
 - (void)preparePreviewOfSearchableItemWithIdentifier:(NSString *)identifier queryString:(NSString *)queryString completionHandler:(void (^)(NSError * _Nullable))handler {
     NSLog(@"preparePreviewOfSearchableItemWithIdentifier: %@ queryString: %@", identifier, queryString );
     
-    // Perform any setup necessary in order to prepare the view.
-    
-    // Call the completion handler so Quick Look knows that the preview is fully loaded.
-    // Quick Look will display a loading spinner while the completion handler is not called.
-    
     _ifid = nil;
     _addedFileInfo = NO;
     _showingIcon = NO;
