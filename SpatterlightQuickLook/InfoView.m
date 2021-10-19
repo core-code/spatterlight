@@ -285,19 +285,6 @@ fprintf(stderr, "%s\n",                                                    \
     if (somedata.title) { // Every game will have a title unless something is broken
         font = [NSFont systemFontOfSize:20];
 
-        NSFontDescriptor *descriptor = font.fontDescriptor;
-
-        NSArray *array = @[@{NSFontFeatureTypeIdentifierKey : @(kNumberCaseType),
-                             NSFontFeatureSelectorIdentifierKey : @(kUpperCaseNumbersSelector)}];
-
-        descriptor = [descriptor fontDescriptorByAddingAttributes:@{NSFontFeatureSettingsAttribute : array}];
-
-        if (somedata.title.length > 9) {
-            font = [NSFont fontWithDescriptor:descriptor size:20];
-        } else {
-            font = [NSFont fontWithDescriptor:descriptor size:30];
-        }
-
         longestWord = @"";
 
         for (NSString *word in [somedata.title componentsSeparatedByString:@" "]) {
